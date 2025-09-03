@@ -23,7 +23,7 @@
 						<section class="flight-search ptb-50 pl-50 pr-20">
 							<p class="mb-0 search-heading-1">Book Your Journey With Us</p>
 							<h1 class="mt-0 mb-30 search-heading-2">Find Perfect Trip</h1>
-							<form class="searchform" action="<?php echo base_url('flight/resultsnew') ;?>" method="get">
+							<form class="searchform" action="<?php echo site_url(); ?>search/flights.php" <?php //echo base_url('flight/resultsnew') ;?>" method="get">
                                 <input type="hidden" name="direct_flights" value="No">
 								<div class="row">
 									<div class="col-lg-12 mb-10">

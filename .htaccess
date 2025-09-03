@@ -5,6 +5,9 @@
     # Allow PATH_INFO
     AcceptPathInfo On
 
+    RewriteCond %{REQUEST_URI} ^/travel/flights/search/
+    RewriteRule .* - [L]
+    
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
 

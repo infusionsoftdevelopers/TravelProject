@@ -2,7 +2,7 @@
 // dynamic flight search and booking mock application
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
+var_dump($_GET);
 
 // Basic data about airports including coordinates for distance calculation.
 // This is a small curated list of popular international airports. More can be added easily.
@@ -873,6 +873,7 @@ $iataList = array_map(function($a) {
     <script>
     // Auto uppercase and filter suggestions for IATA input fields.
     function setupIataInput(id) {
+        console.log(id);
         var input = document.getElementById(id);
         input.addEventListener('input', function() {
             this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0,3);
@@ -902,7 +903,7 @@ $iataList = array_map(function($a) {
     <div class="container">
         <div class="sidebar">
             <h2>Refine Your Results</h2>
-            <form id="flightForm" method="get" action="<?php echo base_url('flight/resultsnew') ;?>">
+            <form id="flightForm" method="get" action="<?php echo site_url(); ?>search/flights.php"">
                 <div class="form-group">
                     <label>Trip Type</label>
                     <label><input type="radio" name="mode" value="round" <?php echo $mode==='oneway'?'':'checked'; ?>> Round Trip</label><br>
