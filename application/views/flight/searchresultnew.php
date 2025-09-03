@@ -903,7 +903,7 @@ $iataList = array_map(function($a) {
     <div class="container">
         <div class="sidebar">
             <h2>Refine Your Results</h2>
-            <form id="flightForm" method="get" action="">
+            <form id="flightForm" method="get" action="<?php echo base_url('flight/resultsnew') ;?>">
                 <div class="form-group">
                     <label>Trip Type</label>
                     <label><input type="radio" name="mode" value="round" <?php echo $mode==='oneway'?'':'checked'; ?>> Round Trip</label><br>
