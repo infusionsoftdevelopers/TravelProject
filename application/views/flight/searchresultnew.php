@@ -2,7 +2,6 @@
 // dynamic flight search and booking mock application
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-var_dump($_GET);
 
 
 // Basic data about airports including coordinates for distance calculation.
