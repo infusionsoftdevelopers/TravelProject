@@ -84,7 +84,7 @@
                                                                     <div class="col-md-4">
                                                                         <h3><?php echo $cont['airport_continent'] ; ?></h3>
                                                                         <ul class="row-list">
-                                                                            <?
+                                                                            <?php
                                                                                 foreach ($cities as $key => $ct) {
                                                                                     $country = strtolower($ct['airport_country']) ;
                                                                                     $slug = str_replace(' ','-',$country) ;
