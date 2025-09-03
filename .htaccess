@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /
+    RewriteBase /travel/flights/
 
     # Allow PATH_INFO
     AcceptPathInfo On
