@@ -1,16 +1,27 @@
-RewriteEngine on
+RewriteEngine On
+
+# --- Force HTTPS + www only on live server ---
+# Skip redirect if on localhost or 127.0.0.1
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteCond %{HTTP_HOST} !^127\.0\.0\.1$ [NC]
+
 RewriteCond %{HTTPS} off [OR]
-RewriteCond %{HTTP_HOST} !^www\. [OR]
-RewriteCond %{HTTP_HOST} ^rrtravels\.co.uk$ [NC]
+RewriteCond %{HTTP_HOST} !^www\. [NC]
 RewriteRule ^ https://www.rrtravels.co.uk%{REQUEST_URI} [R=301,L,NE]
-RewriteCond %{THE_REQUEST} ^[A-Z]+\ /index\.php(/[^\ ]*)?\ HTTP/ 
-RewriteRule ^index\.php(/(.*))?$ rrtravels.co.uk/$2 [R=301,L]
+
+# --- Redirect index.php to clean URL (only live) ---
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteCond %{HTTP_HOST} !^127\.0\.0\.1$ [NC]
+RewriteCond %{THE_REQUEST} ^[A-Z]+\ /index\.php(/[^\ ]*)?\ HTTP/
+RewriteRule ^index\.php(/(.*))?$ https://www.rrtravels.co.uk/$2 [R=301,L]
+
+# --- CodeIgniter front controller ---
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$1 [L]
 
-
-## EXPIRES CACHING ##
+# -----------------------
+# Caching
 <IfModule mod_expires.c>
 ExpiresActive On
 ExpiresByType image/jpg "access 1 year"
@@ -27,25 +38,15 @@ ExpiresByType application/x-shockwave-flash "access 1 month"
 ExpiresByType image/x-icon "access 1 year"
 ExpiresDefault "access 1 month"
 </IfModule>
-## EXPIRES CACHING ##
 
 <FilesMatch "(?i)^.*\.(ico|flv|jpg|jpeg|png|gif|js|css)$">
 ExpiresActive On
 ExpiresDefault A2592000
 </FilesMatch>
-<ifModule mod_gzip.c>
-  mod_gzip_on Yes
-  mod_gzip_dechunk Yes
-  mod_gzip_item_include file .(html?|txt|css|js|php|pl)$
-  mod_gzip_item_include handler ^cgi-script$
-  mod_gzip_item_include mime ^text/.*
-  mod_gzip_item_include mime ^application/x-javascript.*
-  mod_gzip_item_exclude mime ^image/.*
-  mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
-</ifModule>
 
+# -----------------------
+# Gzip/Deflate
 <IfModule mod_deflate.c>
-  # Compress HTML, CSS, JavaScript, Text, XML and fonts
   AddOutputFilterByType DEFLATE application/javascript
   AddOutputFilterByType DEFLATE application/rss+xml
   AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
@@ -68,15 +69,18 @@ ExpiresDefault A2592000
   AddOutputFilterByType DEFLATE text/plain
   AddOutputFilterByType DEFLATE text/xml
 
-  # Remove browser bugs (only needed for really old browsers)
   BrowserMatch ^Mozilla/4 gzip-only-text/html
   BrowserMatch ^Mozilla/4\.0[678] no-gzip
   BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>
+
+<IfModule mod_headers.c>
   Header append Vary User-Agent
 </IfModule>
 
-## Bad bots
-
+# -----------------------
+# Block bad bots
+<IfModule mod_setenvif.c>
 BrowserMatchNoCase "Bytespider" bad_bot
 BrowserMatchNoCase "SemrushBot" bad_bot
 BrowserMatchNoCase "AhrefsBot" bad_bot
@@ -89,7 +93,9 @@ BrowserMatchNoCase "OAI-SearchBot" bad_bot
 BrowserMatchNoCase "Amazonbot" bad_bot
 BrowserMatchNoCase "ImagesiftBot" bad_bot
 BrowserMatchNoCase "Timpibot" bad_bot
+</IfModule>
 
-Order Deny,Allow
-Deny from env=bad_bot
-
+<RequireAll>
+   Require all granted
+   Require not env bad_bot
+</RequireAll>

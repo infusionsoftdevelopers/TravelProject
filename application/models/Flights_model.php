@@ -27,14 +27,30 @@ class Flights_model extends RR_Model {
 	public function bestfares()
 	{
 		$date = date('Y-m-d');
-		$this->db->select("*, MIN(f_adultbasic+f_adulttax) as price");
+		// Simple approach: get all fares and then find the best one for each destination
+		$this->db->select("f_tocode, f_to, f_seasonstartdate, f_seasonenddate, f_from, f_fromcode, f_cabin, f_type, f_airlinecode, f_airline, f_adultbasic, f_adulttax, (f_adultbasic + f_adulttax) as price");
 		$this->db->from('fares');
 		$this->db->where("f_cabin = 'Economy' AND f_type = 'Return' AND f_seasonstartdate <= '$date' AND f_seasonenddate >= '$date' AND  f_tocode IN('BJL','DXB','ALG','NBO','SIN','IST','ADD','AUH','AMS','CDG') AND f_fromcode = 'LHR'");
-		$this->db->GROUP_BY("f_tocode,f_to,f_seasonstartdate,f_seasonenddate,f_from");
-		$this->db->ORDER_BY("RAND()");
-		$this->db->LIMIT("8");
+		$this->db->order_by("(f_adultbasic + f_adulttax)", "ASC");
 		$query = $this->db->get();
 		$result = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+		
+		if ($result) {
+			// Group by destination and keep only the cheapest fare for each
+			$grouped = array();
+			foreach ($result as $row) {
+				$key = $row['f_tocode'] . '_' . $row['f_to'];
+				if (!isset($grouped[$key]) || $row['price'] < $grouped[$key]['price']) {
+					$grouped[$key] = $row;
+				}
+			}
+			// Convert back to array and limit to 8
+			$result = array_values($grouped);
+			$result = array_slice($result, 0, 8);
+			// Shuffle the results
+			shuffle($result);
+		}
+		
 		return $result;
 	}
     public function getCountry($params = array())

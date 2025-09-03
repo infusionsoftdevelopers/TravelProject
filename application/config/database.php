@@ -76,9 +76,9 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'root',//'rrtravels_flg',
-	'password' => '',//'Technify123!',
-	'database' => 'rrtravels_flg',
+	'username' => 'wpci_user',
+	'password' => '12345678',
+	'database' => 'travel',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -92,7 +92,10 @@ $db['default'] = array(
 	'compress' => FALSE,
 	'stricton' => FALSE,
 	'failover' => array(),
-	'save_queries' => TRUE
+	'save_queries' => TRUE,
+	'init_commands' => array(
+		'SET SESSION sql_mode = ""'
+	)
 );
 $db['panel_db'] = array(
 	'dsn'	=> '',
