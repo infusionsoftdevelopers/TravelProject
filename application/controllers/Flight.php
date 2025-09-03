@@ -113,60 +113,78 @@ class Flight extends RR_Controller {
 
 	/**
 	 * Normalize query parameters from various form field names to
-	 * the keys expected by searchresultnew.php without changing the view.
+	 * the exact keys expected by searchresultnew.php: mode, from, to, depart, return, class,
+	 * airline, adults, children, infants. Leaves other incoming keys intact.
 	 */
 	private function normalizeSearchParams($data){
-		$expected = [
-			'direct_flights' => ['direct_flights','nonstop','direct','is_direct'],
-			'flight_type' => ['flight_type','trip_type','journey_type','type'],
-			'dept_arpt' => ['dept_arpt','from','origin','departure_airport','o_deptairport','depart_airport'],
-			'dest_arpt' => ['dest_arpt','to','destination','arrival_airport','o_arvlairport','arrive_airport'],
-			'departure_date' => ['departure_date','depart_date','departure','outbound_date','from_date','dep_date'],
-			'return_date' => ['return_date','return','inbound_date','to_date','ret_date'],
-			'page' => ['page'],
-			'cabin_class' => ['cabin_class','cabin','class','ticketclass'],
-			'airline' => ['airline','carrier'],
-			'padults' => ['padults','adults','adult_count','m_adults'],
-			'pchildren' => ['pchildren','children','child_count','m_children'],
-			'pinfants' => ['pinfants','infants','infant_count','m_infants'],
-			'c_name' => ['c_name','name','fullname','cname'],
-			'c_email' => ['c_email','email','mail','cemail'],
-			'c_phone' => ['c_phone','phone','telephone','mobile','cphone']
+		$out = $data; // start with incoming
+
+		// 1) From/To airport codes (IATA)
+		$fromLabel = $data['dept_arpt'] ?? ($data['departure_airport'] ?? ($data['from'] ?? ($data['origin'] ?? 'London - LON')));
+		$toLabel   = $data['dest_arpt'] ?? ($data['destination_airport'] ?? ($data['to'] ?? ($data['destination'] ?? 'Dubai - DXB')));
+		// Extract codes if labels like "City - CODE"
+		$fromCode = isset($data['from']) ? $data['from'] : substr(trim($fromLabel), -3);
+		$toCode   = isset($data['to'])   ? $data['to']   : substr(trim($toLabel), -3);
+		$out['from'] = strtoupper(preg_replace('/[^A-Z]/i','', $fromCode));
+		$out['to']   = strtoupper(preg_replace('/[^A-Z]/i','', $toCode));
+
+		// 2) Dates -> Y-m-d
+		$depart = $data['depart'] ?? ($data['departure_date'] ?? ($data['outbound_date'] ?? ''));
+		$return = $data['return'] ?? ($data['return_date'] ?? ($data['inbound_date'] ?? ''));
+		$out['depart'] = $this->normalizeDateToYmd($depart);
+		$out['return'] = $this->normalizeDateToYmd($return);
+
+		// 3) Class -> expected keys: economy, premium_economy, business, first
+		$classRaw = $data['class'] ?? ($data['cabin_class'] ?? ($data['ticketclass'] ?? 'economy'));
+		$classMap = [
+			'economy' => 'economy',
+			'premium economy' => 'premium_economy',
+			'premium_economy' => 'premium_economy',
+			'business' => 'business',
+			'first' => 'first'
 		];
+		$key = strtolower(trim($classRaw));
+		$out['class'] = $classMap[$key] ?? 'economy';
 
-		$normalized = [];
-		foreach($expected as $targetKey => $candidates){
-			foreach($candidates as $key){
-				if(isset($data[$key]) && $data[$key] !== ''){
-					$normalized[$targetKey] = $data[$key];
-					break;
-				}
-			}
+		// 4) Trip mode
+		$ftype = strtolower(trim($data['flight_type'] ?? ($data['trip_type'] ?? 'round')));
+		$out['mode'] = ($ftype === 'oneway' || $ftype === 'one-way' || $ftype === 'one way') ? 'oneway' : 'round';
+
+		// 5) Airline code (optional)
+		$airline = $data['airline'] ?? '';
+		if ($airline && strlen($airline) > 3) {
+			// If in format "XX - Airline Name"
+			$code = substr($airline, 0, 2);
+			$out['airline'] = strtoupper(preg_replace('/[^A-Za-z]/','', $code));
+		} else {
+			$out['airline'] = strtoupper(preg_replace('/[^A-Za-z]/','', $airline));
 		}
 
-		// Sensible defaults if not provided
-		if(!isset($normalized['direct_flights'])){ $normalized['direct_flights'] = 'No'; }
-		if(!isset($normalized['flight_type'])){ $normalized['flight_type'] = 'Return'; }
-		if(!isset($normalized['cabin_class'])){ $normalized['cabin_class'] = 'Economy'; }
-		if(!isset($normalized['airline'])){ $normalized['airline'] = 'All Airlines'; }
-		if(!isset($normalized['padults'])){ $normalized['padults'] = 1; }
-		if(!isset($normalized['pchildren'])){ $normalized['pchildren'] = 0; }
-		if(!isset($normalized['pinfants'])){ $normalized['pinfants'] = 0; }
-		if(!isset($normalized['page'])){ $normalized['page'] = 'landing'; }
+		// 6) Pax
+		$out['adults']   = isset($data['adults'])   ? (int)$data['adults']   : (int)($data['padults']   ?? ($data['m_adults']   ?? 1));
+		$out['children'] = isset($data['children']) ? (int)$data['children'] : (int)($data['pchildren'] ?? ($data['m_children'] ?? 0));
+		$out['infants']  = isset($data['infants'])  ? (int)$data['infants']  : (int)($data['pinfants']  ?? ($data['m_infants']  ?? 0));
 
-		// If airports provided as separate code/name parts, synthesize label format "City - CODE"
-		if(!isset($normalized['dept_arpt'])){
-			$fromCity = isset($data['from_city']) ? $data['from_city'] : (isset($data['origin_city']) ? $data['origin_city'] : 'London');
-			$fromCode = isset($data['from_code']) ? $data['from_code'] : (isset($data['origin_code']) ? $data['origin_code'] : 'LON');
-			$normalized['dept_arpt'] = $fromCity.' - '.$fromCode;
-		}
-		if(!isset($normalized['dest_arpt'])){
-			$toCity = isset($data['to_city']) ? $data['to_city'] : (isset($data['destination_city']) ? $data['destination_city'] : 'Dubai');
-			$toCode = isset($data['to_code']) ? $data['to_code'] : (isset($data['destination_code']) ? $data['destination_code'] : 'DXB');
-			$normalized['dest_arpt'] = $toCity.' - '.$toCode;
-		}
+		return $out;
+	}
 
-		return array_merge($data, $normalized);
+	private function normalizeDateToYmd($dateStr){
+		$dateStr = trim((string)$dateStr);
+		if ($dateStr === '') { return ''; }
+		// Try Y-m-d first
+		$d = DateTime::createFromFormat('Y-m-d', $dateStr);
+		if ($d) { return $d->format('Y-m-d'); }
+		// Try d-M-Y (e.g., 22-Jun-2020)
+		$d = DateTime::createFromFormat('d-M-Y', $dateStr);
+		if ($d) { return $d->format('Y-m-d'); }
+		// Try d/m/Y, m/d/Y, d-m-Y
+		$formats = ['d/m/Y','m/d/Y','d-m-Y','m-d-Y','d.m.Y'];
+		foreach($formats as $fmt){
+			$d = DateTime::createFromFormat($fmt, $dateStr);
+			if ($d) { return $d->format('Y-m-d'); }
+		}
+		// Fallback: return as-is
+		return $dateStr;
 	}
     public function enquire()
     {

@@ -3,6 +3,18 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 var_dump($_GET);
+
+$_GET["mode"] = isset($_GET["mode"]) ? $_GET["mode"] : 'round';
+$_GET["from"] = isset($_GET["from"]) ? $_GET["from"] : '';
+$_GET["to"] = isset($_GET["to"]) ? $_GET["to"] : '';
+$_GET["depart"] = isset($_GET["depart"]) ? $_GET["depart"] : '';
+$_GET["return"] = isset($_GET["return"]) ? $_GET["return"] : '';
+$_GET["class"] = isset($_GET["class"]) ? $_GET["class"] : 'economy';
+$_GET["airline"] = isset($_GET["airline"]) ? $_GET["airline"] : '';
+$_GET["adults"] = isset($_GET["adults"]) ? $_GET["adults"] : 1;
+$_GET["children"] = isset($_GET["children"]) ? $_GET["children"] : 0;
+$_GET["infants"] = isset($_GET["infants"]) ? $_GET["infants"] : 0;
+
 // Basic data about airports including coordinates for distance calculation.
 // This is a small curated list of popular international airports. More can be added easily.
 $AIRPORTS = [
@@ -696,6 +708,29 @@ function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateSt
 function sanitizeIata($str) {
     return strtoupper(substr(preg_replace('/[^A-Za-z]/', '', $str), 0, 3));
 }
+
+function getParam(array $keys, $default = null) {
+    foreach ($keys as $key) {
+        if (isset($_GET[$key]) && $_GET[$key] !== '') {
+            return $_GET[$key];
+        }
+    }
+    return $default;
+}
+
+$_GET['mode']      = strtolower(getParam(['mode', 'flight_type'], 'round')) === 'oneway' ? 'oneway' : 'round';
+$_GET['from']      = sanitizeIata(getParam(['from', 'dept_arpt'], ''));
+$_GET['to']        = sanitizeIata(getParam(['to', 'dest_arpt'], ''));
+$_GET['depart']    = getParam(['depart', 'departure_date'], '');
+$_GET['return']    = getParam(['return', 'return_date'], '');
+$_GET['class']     = strtolower(getParam(['class', 'cabin_class'], 'economy'));
+$_GET['airline']   = strtoupper(preg_replace('/[^A-Za-z]/', '', getParam(['airline', 'airline'], '')));
+$_GET['adults']    = max(1, intval(getParam(['adults', 'padults'], 1)));
+$_GET['children']  = max(0, intval(getParam(['children', 'pchildren'], 0)));
+$_GET['infants']   = max(0, intval(getParam(['infants', 'pinfants'], 0)));
+$_GET['c_name']    = getParam(['c_name'], '');
+$_GET['c_email']   = getParam(['c_email'], '');
+$_GET['c_phone']   = getParam(['c_phone'], '');
 
 // Read basic search parameters
 $mode      = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
