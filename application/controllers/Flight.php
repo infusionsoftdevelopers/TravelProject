@@ -93,7 +93,8 @@ class Flight extends RR_Controller {
             $data['meta_title'] = "Flight Search to ".$data['dst']." | ".$this->web_title;
             $data['meta_desc'] = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos earum eaque ducimus, esse incidunt eum odit totam ratione quidem culpa, inventore laborum. Ducimus sed esse sint quo, error magni laborum.';
             $data['meta_key'] = "cheap flights,flights,cheap flights from UK,cheap flights from london";
-	        $this->load->view('flight/searchresult', $data);
+	        // $this->load->view('flight/searchresult', $data);
+	        $this->load->view('flight/searchresultnew', $data);
         }
     }
     public function enquire()
