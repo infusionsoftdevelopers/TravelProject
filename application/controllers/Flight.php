@@ -46,6 +46,14 @@ class Flight extends RR_Controller {
             $this->load->view('flight/searchresult', $data);
         }
     }
+    public function resultsnew(){
+		$data = $this->input->get(); 
+		if(!$this->input->get()){
+            header("Location: ./index.php");
+        }else{
+            $this->load->view('flight/searchresultnew');
+        }
+    }
     public function results(){
 		$data = $this->input->get(); 
 		if(!$this->input->get()){
