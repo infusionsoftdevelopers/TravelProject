@@ -4,16 +4,6 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 var_dump($_GET);
 
-$_GET["mode"] = isset($_GET["mode"]) ? $_GET["mode"] : 'round';
-$_GET["from"] = isset($_GET["from"]) ? $_GET["from"] : '';
-$_GET["to"] = isset($_GET["to"]) ? $_GET["to"] : '';
-$_GET["depart"] = isset($_GET["depart"]) ? $_GET["depart"] : '';
-$_GET["return"] = isset($_GET["return"]) ? $_GET["return"] : '';
-$_GET["class"] = isset($_GET["class"]) ? $_GET["class"] : 'economy';
-$_GET["airline"] = isset($_GET["airline"]) ? $_GET["airline"] : '';
-$_GET["adults"] = isset($_GET["adults"]) ? $_GET["adults"] : 1;
-$_GET["children"] = isset($_GET["children"]) ? $_GET["children"] : 0;
-$_GET["infants"] = isset($_GET["infants"]) ? $_GET["infants"] : 0;
 
 // Basic data about airports including coordinates for distance calculation.
 // This is a small curated list of popular international airports. More can be added easily.
