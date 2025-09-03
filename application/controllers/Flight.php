@@ -51,7 +51,12 @@ class Flight extends RR_Controller {
 		if(!$this->input->get()){
             header("Location: ./index.php");
         }else{
-            $this->load->view('flight/searchresultnew');
+            // Normalize incoming params so the view (which reads $_GET) can work unchanged
+            // $normalized = $this->normalizeSearchParams($data);
+            // Overwrite superglobal for the view's direct access
+            // $data = $normalized;
+            // $p["data"]=$normalized;
+            $this->load->view('flight/searchresultnew');//, $data);
         }
     }
     public function results(){
@@ -105,6 +110,64 @@ class Flight extends RR_Controller {
 	        $this->load->view('flight/searchresultnew', $data);
         }
     }
+
+	/**
+	 * Normalize query parameters from various form field names to
+	 * the keys expected by searchresultnew.php without changing the view.
+	 */
+	private function normalizeSearchParams($data){
+		$expected = [
+			'direct_flights' => ['direct_flights','nonstop','direct','is_direct'],
+			'flight_type' => ['flight_type','trip_type','journey_type','type'],
+			'dept_arpt' => ['dept_arpt','from','origin','departure_airport','o_deptairport','depart_airport'],
+			'dest_arpt' => ['dest_arpt','to','destination','arrival_airport','o_arvlairport','arrive_airport'],
+			'departure_date' => ['departure_date','depart_date','departure','outbound_date','from_date','dep_date'],
+			'return_date' => ['return_date','return','inbound_date','to_date','ret_date'],
+			'page' => ['page'],
+			'cabin_class' => ['cabin_class','cabin','class','ticketclass'],
+			'airline' => ['airline','carrier'],
+			'padults' => ['padults','adults','adult_count','m_adults'],
+			'pchildren' => ['pchildren','children','child_count','m_children'],
+			'pinfants' => ['pinfants','infants','infant_count','m_infants'],
+			'c_name' => ['c_name','name','fullname','cname'],
+			'c_email' => ['c_email','email','mail','cemail'],
+			'c_phone' => ['c_phone','phone','telephone','mobile','cphone']
+		];
+
+		$normalized = [];
+		foreach($expected as $targetKey => $candidates){
+			foreach($candidates as $key){
+				if(isset($data[$key]) && $data[$key] !== ''){
+					$normalized[$targetKey] = $data[$key];
+					break;
+				}
+			}
+		}
+
+		// Sensible defaults if not provided
+		if(!isset($normalized['direct_flights'])){ $normalized['direct_flights'] = 'No'; }
+		if(!isset($normalized['flight_type'])){ $normalized['flight_type'] = 'Return'; }
+		if(!isset($normalized['cabin_class'])){ $normalized['cabin_class'] = 'Economy'; }
+		if(!isset($normalized['airline'])){ $normalized['airline'] = 'All Airlines'; }
+		if(!isset($normalized['padults'])){ $normalized['padults'] = 1; }
+		if(!isset($normalized['pchildren'])){ $normalized['pchildren'] = 0; }
+		if(!isset($normalized['pinfants'])){ $normalized['pinfants'] = 0; }
+		if(!isset($normalized['page'])){ $normalized['page'] = 'landing'; }
+
+		// If airports provided as separate code/name parts, synthesize label format "City - CODE"
+		if(!isset($normalized['dept_arpt'])){
+			$fromCity = isset($data['from_city']) ? $data['from_city'] : (isset($data['origin_city']) ? $data['origin_city'] : 'London');
+			$fromCode = isset($data['from_code']) ? $data['from_code'] : (isset($data['origin_code']) ? $data['origin_code'] : 'LON');
+			$normalized['dept_arpt'] = $fromCity.' - '.$fromCode;
+		}
+		if(!isset($normalized['dest_arpt'])){
+			$toCity = isset($data['to_city']) ? $data['to_city'] : (isset($data['destination_city']) ? $data['destination_city'] : 'Dubai');
+			$toCode = isset($data['to_code']) ? $data['to_code'] : (isset($data['destination_code']) ? $data['destination_code'] : 'DXB');
+			$normalized['dest_arpt'] = $toCity.' - '.$toCode;
+		}
+
+		return array_merge($data, $normalized);
+	}
     public function enquire()
     {
         if($this->input->get()){
