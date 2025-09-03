@@ -873,7 +873,6 @@ $iataList = array_map(function($a) {
     <script>
     // Auto uppercase and filter suggestions for IATA input fields.
     function setupIataInput(id) {
-        console.log(id);
         var input = document.getElementById(id);
         input.addEventListener('input', function() {
             this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0,3);
@@ -903,7 +902,7 @@ $iataList = array_map(function($a) {
     <div class="container">
         <div class="sidebar">
             <h2>Refine Your Results</h2>
-            <form id="flightForm" method="get" action="<?php echo site_url(); ?>search/flights.php"">
+            <form id="flightForm" method="get" action="#">
                 <div class="form-group">
                     <label>Trip Type</label>
                     <label><input type="radio" name="mode" value="round" <?php echo $mode==='oneway'?'':'checked'; ?>> Round Trip</label><br>
@@ -994,10 +993,10 @@ $iataList = array_map(function($a) {
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <img src="<?php echo base_url('assets/image/search_top_banner.jpg?v0.1') ; ?>" alt="Flight Search">
+                    <img src="../assets/image/search_top_banner.jpg?v0.1" style="width: 100%;" alt="Flight Search">
                 </div>
             </div>
-            <h2>Available Flights</h2>
+            <h2>Cheap Flights To <?php echo htmlspecialchars($toCode); ?></h2>
             <?php if ($results): ?>
                 <?php foreach ($results as $res): ?>
                     <div class="flight-card">
