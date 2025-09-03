@@ -869,6 +869,69 @@ $iataList = array_map(function($a) {
             color: #2b6cb0;
             line-height: 1.2;
         }
+
+
+
+        .class-tabs {
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ddd;
+}
+
+.class-tabs ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.class-tabs li {
+  margin: 0;
+}
+
+.class-tabs a {
+  display: block;
+  padding: 10px 18px;
+  text-decoration: none;
+  color: #555;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  margin-right: 5px;
+  border-radius: 6px 6px 0 0;
+  background: #f8f8f8;
+  transition: background 0.2s, color 0.2s;
+}
+
+.class-tabs a:hover {
+  background: #eaeaea;
+  color: #000;
+}
+
+.class-tabs a.active {
+  background: #fff;
+  color: #000;
+  border-bottom: 2px solid #fff; /* seamless with container */
+  font-weight: bold;
+}
+
+/* Tab content style */
+.tab-content {
+  display: none;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 0 6px 6px 6px;
+  background: #fff;
+}
+
+/* Show the section if its ID matches hash in URL */
+:target.tab-content {
+  display: block;
+}
+
+/* Default: show first tab if no hash */
+.tab-content:first-of-type {
+  display: block;
+}
+
     </style>
     <script>
     // Auto uppercase and filter suggestions for IATA input fields.
@@ -996,6 +1059,25 @@ $iataList = array_map(function($a) {
                     <img src="../assets/image/search_top_banner.jpg?v0.1" style="width: 100%;" alt="Flight Search">
                 </div>
             </div>
+            
+            <!-- Flight Class Tabs -->
+            <div class="class-tabs">
+                <ul>
+                    <?php foreach ($CLASSES as $key => $mult): ?>
+                                            <li><a href="#<?php echo htmlspecialchars($key); ?>" <?php echo ($classKey === $key) ? 'class="active"' : ''; ?>><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></a></li>
+                                        <?php endforeach; ?>
+                </ul>
+            </div>
+
+            <!-- Tab contents -->
+            <?php foreach ($CLASSES as $key => $mult): ?>
+            <div class="tab-content" id="<?php echo htmlspecialchars($key); ?>">
+            <h2><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></h2>
+            <p><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?> class content goes here.</p>
+            </div>
+            <?php endforeach; ?>
+
+            
             <h2>Cheap Flights To <?php echo htmlspecialchars($toCode); ?></h2>
             <?php if ($results): ?>
                 <?php foreach ($results as $res): ?>
