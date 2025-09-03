@@ -926,7 +926,9 @@ $iataList = array_map(function($a) {
 :target.tab-content {
   display: block;
 }
-
+:target {
+  scroll-margin-top: -100vh; /* pushes target out of view */
+}
 /* Default: show first tab if no hash */
 .tab-content:first-of-type {
   display: block;
@@ -1062,25 +1064,24 @@ $iataList = array_map(function($a) {
             
             <!-- Flight Class Tabs -->
             <div class="class-tabs">
-                <ul>
-                    <?php foreach ($CLASSES as $key => $mult): ?>
-                                            <li><a href="#<?php echo htmlspecialchars($key); ?>" <?php echo ($classKey === $key) ? 'class="active"' : ''; ?>><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></a></li>
-                                        <?php endforeach; ?>
-                </ul>
-            </div>
+  <ul>
+    <?php foreach ($CLASSES as $key => $mult): ?>
+      <li><a href="#<?php echo htmlspecialchars($key); ?>"><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></a></li>
+    <?php endforeach; ?>
+  </ul>
+</div>
 
-            <!-- Tab contents -->
-            <?php foreach ($CLASSES as $key => $mult): ?>
-            <div class="tab-content" id="<?php echo htmlspecialchars($key); ?>">
-            <h2><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></h2>
-            <p><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?> class content goes here.</p>
-            </div>
-            <?php endforeach; ?>
+<!-- Tab contents -->
+<?php foreach ($CLASSES as $key => $mult): ?>
+  <div class="tab-content" id="<?php echo htmlspecialchars($key); ?>">
+  <h2><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?> Flights To <?php echo htmlspecialchars($toCode); ?></h2>
 
-            
-            <h2>Cheap Flights To <?php echo htmlspecialchars($toCode); ?></h2>
-            <?php if ($results): ?>
+    <!-- flights results here -->
+
+    <?php if ($results): ?>
                 <?php foreach ($results as $res): ?>
+                    <?php
+                        if( $res['class'] == htmlspecialchars(ucwords(str_replace('_',' ', $key))) ): ?>
                     <div class="flight-card">
                         <h3><?php echo htmlspecialchars($res['airline']); ?> - <?php echo htmlspecialchars($res['class']); ?></h3>
                         <div class="segments">
@@ -1120,10 +1121,20 @@ $iataList = array_map(function($a) {
                             <div class="price">£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
                         </div>
                     </div>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php else: ?>
                 <p>No flights found. Please adjust your search criteria.</p>
             <?php endif; ?>
+
+     <!-- flight result -->
+  </div>
+<?php endforeach; ?>
+
+
+            
+            
+            
         </div>
     </div>
 </body>
