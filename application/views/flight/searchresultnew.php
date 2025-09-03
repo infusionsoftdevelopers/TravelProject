@@ -738,8 +738,8 @@ $_GET['c_phone']   = getParam(['c_phone'], '');
 $mode      = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
 $fromCode  = isset($_GET['from']) ? sanitizeIata($_GET['from']) : '';
 $toCode    = isset($_GET['to'])   ? sanitizeIata($_GET['to'])   : '';
-$depart    = isset($_GET['depart']) ? $_GET['depart'] : '';
-$return    = isset($_GET['return']) ? $_GET['return'] : '';
+$depart    = isset($_GET['depart']) ? date('Y-m-d', strtotime($_GET['depart'])) : '';
+$return    = isset($_GET['return']) ? date('Y-m-d', strtotime($_GET['return'])) : '';
 $classKey  = isset($_GET['class']) ? $_GET['class'] : 'economy';
 // Additional fields for refined search
 $airlineCode = isset($_GET['airline']) ? strtoupper(preg_replace('/[^A-Za-z]/', '', $_GET['airline'])) : '';
