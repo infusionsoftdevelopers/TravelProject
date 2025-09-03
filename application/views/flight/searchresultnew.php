@@ -276,6 +276,9 @@ $AIRPORTS = [
     ['code' => 'HRE', 'city' => 'Harare', 'country' => 'Zimbabwe', 'lat' => -17.9390, 'lon' => 31.0928],
 ];
 
+// Ensure availability inside functions that declare `global $AIRPORTS`
+$GLOBALS['AIRPORTS'] = $AIRPORTS;
+
 // Airlines with quality factors (affects price) and hubs for connecting flights.
 $AIRLINES = [
     ['name' => 'Etihad Airways',       'code' => 'EY', 'quality' => 1.25, 'hubs' => ['AUH']],
@@ -286,6 +289,9 @@ $AIRLINES = [
     ['name' => 'Malaysia Airlines',    'code' => 'MH', 'quality' => 1.00, 'hubs' => ['KUL']],
 ];
 
+// Ensure availability inside functions that declare `global $AIRLINES`
+$GLOBALS['AIRLINES'] = $AIRLINES;
+
 // Multipliers for different cabin classes.
 $CLASSES = [
     // Updated cabin multipliers: higher premiums for upper classes
@@ -294,6 +300,9 @@ $CLASSES = [
     'business'        => 2.75,
     'first'           => 4.20,
 ];
+
+// Ensure availability inside functions that declare `global $CLASSES`
+$GLOBALS['CLASSES'] = $CLASSES;
 
 // Price ranges for each month (adult one-way before multipliers).
 $MONTH_PRICE_BANDS = [
@@ -310,6 +319,9 @@ $MONTH_PRICE_BANDS = [
     11 => [430, 640],  // NOV
     12 => [590, 850],  // DEC
 ];
+
+// Ensure availability inside functions that declare `global $MONTH_PRICE_BANDS`
+$GLOBALS['MONTH_PRICE_BANDS'] = $MONTH_PRICE_BANDS;
 
 // List of all ISO‑3166-1 alpha‑3 country codes and names for datalist suggestions.
 // These entries allow the user to quickly find their country and then choose an airport.
