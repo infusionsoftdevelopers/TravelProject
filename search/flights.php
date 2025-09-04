@@ -934,6 +934,56 @@ $iataList = array_map(function($a) {
   display: block;
 }
 
+
+/* Tabs wrapper */
+.nav-tabs {
+    border-bottom: 2px solid #ddd; /* cleaner bottom line */
+    margin-bottom: 15px;
+}
+
+/* Each tab item */
+.nav-tabs > li {
+    float: none; /* center align since you use text-center */
+    display: inline-block;
+    margin-bottom: 0; /* remove bootstrap default spacing */
+}
+
+/* Tab link */
+.nav-tabs > li > a {
+    padding: 10px 20px;
+    font-weight: 500;
+    color: #555;
+    border: 1px solid transparent;
+    border-radius: 0;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.nav-tabs > li > a:hover {
+    background-color: #f9f9f9;
+    border-color: #eee #eee #ddd;
+    color: #333;
+}
+
+/* Active tab */
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
+    color: #000;
+    font-weight: 600;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent; /* connect with content below */
+    cursor: default;
+}
+
+/* Responsive small text */
+.nav-tabs > li > a small {
+    display: block;
+    font-size: 11px;
+    color: #999;
+}
+
     </style>
     <script>
     // Auto uppercase and filter suggestions for IATA input fields.
@@ -1063,25 +1113,79 @@ $iataList = array_map(function($a) {
             </div>
             
             <!-- Flight Class Tabs -->
-            <div class="class-tabs">
-  <ul>
+            <div class="class-tabs" style="margin-top:1.5rem">
+  <!-- <ul>
     <?php foreach ($CLASSES as $key => $mult): ?>
       <li><a href="#<?php echo htmlspecialchars($key); ?>"><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></a></li>
     <?php endforeach; ?>
-  </ul>
+  </ul> -->
+
+  <ul class="nav nav-tabs" role="tablist">
+    <?php foreach ($CLASSES as $key => $mult): ?>
+        <?php
+        // Copy current query params
+        $params = $_GET;
+
+        // Set/override the class param
+        $params['class'] = $key;
+
+        // Build the new URL (same page + updated query)
+        $url = htmlspecialchars($_SERVER['PHP_SELF'] . '?' . http_build_query($params));
+
+        // Check if this tab should be active
+        $active = (isset($_GET['class']) && $_GET['class'] === $key) ? 'active' : '';
+        ?>
+        
+        <li role="presentation" class="text-center <?php echo $active; ?>">
+            <a href="<?php echo $url; ?>" aria-controls="<?php echo htmlspecialchars($key); ?>" role="tab" data-toggle="tab" aria-expanded="<?php echo $active ? 'true' : 'false'; ?>">
+                <span><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></span>
+                <small class="visible-xs">
+                    <small><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></small>
+                </small>
+            </a>
+        </li>
+    <?php endforeach; ?>
+</ul>
+
+
 </div>
 
 <!-- Tab contents -->
-<?php foreach ($CLASSES as $key => $mult): ?>
-  <div class="tab-content" id="<?php echo htmlspecialchars($key); ?>">
-  <h2><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?> Flights To <?php echo htmlspecialchars($toCode); ?></h2>
 
+
+  <h2><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $classKey))); ?> Flights To <?php echo htmlspecialchars($toCode); ?></h2>
+  <p style="text-transform:capitalize;">
+								    	<?php echo htmlspecialchars(ucwords(str_replace('_',' ', $mode))); ?>, <?php echo htmlspecialchars(ucwords(str_replace('_',' ', $classKey))); ?>, departuring on 
+								    	<strong>
+    <?php 
+    if (!empty($depart)) {
+        echo htmlspecialchars(date("d-M-Y", strtotime($depart)));
+    }
+    ?>
+</strong> 
+<?php if ($mode !== 'oneway'): ?>
+								    	 and returning on 								    	<strong>
+    <?php 
+    if (!empty($depart)) {
+        echo htmlspecialchars(date("d-M-Y", strtotime($return)));
+    }
+    ?>
+    </strong> 
+<?php endif; ?>
+for 
+<?php echo htmlspecialchars($adults); ?> Adult
+<?php if ($children > 0): ?>
+    <?php echo htmlspecialchars($children); ?> Child
+<?php endif; ?>
+<?php if ($infants > 0): ?>
+    <?php echo htmlspecialchars($infants); ?> Infant
+<?php endif; ?>
+.
+									</p>
     <!-- flights results here -->
 
     <?php if ($results): ?>
                 <?php foreach ($results as $res): ?>
-                    <?php
-                        if( $res['class'] == htmlspecialchars(ucwords(str_replace('_',' ', $key))) ): ?>
                     <div class="flight-card">
                         <h3><?php echo htmlspecialchars($res['airline']); ?> - <?php echo htmlspecialchars($res['class']); ?></h3>
                         <div class="segments">
@@ -1121,15 +1225,13 @@ $iataList = array_map(function($a) {
                             <div class="price">£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
                         </div>
                     </div>
-                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php else: ?>
                 <p>No flights found. Please adjust your search criteria.</p>
             <?php endif; ?>
 
-     <!-- flight result -->
-  </div>
-<?php endforeach; ?>
+    
+
 
 
             
