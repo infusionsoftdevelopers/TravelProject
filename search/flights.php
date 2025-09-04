@@ -2153,30 +2153,7 @@ $iataList = array_map(function ($a) {
                                                 <a href="#" class="more-flights-link">
                                                     <span class="info-dot"></span> More <?php echo htmlspecialchars($res['airline']); ?> Flights <i class="fa fa-angle-double-down"></i>
                                                 </a>
-                                                <div class="flight-details-panel">
-                                                    <div class="flight-details-header">
-                                                        <span><?php echo htmlspecialchars($inSegs[0]['from']); ?> ➜ <?php echo htmlspecialchars(end($inSegs)['to']); ?></span>
-                                                        <span class="flight-details-close" onclick="this.closest('.flight-details-panel').classList.remove('visible');">✕</span>
-                                                    </div>
-                                                    <div class="flight-details-body">
-                                                        <?php foreach ($inSegs as $seg): ?>
-                                                            <div class="flight-details-section">
-                                                                <div class="flight-details-row">
-                                                                    <div class="flight-details-col">
-                                                                        <strong><?php echo htmlspecialchars($seg['from']); ?></strong><br>
-                                                                        <?php echo date('D, M d - g:i A', strtotime($seg['depart'])); ?><br>
-                                                                        Duration: <?php echo htmlspecialchars(formatDuration($seg['duration'])); ?>
-                                                                    </div>
-                                                                    <div class="flight-details-col" style="text-align:right;">
-                                                                        <strong><?php echo htmlspecialchars($seg['to']); ?></strong><br>
-                                                                        <?php echo date('D, M d - g:i A', strtotime($seg['arrive'])); ?><br>
-                                                                        Baggage: 1PC
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        <?php endforeach; ?>
-                                                    </div>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     <?php endif; ?>
