@@ -1526,11 +1526,11 @@ $iataList = array_map(function ($a) {
             display: inline-flex;
             align-items: center;
             gap: 4px;
+            font-weight: bold;
         }
 
         .flight-details-link::after {
-            content: "⌄";
-            font-size: 10px;
+            content: none;
         }
 
         .more-flights-link {
@@ -1540,6 +1540,7 @@ $iataList = array_map(function ($a) {
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            font-weight: bold;
         }
 
         .flight-footer{
@@ -1565,8 +1566,7 @@ $iataList = array_map(function ($a) {
         }
 
         .more-flights-link::after {
-            content: "⌄";
-            font-size: 10px;
+            content: none;
         }
 
         /* New Price Section Styling */
@@ -2051,7 +2051,7 @@ $iataList = array_map(function ($a) {
                                             </div>
                                         </div>
                                         <div class="section-footer" style="display:flex; justify-content: space-between; padding: 8px 12px; ">
-                                            <a href="#" class="flight-details-link">Flight Details</a>
+                                            <a href="#" class="flight-details-link">Flight Details <i class="fa fa-angle-double-down"></i></a>
                                         </div>
                                     </div>
 
@@ -2101,7 +2101,7 @@ $iataList = array_map(function ($a) {
                                                 </div>
                                             </div>
                                             <div class="section-footer" style="display:flex; justify-content: flex-end; padding: 8px 12px; ">
-                                                <a href="#" class="more-flights-link">More <?php echo htmlspecialchars($res['airline']); ?> Flights</a>
+                                                <a href="#" class="more-flights-link"><span class="info-dot"></span> More <?php echo htmlspecialchars($res['airline']); ?> Flights <i class="fa fa-angle-double-down"></i></a>
                                             </div>
                                         </div>
                                     <?php endif; ?>
