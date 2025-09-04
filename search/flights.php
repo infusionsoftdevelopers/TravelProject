@@ -919,6 +919,27 @@ function sanitizeIata($str)
     return strtoupper(substr(preg_replace('/[^A-Za-z]/', '', $str), 0, 3));
 }
 
+// Extract airport code from various formats: "LHR" or "London - LHR"
+function extractAirportCode($str)
+{
+    if (empty($str)) {
+        return '';
+    }
+    
+    // If it contains " - " (dash with spaces), extract the part after the dash
+    if (strpos($str, ' - ') !== false) {
+        $parts = explode(' - ', $str);
+        if (count($parts) >= 2) {
+            // Get the last part (should be the airport code)
+            $code = trim(end($parts));
+            return sanitizeIata($code);
+        }
+    }
+    
+    // If no dash format, treat as direct airport code
+    return sanitizeIata($str);
+}
+
 function getParam(array $keys, $default = null)
 {
     foreach ($keys as $key) {
@@ -930,8 +951,8 @@ function getParam(array $keys, $default = null)
 }
 
 $_GET['mode'] = strtolower(getParam(['mode', 'flight_type'], 'round')) === 'oneway' ? 'oneway' : 'round';
-$_GET['from'] = sanitizeIata(getParam(['from', 'dept_arpt'], ''));
-$_GET['to'] = sanitizeIata(getParam(['to', 'dest_arpt'], ''));
+$_GET['from'] = extractAirportCode(getParam(['from', 'dept_arpt'], ''));
+$_GET['to'] = extractAirportCode(getParam(['to', 'dest_arpt'], ''));
 $_GET['depart'] = getParam(['depart', 'departure_date'], '');
 $_GET['return'] = getParam(['return', 'return_date'], '');
 $_GET['class'] = strtolower(getParam(['class', 'cabin_class'], 'economy'));
@@ -945,8 +966,8 @@ $_GET['c_phone'] = getParam(['c_phone'], '');
 
 // Read basic search parameters
 $mode = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
-$fromCode = isset($_GET['from']) ? sanitizeIata($_GET['from']) : '';
-$toCode = isset($_GET['to']) ? sanitizeIata($_GET['to']) : '';
+$fromCode = isset($_GET['from']) ? extractAirportCode($_GET['from']) : '';
+$toCode = isset($_GET['to']) ? extractAirportCode($_GET['to']) : '';
 $depart = isset($_GET['depart']) ? date('Y-m-d', strtotime($_GET['depart'])) : '';
 $return = isset($_GET['return']) ? date('Y-m-d', strtotime($_GET['return'])) : '';
 $classKey = isset($_GET['class']) ? $_GET['class'] : 'economy';
