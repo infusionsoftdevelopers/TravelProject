@@ -2171,34 +2171,7 @@ $iataList = array_map(function ($a) {
                                 </div>
                                 <?php $fromAirport = findAirport($outSegs[0]['from'], $AIRPORTS); ?>
                                 <?php $toAirport = findAirport(end($outSegs)['to'], $AIRPORTS); ?>
-                                <div class="flight-details-panel">
-                                <div class="close_details" onclick="this.closest('.flight-details-panel').classList.remove('visible');">
-			<i class="fa fa-times"></i>
-		</div>
-                                                
-                                                <div class="flight-details-body">
-                                                    <?php foreach ($outSegs as $seg): ?>
-                                                        <div class="flight-details-header">
-                                                    <span style="font-weight:500;"><?php echo htmlspecialchars($fromAirport["city"]) . " - " . htmlspecialchars($outSegs[0]['from']); ?> <i class="fa fa-arrow-right"></i> <?php echo htmlspecialchars($toAirport["city"]) . " - " . htmlspecialchars(end($outSegs)['to']); ?></span>
-                                                    <span><?php echo json_encode($seg);?></span>
-                                                </div>
-                                                        <div class="flight-details-section">
-                                                            <div class="flight-details-row">
-                                                                <div class="flight-details-col">
-                                                                    <strong><?php echo htmlspecialchars($seg['from']); ?></strong><br>
-                                                                    <?php echo date('D, M d - g:i A', strtotime($seg['depart'])); ?><br>
-                                                                    Duration: <?php echo htmlspecialchars(formatDuration($seg['duration'])); ?>
-                                                                </div>
-                                                                <div class="flight-details-col" style="text-align:right;">
-                                                                    <strong><?php echo htmlspecialchars($seg['to']); ?></strong><br>
-                                                                    <?php echo date('D, M d - g:i A', strtotime($seg['arrive'])); ?><br>
-                                                                    Baggage: 1PC
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <?php endforeach; ?>
-                                                </div>
-                                            </div>
+                                
                             </div>
                             <div class="flight-card-inner"
                                 style="border-left: 1px solid red; width: 25%; background-color: #ffdd26;">

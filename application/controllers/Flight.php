@@ -46,19 +46,7 @@ class Flight extends RR_Controller {
             $this->load->view('flight/searchresult', $data);
         }
     }
-    public function resultsnew(){
-		$data = $this->input->get(); 
-		if(!$this->input->get()){
-            header("Location: ./index.php");
-        }else{
-            // Normalize incoming params so the view (which reads $_GET) can work unchanged
-            // $normalized = $this->normalizeSearchParams($data);
-            // Overwrite superglobal for the view's direct access
-            // $data = $normalized;
-            // $p["data"]=$normalized;
-            $this->load->view('flight/searchresultnew');//, $data);
-        }
-    }
+    
     public function results(){
 		$data = $this->input->get(); 
 		if(!$this->input->get()){
@@ -84,6 +72,16 @@ class Flight extends RR_Controller {
                 $form_val["requesttitle"] = "Cheap Flight Search";
                 // $this->flights->inqmail($form_val);
             }
+
+            $normalizedParams = $this->normalizeSearchParams($data);
+            $queryString = http_build_query($normalizedParams);
+            $redirectUrl = base_url('search/flights.php');
+            $queryString = $_SERVER['QUERY_STRING'];
+            if (!empty($queryString)) {
+                $redirectUrl .= (strpos($redirectUrl, '?') === false ? '?' : '&') . $queryString;
+            }
+            redirect($redirectUrl);
+            
             $data['departure_airport'] = $data['dept_arpt'];
             $data['destination_airport'] = $data['dest_arpt'];
             $data['dpt_c'] = substr($data['dept_arpt'], -3) ;
