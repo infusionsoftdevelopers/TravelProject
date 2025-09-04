@@ -977,12 +977,25 @@ $_GET['return'] = getParam(['return', 'return_date', 'return-date'], '');
 // Class handling: prefer explicit class/cabin_class, otherwise infer from flags like economy=Economy
 $__classParam = strtolower(getParam(['class', 'cabin_class'], ''));
 
+// if ($__classParam === '') {
+//     if (isset($_GET['economy'])) { $__classParam = 'economy'; }
+//     elseif (isset($_GET['premium_economy']) || isset($_GET['premium-economy'])) { $__classParam = 'premium_economy'; }
+//     elseif (isset($_GET['business'])) { $__classParam = 'business'; }
+//     elseif (isset($_GET['first'])) { $__classParam = 'first'; }
+//     $__classParam = strtolower( $_GET[$__classParam] );
+// }
 if ($__classParam === '') {
-    if (isset($_GET['economy'])) { $__classParam = 'economy'; }
-    elseif (isset($_GET['premium_economy']) || isset($_GET['premium-economy'])) { $__classParam = 'premium_economy'; }
-    elseif (isset($_GET['business'])) { $__classParam = 'business'; }
-    elseif (isset($_GET['first'])) { $__classParam = 'first'; }
-    $__classParam = strtolower( $_GET[$__classParam] );
+    if (isset($_GET['economy'])) {
+        $__classParam = strtolower($_GET['economy']);
+    } elseif (isset($_GET['premium_economy'])) {
+        $__classParam = strtolower($_GET['premium_economy']);
+    } elseif (isset($_GET['premium-economy'])) {
+        $__classParam = strtolower($_GET['premium-economy']);
+    } elseif (isset($_GET['business'])) {
+        $__classParam = strtolower($_GET['business']);
+    } elseif (isset($_GET['first'])) {
+        $__classParam = strtolower($_GET['first']);
+    }
 }
 // echo $__classParam;
 // die();
