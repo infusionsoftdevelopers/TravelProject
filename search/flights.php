@@ -1570,6 +1570,15 @@ $iataList = array_map(function ($a) {
             background: #fff;
         }
 
+        .close_details{
+            position: absolute;
+    top: 0;
+    right: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 9999 !important;
+}
+
         /* Flight details popover */
         .flight-details-panel {
             position: absolute;
@@ -1593,7 +1602,7 @@ $iataList = array_map(function ($a) {
             justify-content: space-between;
             align-items: center;
         }
-        .flight-details-body { padding: 10px 14px; }
+        .flight-details-body {  }
         .flight-details-section { border-top: 1px dashed #c6c6c6; padding: 12px 0; }
         .flight-details-row { display: flex; justify-content: space-between; gap: 12px; }
         .flight-details-col { width: 48%; }
@@ -2163,12 +2172,16 @@ $iataList = array_map(function ($a) {
                                 <?php $fromAirport = findAirport($outSegs[0]['from'], $AIRPORTS); ?>
                                 <?php $toAirport = findAirport(end($outSegs)['to'], $AIRPORTS); ?>
                                 <div class="flight-details-panel">
-                                                <div class="flight-details-header">
-                                                    <span style="font-weight:500;"><?php echo htmlspecialchars($fromAirport["city"]) . " - " . htmlspecialchars($outSegs[0]['from']); ?> <i class="fa fa-arrow-right"></i> <?php echo htmlspecialchars($toAirport["city"]) . " - " . htmlspecialchars(end($outSegs)['to']); ?></span>
-                                                    <span class="flight-details-close" onclick="this.closest('.flight-details-panel').classList.remove('visible');">✕</span>
-                                                </div>
+                                <div class="close_details" onclick="this.closest('.flight-details-panel').classList.remove('visible');">
+			<i class="fa fa-times"></i>
+		</div>
+                                                
                                                 <div class="flight-details-body">
                                                     <?php foreach ($outSegs as $seg): ?>
+                                                        <div class="flight-details-header">
+                                                    <span style="font-weight:500;"><?php echo htmlspecialchars($fromAirport["city"]) . " - " . htmlspecialchars($outSegs[0]['from']); ?> <i class="fa fa-arrow-right"></i> <?php echo htmlspecialchars($toAirport["city"]) . " - " . htmlspecialchars(end($outSegs)['to']); ?></span>
+                                                    <span><?php echo json_encode($seg);?></span>
+                                                </div>
                                                         <div class="flight-details-section">
                                                             <div class="flight-details-row">
                                                                 <div class="flight-details-col">
