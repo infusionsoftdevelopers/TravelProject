@@ -1394,7 +1394,8 @@ $iataList = array_map(function ($a) {
             font-size: 16px;
         }
 
-        .flight-section:last-child h2::after {
+        /* Only apply left arrow to inbound flights in round trips */
+        .flight-card.round-trip .flight-section:last-child h2::after {
             content: "⬅";
         }
 
@@ -2057,7 +2058,7 @@ $iataList = array_map(function ($a) {
 
 
 
-                    <div class="flight-card">
+                    <div class="flight-card<?php echo $mode === 'round' ? ' round-trip' : ''; ?>">
                         <div class="row" style="display: flex;">
                             <div class="flight-card-inner" style="width: 75%;">
                                 <div class="flight-header">
