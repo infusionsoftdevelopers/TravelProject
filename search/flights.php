@@ -2160,9 +2160,11 @@ $iataList = array_map(function ($a) {
 
 
                                 </div>
+                                <?php $fromAirport = findAirport($outSegs[0]['from'], $AIRPORTS); ?>
+                                <?php $toAirport = findAirport(end($outSegs)['to'], $AIRPORTS); ?>
                                 <div class="flight-details-panel">
                                                 <div class="flight-details-header">
-                                                    <span><?php echo htmlspecialchars($outSegs[0]['from']); ?> ➜ <?php echo htmlspecialchars(end($outSegs)['to']); ?></span>
+                                                    <span style="font-weight:500;"><?php echo htmlspecialchars($fromAirport["city"]) . " - " . htmlspecialchars($outSegs[0]['from']); ?> <i class="fa fa-arrow-right"></i> <?php echo htmlspecialchars($toAirport["city"]) . " - " . htmlspecialchars(end($outSegs)['to']); ?></span>
                                                     <span class="flight-details-close" onclick="this.closest('.flight-details-panel').classList.remove('visible');">✕</span>
                                                 </div>
                                                 <div class="flight-details-body">
