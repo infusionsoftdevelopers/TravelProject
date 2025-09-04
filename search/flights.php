@@ -1341,6 +1341,17 @@ $iataList = array_map(function ($a) {
             border-right: none;
         }
 
+        .flight-section h2 {
+            font-size: 13px;
+    background: #015f9e;
+    margin: 0;
+    color: #fff;
+    padding: 6px 8px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-align: center;
+    border-right: 1px solid #fff;
+        }
         .flight-section h4 {
             background: #1E40AF;
             color: #fff;
@@ -1353,12 +1364,12 @@ $iataList = array_map(function ($a) {
             gap: 8px;
         }
 
-        .flight-section h4::after {
+        .flight-section h2::after {
             content: "➜";
             font-size: 16px;
         }
 
-        .flight-section:last-child h4::after {
+        .flight-section:last-child h2::after {
             content: "⬅";
         }
 
@@ -1509,13 +1520,10 @@ $iataList = array_map(function ($a) {
         }
 
         .flight-details-link {
-            /* position: absolute; */
-            bottom: 8px;
-            left: 16px;
             font-size: 12px;
             color: #DC2626;
             text-decoration: none;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 4px;
         }
@@ -1526,15 +1534,12 @@ $iataList = array_map(function ($a) {
         }
 
         .more-flights-link {
-            /* position: absolute; */
-            /* bottom: 8px; */
-            /* right: 16px; */
             font-size: 12px;
             color: #DC2626;
             text-decoration: none;
-            /* display: flex; */
-            /* align-items: center; */
-            /* gap: 4px; */
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .flight-footer{
@@ -1542,8 +1547,9 @@ $iataList = array_map(function ($a) {
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            /* padding: 16px; */
-            text-align: center;
+            padding: 8px 12px;
+            /* border-top: 1px solid #E5E7EB; */
+            background: #fff;
         }
         .more-flights-link::before {
             content: "ℹ";
@@ -1552,7 +1558,7 @@ $iataList = array_map(function ($a) {
             width: 14px;
             height: 14px;
             border-radius: 50%;
-            /* display: flex; */
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             font-size: 10px;
@@ -2002,7 +2008,7 @@ $iataList = array_map(function ($a) {
                                 <div class="flight-body">
                                     <!-- Outbound -->
                                     <div class="flight-section">
-                                        <h4>Outbound Flight</h4>
+                                        <h2>Outbound Flight</h2>
                                         <?php $outSegs = $res['outbound']['segments']; ?>
                                         <div class="flight-info">
                                             <div class="from">
@@ -2044,13 +2050,15 @@ $iataList = array_map(function ($a) {
                                                     <?php echo date('D d, M', strtotime(end($outSegs)['arrive'])); ?></div>
                                             </div>
                                         </div>
-                                        
+                                        <div class="section-footer" style="display:flex; justify-content: space-between; padding: 8px 12px; ">
+                                            <a href="#" class="flight-details-link">Flight Details</a>
+                                        </div>
                                     </div>
 
                                     <!-- Inbound -->
                                     <?php if ($res['inbound']): ?>
                                         <div class="flight-section">
-                                            <h4>Inbound Flight</h4>
+                                            <h2>Inbound Flight</h2>
                                             <?php $inSegs = $res['inbound']['segments']; ?>
                                             <div class="flight-info">
                                                 <div class="from">
@@ -2092,17 +2100,13 @@ $iataList = array_map(function ($a) {
                                                         <?php echo date('D d, M', strtotime(end($inSegs)['arrive'])); ?></div>
                                                 </div>
                                             </div>
-                                            
+                                            <div class="section-footer" style="display:flex; justify-content: flex-end; padding: 8px 12px; ">
+                                                <a href="#" class="more-flights-link">More <?php echo htmlspecialchars($res['airline']); ?> Flights</a>
+                                            </div>
                                         </div>
                                     <?php endif; ?>
 
 
-                                </div>
-
-                                <div class="flight-footer" style="border: 1px solid red; width: 100%;">
-                                <a href="#" class="flight-details-link">Flight Details</a>
-                                <a href="#" class="more-flights-link">More
-                                                <?php echo htmlspecialchars($res['airline']); ?> Flights</a>
                                 </div>
                             </div>
                             <div class="flight-card-inner"
