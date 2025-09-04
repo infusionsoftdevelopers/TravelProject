@@ -1292,7 +1292,7 @@ $iataList = array_map(function ($a) {
             flex-direction: column;
             border: 2px solid #8B5CF6;
             border-radius: 6px;
-            overflow: hidden;
+            overflow: visible;
             margin: 15px 0;
             font-family: Arial, sans-serif;
             background: #fff;
@@ -1480,6 +1480,9 @@ $iataList = array_map(function ($a) {
             color: #9CA3AF;
         }
 
+        /* Make the left column a positioning context for the details panel */
+        .flight-card-inner { position: relative; }
+
         .flight-sidebar {
             background: #1E40AF;
             border: 3px solid #FCD34D;
@@ -1566,6 +1569,35 @@ $iataList = array_map(function ($a) {
             /* border-top: 1px solid #E5E7EB; */
             background: #fff;
         }
+
+        /* Flight details popover */
+        .flight-details-panel {
+            position: absolute;
+            left: 0;
+            right: auto;
+            width: 100%;
+            top: calc(100% + 8px);
+            background: #fff;
+            border: 2px solid #5b2a86;
+            box-shadow: 0 4px 18px rgba(0,0,0,.15);
+            z-index: 1000;
+            display: none;
+        }
+        .flight-details-panel.visible { display: block; }
+        .flight-details-header {
+            background: #ffd71e;
+            color: #000;
+            padding: 10px 14px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .flight-details-body { padding: 10px 14px; }
+        .flight-details-section { border-top: 1px dashed #c6c6c6; padding: 12px 0; }
+        .flight-details-row { display: flex; justify-content: space-between; gap: 12px; }
+        .flight-details-col { width: 48%; }
+        .flight-details-close { cursor: pointer; color: #5b2a86; font-size: 16px; }
         .more-flights-link::before {
             content: "ℹ";
             background: #DC2626;
@@ -2062,8 +2094,13 @@ $iataList = array_map(function ($a) {
                                                     <?php echo date('D d, M', strtotime(end($outSegs)['arrive'])); ?></div>
                                             </div>
                                         </div>
-                                        <div class="section-footer" style="display:flex; justify-content: space-between; padding: 8px 12px; ">
-                                            <a href="#" class="flight-details-link">Flight Details <i class="fa fa-angle-double-down"></i></a>
+                                        <div class="section-footer" style="display:flex; justify-content: space-between; padding: 8px 12px; position: relative; ">
+                                            <a href="#" class="flight-details-link" 
+                                               onmouseenter="this.closest('.flight-card').querySelector('.flight-details-panel').classList.add('visible');"
+                                               onclick="event.preventDefault(); this.closest('.flight-card').querySelector('.flight-details-panel').classList.add('visible');">
+                                                Flight Details <i class="fa fa-angle-double-down"></i>
+                                            </a>
+                                            
                                         </div>
                                     </div>
 
@@ -2112,14 +2149,64 @@ $iataList = array_map(function ($a) {
                                                         <?php echo date('D d, M', strtotime(end($inSegs)['arrive'])); ?></div>
                                                 </div>
                                             </div>
-                                            <div class="section-footer" style="display:flex; justify-content: flex-end; padding: 8px 12px; ">
-                                                <a href="#" class="more-flights-link"><span class="info-dot"></span> More <?php echo htmlspecialchars($res['airline']); ?> Flights <i class="fa fa-angle-double-down"></i></a>
+                                            <div class="section-footer" style="display:flex; justify-content: flex-end; padding: 8px 12px; position: relative; ">
+                                                <a href="#" class="more-flights-link">
+                                                    <span class="info-dot"></span> More <?php echo htmlspecialchars($res['airline']); ?> Flights <i class="fa fa-angle-double-down"></i>
+                                                </a>
+                                                <div class="flight-details-panel">
+                                                    <div class="flight-details-header">
+                                                        <span><?php echo htmlspecialchars($inSegs[0]['from']); ?> ➜ <?php echo htmlspecialchars(end($inSegs)['to']); ?></span>
+                                                        <span class="flight-details-close" onclick="this.closest('.flight-details-panel').classList.remove('visible');">✕</span>
+                                                    </div>
+                                                    <div class="flight-details-body">
+                                                        <?php foreach ($inSegs as $seg): ?>
+                                                            <div class="flight-details-section">
+                                                                <div class="flight-details-row">
+                                                                    <div class="flight-details-col">
+                                                                        <strong><?php echo htmlspecialchars($seg['from']); ?></strong><br>
+                                                                        <?php echo date('D, M d - g:i A', strtotime($seg['depart'])); ?><br>
+                                                                        Duration: <?php echo htmlspecialchars(formatDuration($seg['duration'])); ?>
+                                                                    </div>
+                                                                    <div class="flight-details-col" style="text-align:right;">
+                                                                        <strong><?php echo htmlspecialchars($seg['to']); ?></strong><br>
+                                                                        <?php echo date('D, M d - g:i A', strtotime($seg['arrive'])); ?><br>
+                                                                        Baggage: 1PC
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     <?php endif; ?>
 
 
                                 </div>
+                                <div class="flight-details-panel">
+                                                <div class="flight-details-header">
+                                                    <span><?php echo htmlspecialchars($outSegs[0]['from']); ?> ➜ <?php echo htmlspecialchars(end($outSegs)['to']); ?></span>
+                                                    <span class="flight-details-close" onclick="this.closest('.flight-details-panel').classList.remove('visible');">✕</span>
+                                                </div>
+                                                <div class="flight-details-body">
+                                                    <?php foreach ($outSegs as $seg): ?>
+                                                        <div class="flight-details-section">
+                                                            <div class="flight-details-row">
+                                                                <div class="flight-details-col">
+                                                                    <strong><?php echo htmlspecialchars($seg['from']); ?></strong><br>
+                                                                    <?php echo date('D, M d - g:i A', strtotime($seg['depart'])); ?><br>
+                                                                    Duration: <?php echo htmlspecialchars(formatDuration($seg['duration'])); ?>
+                                                                </div>
+                                                                <div class="flight-details-col" style="text-align:right;">
+                                                                    <strong><?php echo htmlspecialchars($seg['to']); ?></strong><br>
+                                                                    <?php echo date('D, M d - g:i A', strtotime($seg['arrive'])); ?><br>
+                                                                    Baggage: 1PC
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
                             </div>
                             <div class="flight-card-inner"
                                 style="border-left: 1px solid red; width: 25%; background-color: #ffdd26;">
