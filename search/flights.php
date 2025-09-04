@@ -1310,7 +1310,7 @@ $iataList = array_map(function ($a) {
                 <div class="form-group">
                     <label for="adults">Adults</label>
                     <select id="adults" name="adults">
-                        <?php for ($i = 1; $i <= 9; $i++): ?>
+                        <?php for ($i = 1; $i <= 10; $i++): ?>
                             <option value="<?php echo $i; ?>" <?php echo ($adults == $i) ? 'selected' : ''; ?>>
                                 <?php echo $i; ?></option>
                         <?php endfor; ?>
@@ -1319,7 +1319,7 @@ $iataList = array_map(function ($a) {
                 <div class="form-group">
                     <label for="children">Children</label>
                     <select id="children" name="children">
-                        <?php for ($i = 0; $i <= 5; $i++): ?>
+                        <?php for ($i = 0; $i <= 10; $i++): ?>
                             <option value="<?php echo $i; ?>" <?php echo ($children == $i) ? 'selected' : ''; ?>>
                                 <?php echo $i; ?></option>
                         <?php endfor; ?>
@@ -1328,7 +1328,7 @@ $iataList = array_map(function ($a) {
                 <div class="form-group">
                     <label for="infants">Infants</label>
                     <select id="infants" name="infants">
-                        <?php for ($i = 0; $i <= 4; $i++): ?>
+                        <?php for ($i = 0; $i <= 10; $i++): ?>
                             <option value="<?php echo $i; ?>" <?php echo ($infants == $i) ? 'selected' : ''; ?>>
                                 <?php echo $i; ?></option>
                         <?php endfor; ?>
@@ -1424,10 +1424,10 @@ $iataList = array_map(function ($a) {
                 for
                 <?php echo htmlspecialchars($adults); ?> Adult
                 <?php if ($children > 0): ?>
-                    <?php echo htmlspecialchars($children); ?> Child
+                    <?php echo ", " . htmlspecialchars($children); ?> Child
                 <?php endif; ?>
                 <?php if ($infants > 0): ?>
-                    <?php echo htmlspecialchars($infants); ?> Infant
+                    <?php echo "and " . htmlspecialchars($infants); ?> Infant
                 <?php endif; ?>
                 .
             </p>
