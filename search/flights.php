@@ -1521,6 +1521,122 @@ $iataList = array_map(function ($a) {
         font-size: 10px;
     }
 
+    /* New Price Section Styling */
+    .price_details {
+        background: #FCD34D;
+        border: 3px solid #FCD34D;
+        padding: 16px;
+        text-align: center;
+        position: relative;
+        min-width: 200px;
+    }
+
+    .price_details::before {
+        content: "";
+        position: absolute;
+        left: -12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+        border-right: 12px solid #FCD34D;
+    }
+
+    .price_details .price h6 {
+        font-size: 12px;
+        color: #374151;
+        margin: 0 0 8px 0;
+        font-weight: normal;
+    }
+
+    .price_details .price h1 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #374151;
+        margin: 0 0 8px 0;
+        line-height: 1;
+    }
+
+    .price_details .price h1 span {
+        font-size: 14px;
+        font-weight: normal;
+    }
+
+    .price_details .price h6:last-child {
+        font-size: 11px;
+        line-height: 1.4;
+        margin-bottom: 16px;
+    }
+
+    .add-to-link {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .add-to-link a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+        color: white;
+        transition: all 0.2s;
+    }
+
+    .call_now {
+        background: #DC2626;
+    }
+
+    .call_now:hover {
+        background: #B91C1C;
+    }
+
+    .book_now {
+        background: #1E40AF;
+    }
+
+    .book_now:hover {
+        background: #1D4ED8;
+    }
+
+    .whatsapp_now {
+        background: #059669;
+    }
+
+    .whatsapp_now:hover {
+        background: #047857;
+    }
+
+    .add-to-link a div {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .add-to-link a i {
+        font-size: 14px;
+    }
+
+    /* Mobile responsive */
+    .mob_price {
+        font-size: 18px;
+        font-weight: bold;
+        color: #374151;
+        margin: 0;
+    }
+
+    .mob_price small {
+        font-size: 10px;
+        font-weight: normal;
+        display: block;
+    }
+
 </style>
     <script>
         // Auto uppercase and filter suggestions for IATA input fields.
@@ -1554,8 +1670,10 @@ $iataList = array_map(function ($a) {
 <body>
     <div class="container">
         <div class="sidebar">
-            <h2>Refine Your Results</h2>
-            <form id="flightForm" method="get" action="#">
+            <h2 style="background: #015F9E;margin: 0 0 0 0;text-align: center;padding: 10px 0;color: #ffffff;">Refine Your Results</h2>
+            <form id="flightForm" method="get" action="#" style="background: #350c48;color: #fff;
+    padding: 15px;
+    margin-bottom: 14px;">
                 <div class="form-group">
                     <label>Trip Type</label>
                     <label><input type="radio" name="mode" value="round" <?php echo $mode === 'oneway' ? '' : 'checked'; ?>>
@@ -1656,7 +1774,7 @@ $iataList = array_map(function ($a) {
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <img src="../assets/image/search_top_banner.jpg?v0.1" style="width: 100%;" alt="Flight Search">
+                    <img src="../assets/image/search_top_banner.png?v0.1" style="width: 100%;" alt="Flight Search">
                 </div>
             </div>
 
@@ -1837,11 +1955,11 @@ $iataList = array_map(function ($a) {
 								  			<div class="price_details hidden-xs hidden-sm">
 								  				<div class="price">
 								  					<h6>From</h6>
-								  					<h1>£ 1877<span>PP</span></h1>
+								  					<h1>£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?><span>PP</span></h1>
 								  					<h6>
-								  						Return, Inc. Taxes<br>
-														1 Adult<br>
-														<strong style="font-size:13px;">Total Price £ 1877</strong>
+								  						<?php echo $mode === 'oneway' ? 'One Way' : 'Return'; ?>, Inc. Taxes<br>
+														<?php echo $adults; ?> Adult<?php echo $adults > 1 ? 's' : ''; ?><?php if ($children > 0): ?>, <?php echo $children; ?> Child<?php echo $children > 1 ? 'ren' : ''; ?><?php endif; ?><?php if ($infants > 0): ?>, <?php echo $infants; ?> Infant<?php echo $infants > 1 ? 's' : ''; ?><?php endif; ?><br>
+														<strong style="font-size:13px;">Total Price £ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?></strong>
 								  					</h6>
 								  					<!-- <h6 class="phn-strok">
 														<a href="tel:02079936068">0207 993 6068</a>
@@ -1851,27 +1969,27 @@ $iataList = array_map(function ($a) {
 													<a class="call_now" href="tel:02079936068">
 								                        <div><i class="fa fa-phone"></i><span>0207 993 6068</span></div>
 								                    </a>
-								                    <a class="book_now" href="javascript: bookingRequest(['Thu, Sep 25', '8:30 AM', 'Heathrow - LHR', 'Thu, Sep 25', '10:04 PM', 'Nanaimo - YCD', '21h 34m', '2 stops', 'Tue, Sep 30', '6:00 AM', 'Nanaimo - YCD', 'Wed, Oct 01', '6:20 AM', 'Heathrow - LHR', '16h 20m', '2 stops', 'London - LON', 'Nanaimo - YCD', 'OS', 'Austrian Airlines', '1', '0', '0', '1877', '1877']);">
+								                    <a class="book_now" href="javascript: bookingRequest(['<?php echo date('D, M d', strtotime($outSegs[0]['depart'])); ?>', '<?php echo date('g:i A', strtotime($outSegs[0]['depart'])); ?>', '<?php echo htmlspecialchars($fromAirport['city'] . ' - ' . $outSegs[0]['from']); ?>', '<?php echo date('D, M d', strtotime(end($outSegs)['arrive'])); ?>', '<?php echo date('g:i A', strtotime(end($outSegs)['arrive'])); ?>', '<?php echo htmlspecialchars($toAirport['city'] . ' - ' . end($outSegs)['to']); ?>', '<?php echo formatDuration($res['outbound']['totalDuration']); ?>', '<?php echo max(0, count($outSegs) - 1); ?> stops', '<?php if ($res['inbound']): ?><?php echo date('D, M d', strtotime($inSegs[0]['depart'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('g:i A', strtotime($inSegs[0]['depart'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo htmlspecialchars($toAirport['city'] . ' - ' . $inSegs[0]['from']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('D, M d', strtotime(end($inSegs)['arrive'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('g:i A', strtotime(end($inSegs)['arrive'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo htmlspecialchars($fromAirport['city'] . ' - ' . end($inSegs)['to']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo formatDuration($res['inbound']['totalDuration']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo max(0, count($inSegs) - 1); ?> stops<?php endif; ?>', '<?php echo htmlspecialchars($fromAirport['city'] . ' - ' . $fromCode); ?>', '<?php echo htmlspecialchars($toAirport['city'] . ' - ' . $toCode); ?>', '<?php echo htmlspecialchars($res['airline']); ?>', '<?php echo htmlspecialchars($res['airline']); ?>', '<?php echo $adults; ?>', '<?php echo $children; ?>', '<?php echo $infants; ?>', '<?php echo $res['price']; ?>', '<?php echo $res['price']; ?>']);">
 								                        <div><i class="fa fa-check"></i><span>Book Now</span></div>
 								                    </a>
-								                    <a class="whatsapp_now" href="https://api.whatsapp.com/send?phone=442079935374&amp;text=I'm%20interested%20in%20flights%20to%20Nanaimo%20from%20Heathrow%20Return%20Departure Date:%20Thu, Sep 25%20Return Date:%20Wed, Oct 01%20Adults:%201%20Price:%20£1877%20%20%20%20" target="_blank">
+								                    <a class="whatsapp_now" href="https://api.whatsapp.com/send?phone=442079935374&amp;text=I'm%20interested%20in%20flights%20to%20<?php echo urlencode($toAirport['city']); ?>%20from%20<?php echo urlencode($fromAirport['city']); ?>%20<?php echo $mode === 'oneway' ? 'One Way' : 'Return'; ?>%20Departure Date:%20<?php echo urlencode(date('D, M d', strtotime($outSegs[0]['depart']))); ?><?php if ($res['inbound']): ?>%20Return Date:%20<?php echo urlencode(date('D, M d', strtotime($inSegs[0]['depart']))); ?><?php endif; ?>%20Adults:%20<?php echo $adults; ?><?php if ($children > 0): ?>%20Children:%20<?php echo $children; ?><?php endif; ?><?php if ($infants > 0): ?>%20Infants:%20<?php echo $infants; ?><?php endif; ?>%20Price:%20£<?php echo $res['price']; ?>%20%20%20%20" target="_blank">
 								                        <div><i class="fa fa-whatsapp"></i><span>Whatsapp</span></div>
 								                    </a>
 								                </div>
 								  			</div>
 								  			<div class="row visible-sm visible-xs">
 								  				<div class="col-xs-6 clear-padding">
-								  													  					<h3 class="mob_price">£ 1877<small><small>1Person</small></small></h3>
+								  					<h3 class="mob_price">£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?><small><small><?php echo $adults + $children + $infants; ?> Person<?php echo ($adults + $children + $infants) > 1 ? 's' : ''; ?></small></small></h3>
 								  				</div>
 								  				<div class="col-xs-6 clear-padding">
 								  					<div class="add-to-link"> 
 								  						<a class="call_now" href="tel:02079936068">
 								                            <div><i class="fa fa-phone"></i><span>Call Now</span></div>
 								                        </a>
-								                        <a class="book_now" href="javascript: bookingRequest(['Thu, Sep 25', '8:30 AM', 'Heathrow - LHR', 'Thu, Sep 25', '10:04 PM', 'Nanaimo - YCD', '21h 34m', '2 stops', 'Tue, Sep 30', '6:00 AM', 'Nanaimo - YCD', 'Wed, Oct 01', '6:20 AM', 'Heathrow - LHR', '16h 20m', '2 stops', 'London - LON', 'Nanaimo - YCD', 'OS', 'Austrian Airlines', '1', '0', '0', '1877', '1877']);">
+								                        <a class="book_now" href="javascript: bookingRequest(['<?php echo date('D, M d', strtotime($outSegs[0]['depart'])); ?>', '<?php echo date('g:i A', strtotime($outSegs[0]['depart'])); ?>', '<?php echo htmlspecialchars($fromAirport['city'] . ' - ' . $outSegs[0]['from']); ?>', '<?php echo date('D, M d', strtotime(end($outSegs)['arrive'])); ?>', '<?php echo date('g:i A', strtotime(end($outSegs)['arrive'])); ?>', '<?php echo htmlspecialchars($toAirport['city'] . ' - ' . end($outSegs)['to']); ?>', '<?php echo formatDuration($res['outbound']['totalDuration']); ?>', '<?php echo max(0, count($outSegs) - 1); ?> stops', '<?php if ($res['inbound']): ?><?php echo date('D, M d', strtotime($inSegs[0]['depart'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('g:i A', strtotime($inSegs[0]['depart'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo htmlspecialchars($toAirport['city'] . ' - ' . $inSegs[0]['from']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('D, M d', strtotime(end($inSegs)['arrive'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('g:i A', strtotime(end($inSegs)['arrive'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo htmlspecialchars($fromAirport['city'] . ' - ' . end($inSegs)['to']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo formatDuration($res['inbound']['totalDuration']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo max(0, count($inSegs) - 1); ?> stops<?php endif; ?>', '<?php echo htmlspecialchars($fromAirport['city'] . ' - ' . $fromCode); ?>', '<?php echo htmlspecialchars($toAirport['city'] . ' - ' . $toCode); ?>', '<?php echo htmlspecialchars($res['airline']); ?>', '<?php echo htmlspecialchars($res['airline']); ?>', '<?php echo $adults; ?>', '<?php echo $children; ?>', '<?php echo $infants; ?>', '<?php echo $res['price']; ?>', '<?php echo $res['price']; ?>']);">
 								                            <div><i class="fa fa-check"></i><span>Book Now</span></div>
 								                        </a>
-								                        <a class="whatsapp_now" href="https://api.whatsapp.com/send?phone=442079935374&amp;text=I'm%20interested%20in%20flights%20to%20Nanaimo%20from%20Heathrow%20ReturnReturn%20Departure Date:%20Thu, Sep 25%20Return Date:%20Wed, Oct 01%20Adults:%201%20Price:%20£1877%20%20%20%20" target="_blank">
+								                        <a class="whatsapp_now" href="https://api.whatsapp.com/send?phone=442079935374&amp;text=I'm%20interested%20in%20flights%20to%20<?php echo urlencode($toAirport['city']); ?>%20from%20<?php echo urlencode($fromAirport['city']); ?>%20<?php echo $mode === 'oneway' ? 'One Way' : 'Return'; ?>%20Departure Date:%20<?php echo urlencode(date('D, M d', strtotime($outSegs[0]['depart']))); ?><?php if ($res['inbound']): ?>%20Return Date:%20<?php echo urlencode(date('D, M d', strtotime($inSegs[0]['depart']))); ?><?php endif; ?>%20Adults:%20<?php echo $adults; ?><?php if ($children > 0): ?>%20Children:%20<?php echo $children; ?><?php endif; ?><?php if ($infants > 0): ?>%20Infants:%20<?php echo $infants; ?><?php endif; ?>%20Price:%20£<?php echo $res['price']; ?>%20%20%20%20" target="_blank">
 								                            <div><i class="fa fa-whatsapp"></i><span>Whatsapp</span></div>
 								                        </a>
 								                    </div>
