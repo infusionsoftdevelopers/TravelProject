@@ -1093,7 +1093,7 @@ $iataList = array_map(function ($a) {
             border: 1px solid #ddd;
             border-radius: 4px;
             margin-bottom: 10px;
-            padding: 14px;
+            /* padding: 14px; */
         }
 
         .flight-card h3 {
@@ -1523,15 +1523,15 @@ $iataList = array_map(function ($a) {
 
     /* New Price Section Styling */
     .price_details {
-        background: #FCD34D;
-        border: 3px solid #FCD34D;
+        /* background: #FCD34D; */
+        /* border: 3px solid #FCD34D; */
         padding: 16px;
         text-align: center;
         position: relative;
         min-width: 200px;
     }
 
-    .price_details::before {
+    /* .price_details::before {
         content: "";
         position: absolute;
         left: -12px;
@@ -1542,7 +1542,7 @@ $iataList = array_map(function ($a) {
         border-top: 12px solid transparent;
         border-bottom: 12px solid transparent;
         border-right: 12px solid #FCD34D;
-    }
+    } */
 
     .price_details .price h6 {
         font-size: 12px;
@@ -1665,6 +1665,8 @@ $iataList = array_map(function ($a) {
             });
         });
     </script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -1944,7 +1946,7 @@ $iataList = array_map(function ($a) {
                                 
                             </div>
                         </div>
-                        <div class="flight-card-inner" style="border-left: 1px solid red; width: 25%;">
+                        <div class="flight-card-inner" style="border-left: 1px solid red; width: 25%; background-color: #ffdd26;">
                             <!-- <div class="flight-sidebar">
                                     <div class="price">£<?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
                                     <div class="call-text">Special rates not published online.</div>
@@ -1952,7 +1954,7 @@ $iataList = array_map(function ($a) {
                                     <div class="phone">📞 0207 993 6068</div>
                                 </div> -->
 
-								  			<div class="price_details hidden-xs hidden-sm">
+								  			<div class="price_details hidden-xs hidden-sm" style="">
 								  				<div class="price">
 								  					<h6>From</h6>
 								  					<h1>£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?><span>PP</span></h1>
@@ -1965,35 +1967,17 @@ $iataList = array_map(function ($a) {
 														<a href="tel:02079936068">0207 993 6068</a>
 													</h6> -->
 								  				</div>
-												<div class="add-to-link"> 
+                                                  <div class="add-to-links-div"> 
 													<a class="call_now" href="tel:02079936068">
 								                        <div><i class="fa fa-phone"></i><span>0207 993 6068</span></div>
 								                    </a>
-								                    <a class="book_now" href="javascript: bookingRequest(['<?php echo date('D, M d', strtotime($outSegs[0]['depart'])); ?>', '<?php echo date('g:i A', strtotime($outSegs[0]['depart'])); ?>', '<?php echo htmlspecialchars($fromAirport['city'] . ' - ' . $outSegs[0]['from']); ?>', '<?php echo date('D, M d', strtotime(end($outSegs)['arrive'])); ?>', '<?php echo date('g:i A', strtotime(end($outSegs)['arrive'])); ?>', '<?php echo htmlspecialchars($toAirport['city'] . ' - ' . end($outSegs)['to']); ?>', '<?php echo formatDuration($res['outbound']['totalDuration']); ?>', '<?php echo max(0, count($outSegs) - 1); ?> stops', '<?php if ($res['inbound']): ?><?php echo date('D, M d', strtotime($inSegs[0]['depart'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('g:i A', strtotime($inSegs[0]['depart'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo htmlspecialchars($toAirport['city'] . ' - ' . $inSegs[0]['from']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('D, M d', strtotime(end($inSegs)['arrive'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('g:i A', strtotime(end($inSegs)['arrive'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo htmlspecialchars($fromAirport['city'] . ' - ' . end($inSegs)['to']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo formatDuration($res['inbound']['totalDuration']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo max(0, count($inSegs) - 1); ?> stops<?php endif; ?>', '<?php echo htmlspecialchars($fromAirport['city'] . ' - ' . $fromCode); ?>', '<?php echo htmlspecialchars($toAirport['city'] . ' - ' . $toCode); ?>', '<?php echo htmlspecialchars($res['airline']); ?>', '<?php echo htmlspecialchars($res['airline']); ?>', '<?php echo $adults; ?>', '<?php echo $children; ?>', '<?php echo $infants; ?>', '<?php echo $res['price']; ?>', '<?php echo $res['price']; ?>']);">
+								                    <a class="book_now" href="javascript: bookingRequest(['Thu, Sep 25', '8:30 AM', 'Heathrow - LHR', 'Thu, Sep 25', '10:04 PM', 'Nanaimo - YCD', '21h 34m', '2 stops', 'Tue, Sep 30', '6:00 AM', 'Nanaimo - YCD', 'Wed, Oct 01', '6:20 AM', 'Heathrow - LHR', '16h 20m', '2 stops', 'London - LON', 'Nanaimo - YCD', 'OS', 'Austrian Airlines', '1', '0', '0', '1877', '1877']);">
 								                        <div><i class="fa fa-check"></i><span>Book Now</span></div>
 								                    </a>
-								                    <a class="whatsapp_now" href="https://api.whatsapp.com/send?phone=442079935374&amp;text=I'm%20interested%20in%20flights%20to%20<?php echo urlencode($toAirport['city']); ?>%20from%20<?php echo urlencode($fromAirport['city']); ?>%20<?php echo $mode === 'oneway' ? 'One Way' : 'Return'; ?>%20Departure Date:%20<?php echo urlencode(date('D, M d', strtotime($outSegs[0]['depart']))); ?><?php if ($res['inbound']): ?>%20Return Date:%20<?php echo urlencode(date('D, M d', strtotime($inSegs[0]['depart']))); ?><?php endif; ?>%20Adults:%20<?php echo $adults; ?><?php if ($children > 0): ?>%20Children:%20<?php echo $children; ?><?php endif; ?><?php if ($infants > 0): ?>%20Infants:%20<?php echo $infants; ?><?php endif; ?>%20Price:%20£<?php echo $res['price']; ?>%20%20%20%20" target="_blank">
+								                    <a class="whatsapp_now" href="https://api.whatsapp.com/send?phone=442079935374&amp;text=I'm%20interested%20in%20flights%20to%20Nanaimo%20from%20Heathrow%20Return%20Departure Date:%20Thu, Sep 25%20Return Date:%20Wed, Oct 01%20Adults:%201%20Price:%20£1877%20%20%20%20" target="_blank">
 								                        <div><i class="fa fa-whatsapp"></i><span>Whatsapp</span></div>
 								                    </a>
 								                </div>
-								  			</div>
-								  			<div class="row visible-sm visible-xs">
-								  				<div class="col-xs-6 clear-padding">
-								  					<h3 class="mob_price">£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?><small><small><?php echo $adults + $children + $infants; ?> Person<?php echo ($adults + $children + $infants) > 1 ? 's' : ''; ?></small></small></h3>
-								  				</div>
-								  				<div class="col-xs-6 clear-padding">
-								  					<div class="add-to-link"> 
-								  						<a class="call_now" href="tel:02079936068">
-								                            <div><i class="fa fa-phone"></i><span>Call Now</span></div>
-								                        </a>
-								                        <a class="book_now" href="javascript: bookingRequest(['<?php echo date('D, M d', strtotime($outSegs[0]['depart'])); ?>', '<?php echo date('g:i A', strtotime($outSegs[0]['depart'])); ?>', '<?php echo htmlspecialchars($fromAirport['city'] . ' - ' . $outSegs[0]['from']); ?>', '<?php echo date('D, M d', strtotime(end($outSegs)['arrive'])); ?>', '<?php echo date('g:i A', strtotime(end($outSegs)['arrive'])); ?>', '<?php echo htmlspecialchars($toAirport['city'] . ' - ' . end($outSegs)['to']); ?>', '<?php echo formatDuration($res['outbound']['totalDuration']); ?>', '<?php echo max(0, count($outSegs) - 1); ?> stops', '<?php if ($res['inbound']): ?><?php echo date('D, M d', strtotime($inSegs[0]['depart'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('g:i A', strtotime($inSegs[0]['depart'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo htmlspecialchars($toAirport['city'] . ' - ' . $inSegs[0]['from']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('D, M d', strtotime(end($inSegs)['arrive'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo date('g:i A', strtotime(end($inSegs)['arrive'])); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo htmlspecialchars($fromAirport['city'] . ' - ' . end($inSegs)['to']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo formatDuration($res['inbound']['totalDuration']); ?><?php endif; ?>', '<?php if ($res['inbound']): ?><?php echo max(0, count($inSegs) - 1); ?> stops<?php endif; ?>', '<?php echo htmlspecialchars($fromAirport['city'] . ' - ' . $fromCode); ?>', '<?php echo htmlspecialchars($toAirport['city'] . ' - ' . $toCode); ?>', '<?php echo htmlspecialchars($res['airline']); ?>', '<?php echo htmlspecialchars($res['airline']); ?>', '<?php echo $adults; ?>', '<?php echo $children; ?>', '<?php echo $infants; ?>', '<?php echo $res['price']; ?>', '<?php echo $res['price']; ?>']);">
-								                            <div><i class="fa fa-check"></i><span>Book Now</span></div>
-								                        </a>
-								                        <a class="whatsapp_now" href="https://api.whatsapp.com/send?phone=442079935374&amp;text=I'm%20interested%20in%20flights%20to%20<?php echo urlencode($toAirport['city']); ?>%20from%20<?php echo urlencode($fromAirport['city']); ?>%20<?php echo $mode === 'oneway' ? 'One Way' : 'Return'; ?>%20Departure Date:%20<?php echo urlencode(date('D, M d', strtotime($outSegs[0]['depart']))); ?><?php if ($res['inbound']): ?>%20Return Date:%20<?php echo urlencode(date('D, M d', strtotime($inSegs[0]['depart']))); ?><?php endif; ?>%20Adults:%20<?php echo $adults; ?><?php if ($children > 0): ?>%20Children:%20<?php echo $children; ?><?php endif; ?><?php if ($infants > 0): ?>%20Infants:%20<?php echo $infants; ?><?php endif; ?>%20Price:%20£<?php echo $res['price']; ?>%20%20%20%20" target="_blank">
-								                            <div><i class="fa fa-whatsapp"></i><span>Whatsapp</span></div>
-								                        </a>
-								                    </div>
-								  				</div>
 								  			</div>
 								  		
                         </div>
