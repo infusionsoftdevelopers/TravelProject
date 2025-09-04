@@ -722,6 +722,7 @@ function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $cla
 
             $results[] = [
                 'airline' => $airline['name'],
+                'airlineCode' => $airline['code'],
                 'segments' => [
                     [
                         'from' => $fromApt['code'],
@@ -755,6 +756,7 @@ function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $cla
                 );
                 $results[] = [
                     'airline' => $airline['name'],
+                    'airlineCode' => $airline['code'],
                     'segments' => [
                         [
                             'from' => $fromApt['code'],
@@ -803,6 +805,7 @@ function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $cla
 
                 $results[] = [
                     'airline' => $airline['name'],
+                    'airlineCode' => $airline['code'],
                     'segments' => [
                         [
                             'from' => $fromApt['code'],
@@ -877,6 +880,7 @@ function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateSt
                     $comboDur = $out['totalDuration'] + $in['totalDuration'];
                     $results[] = [
                         'airline' => $airline['name'],
+                        'airlineCode' => $airline['code'],
                         'outbound' => $out,
                         'inbound' => $in,
                         'price' => $comboPrice,
@@ -893,6 +897,7 @@ function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateSt
             foreach ($outboundFlights as $out) {
                 $results[] = [
                     'airline' => $airline['name'],
+                    'airlineCode' => $airline['code'],
                     'outbound' => $out,
                     'inbound' => null,
                     'price' => $out['price'],
@@ -925,7 +930,7 @@ function extractAirportCode($str)
     if (empty($str)) {
         return '';
     }
-
+    
     // If it contains " - " (dash with spaces), extract the part after the dash
     if (strpos($str, ' - ') !== false) {
         $parts = explode(' - ', $str);
@@ -935,9 +940,22 @@ function extractAirportCode($str)
             return sanitizeIata($code);
         }
     }
-
+    
     // If no dash format, treat as direct airport code
     return sanitizeIata($str);
+}
+
+// Convert airline name to logo filename format
+function getAirlineLogoFilename($airlineName)
+{
+    // Convert to lowercase and replace spaces with underscores
+    $filename = strtolower($airlineName);
+    $filename = str_replace(' ', '_', $filename);
+    $filename = str_replace('-', '_', $filename);
+    $filename = str_replace('.', '', $filename);
+    $filename = str_replace('&', 'and', $filename);
+    
+    return $filename . '.jpg';
 }
 
 function getParam(array $keys, $default = null)
@@ -1388,10 +1406,17 @@ $iataList = array_map(function ($a) {
             color: #374151;
         }
 
-        .airline-name {
-            font-size: 12px;
-            color: #6B7280;
-        }
+                 .airline-name {
+             font-size: 12px;
+             color: #6B7280;
+         }
+
+         .airline-logo {
+             width: 24px;
+             height: 16px;
+             object-fit: contain;
+             margin-top: 4px;
+         }
 
         .flight-path {
             display: flex;
@@ -1895,11 +1920,18 @@ $iataList = array_map(function ($a) {
                                                     <?php echo date('D d, M', strtotime($outSegs[0]['depart'])); ?></div>
                                             </div>
                                             <div class="stops">
-                                                <div class="stops-text"><?php echo max(0, count($outSegs) - 1); ?> stops</div>
+                                                                                                 <div class="stops-text"><?php 
+                                                     $stops = max(0, count($outSegs) - 1);
+                                                     echo $stops === 0 ? 'Non-stop' : $stops . ' stop' . ($stops > 1 ? 's' : '');
+                                                 ?></div>
                                                 <div class="flight-path">
                                                     <div class="flight-path-line"></div>
                                                 </div>
                                                 <div class="airline-name"><?php echo htmlspecialchars($res['airline']); ?></div>
+                                                <img src="../assets/image/airlines/<?php echo htmlspecialchars($res['airlineCode']); ?>.gif" 
+                                                     alt="<?php echo htmlspecialchars($res['airline']); ?>" 
+                                                     class="airline-logo"
+                                                     onerror="this.style.display='none';">
                                             </div>
                                             <div class="to">
                                                 <div class="airport-code"><?php echo htmlspecialchars(end($outSegs)['to']); ?>
@@ -1936,11 +1968,18 @@ $iataList = array_map(function ($a) {
                                                         <?php echo date('D d, M', strtotime($inSegs[0]['depart'])); ?></div>
                                                 </div>
                                                 <div class="stops">
-                                                    <div class="stops-text"><?php echo max(0, count($inSegs) - 1); ?> stops</div>
+                                                                                                         <div class="stops-text"><?php 
+                                                         $stops = max(0, count($inSegs) - 1);
+                                                         echo $stops === 0 ? 'Non-stop' : $stops . ' stop' . ($stops > 1 ? 's' : '');
+                                                     ?></div>
                                                     <div class="flight-path">
                                                         <div class="flight-path-line"></div>
                                                     </div>
                                                     <div class="airline-name"><?php echo htmlspecialchars($res['airline']); ?></div>
+                                                    <img src="../assets/image/airlines/<?php echo htmlspecialchars($res['airlineCode']); ?>.gif" 
+                                                         alt="<?php echo htmlspecialchars($res['airline']); ?>" 
+                                                         class="airline-logo"
+                                                         onerror="this.style.display='none';">
                                                 </div>
                                                 <div class="to">
                                                     <div class="airport-code"><?php echo htmlspecialchars(end($inSegs)['to']); ?>
