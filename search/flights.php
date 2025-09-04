@@ -1722,7 +1722,11 @@ $iataList = array_map(function ($a) {
                     <div class="flight-card">
     <div class="flight-header">
         <div class="flight-number"><?php echo $index + 1; ?></div>
-        <span class="airline"><strong><?php echo htmlspecialchars($res['airline']); ?></strong> To <?php echo htmlspecialchars($res['outbound']['segments'][count($res['outbound']['segments']) - 1]['to']); ?></span>
+        <span class="airline"><strong><?php echo htmlspecialchars($res['airline']); ?></strong> To <?php 
+            $destinationCode = $res['outbound']['segments'][count($res['outbound']['segments']) - 1]['to'];
+            $destinationAirport = findAirport($destinationCode, $AIRPORTS);
+            echo $destinationAirport ? htmlspecialchars($destinationAirport['city']) : htmlspecialchars($destinationCode);
+        ?></span>
     </div>
 
     <div class="flight-body">
