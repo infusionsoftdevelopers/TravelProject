@@ -70,7 +70,7 @@ class Flight extends RR_Controller {
                 $form_val["cphone"] = $data['c_phone'];
                 $form_val["inst"] = '';
                 $form_val["requesttitle"] = "Cheap Flight Search";
-                // $this->flights->inqmail($form_val);
+                $this->flights->inqmail($form_val);
             }
 
             $normalizedParams = $this->normalizeSearchParams($data);
