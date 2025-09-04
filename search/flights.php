@@ -1235,31 +1235,45 @@ $iataList = array_map(function ($a) {
         /* Tab link */
         .nav-tabs>li>a {
             padding: 10px 20px;
-            font-weight: 500;
-            color: #555;
+            font-weight: 700;
+            color: #fff;
+            background: rgba(52, 10, 82, .85);
+            letter-spacing: 1px;
             border: 1px solid transparent;
-            border-radius: 0;
+            border-radius: 2px 2px 0 0;
+            margin-right: 4px;
+            position: relative;
             transition: all 0.2s ease-in-out;
         }
 
         /* Hover effect */
         .nav-tabs>li>a:hover {
-            background-color: #f9f9f9;
-            border-color: #eee #eee #ddd;
-            color: #333;
+            color: #fff;
+            background: rgba(52, 10, 82, .95);
         }
 
         /* Active tab */
         .nav-tabs>li.active>a,
         .nav-tabs>li.active>a:focus,
         .nav-tabs>li.active>a:hover {
-            color: #000;
-            font-weight: 600;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-bottom-color: transparent;
-            /* connect with content below */
+            color: #350b47;
+            background: #ffd71e;
+            border: 1px solid transparent;
+            font-weight: bold;
             cursor: default;
+        }
+
+        /* Active tab notch */
+        .nav-tabs>li.active>a::after,
+        .nav-tabs>li.active>a:focus::after,
+        .nav-tabs>li.active>a:hover::after {
+            content: "";
+            position: absolute;
+            left: 24px;
+            bottom: -8px;
+            border-width: 8px 7px 0 7px;
+            border-style: solid;
+            border-color: #ffd71e transparent transparent transparent;
         }
 
         /* Responsive small text */
@@ -1940,9 +1954,7 @@ $iataList = array_map(function ($a) {
                             <a href="<?php echo $url; ?>" aria-controls="<?php echo htmlspecialchars($key); ?>" role="tab"
                                 data-toggle="tab" aria-expanded="<?php echo $active ? 'true' : 'false'; ?>">
                                 <span><?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $key))); ?></span>
-                                <small class="visible-xs">
-                                    <small><?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $key))); ?></small>
-                                </small>
+                                
                             </a>
                         </li>
                     <?php endforeach; ?>
