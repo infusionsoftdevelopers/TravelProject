@@ -280,12 +280,12 @@ $GLOBALS['AIRPORTS'] = $AIRPORTS;
 
 // Airlines with quality factors (affects price) and hubs for connecting flights.
 $AIRLINES = [
-    ['name' => 'Etihad Airways',       'code' => 'EY', 'quality' => 1.25, 'hubs' => ['AUH']],
-    ['name' => 'Qatar Airways',        'code' => 'QR', 'quality' => 1.30, 'hubs' => ['DOH']],
-    ['name' => 'Emirates',             'code' => 'EK', 'quality' => 1.35, 'hubs' => ['DXB']],
-    ['name' => 'Turkish Airlines',     'code' => 'TK', 'quality' => 1.10, 'hubs' => ['IST']],
-    ['name' => 'Saudi Arabian Airlines','code' => 'SV','quality' => 1.05, 'hubs' => ['JED','RUH']],
-    ['name' => 'Malaysia Airlines',    'code' => 'MH', 'quality' => 1.00, 'hubs' => ['KUL']],
+    ['name' => 'Etihad Airways', 'code' => 'EY', 'quality' => 1.25, 'hubs' => ['AUH']],
+    ['name' => 'Qatar Airways', 'code' => 'QR', 'quality' => 1.30, 'hubs' => ['DOH']],
+    ['name' => 'Emirates', 'code' => 'EK', 'quality' => 1.35, 'hubs' => ['DXB']],
+    ['name' => 'Turkish Airlines', 'code' => 'TK', 'quality' => 1.10, 'hubs' => ['IST']],
+    ['name' => 'Saudi Arabian Airlines', 'code' => 'SV', 'quality' => 1.05, 'hubs' => ['JED', 'RUH']],
+    ['name' => 'Malaysia Airlines', 'code' => 'MH', 'quality' => 1.00, 'hubs' => ['KUL']],
 ];
 
 // Ensure availability inside functions that declare `global $AIRLINES`
@@ -294,10 +294,10 @@ $GLOBALS['AIRLINES'] = $AIRLINES;
 // Multipliers for different cabin classes.
 $CLASSES = [
     // Updated cabin multipliers: higher premiums for upper classes
-    'economy'         => 1.00,
-    'premium'         => 1.60,
-    'business'        => 2.75,
-    'first'           => 4.20,
+    'economy' => 1.00,
+    'premium' => 1.60,
+    'business' => 2.75,
+    'first' => 4.20,
 ];
 
 // Ensure availability inside functions that declare `global $CLASSES`
@@ -305,15 +305,15 @@ $GLOBALS['CLASSES'] = $CLASSES;
 
 // Price ranges for each month (adult one-way before multipliers).
 $MONTH_PRICE_BANDS = [
-    1  => [550, 750],  // JAN
-    2  => [430, 612],  // FEB
-    3  => [420, 560],  // MAR
-    4  => [580, 712],  // APR
-    5  => [420, 580],  // MAY
-    6  => [430, 590],  // JUN
-    7  => [580, 700],  // JUL
-    8  => [580, 700],  // AUG
-    9  => [460, 620],  // SEP
+    1 => [550, 750],  // JAN
+    2 => [430, 612],  // FEB
+    3 => [420, 560],  // MAR
+    4 => [580, 712],  // APR
+    5 => [420, 580],  // MAY
+    6 => [430, 590],  // JUN
+    7 => [580, 700],  // JUL
+    8 => [580, 700],  // AUG
+    9 => [460, 620],  // SEP
     10 => [430, 580],  // OCT
     11 => [430, 640],  // NOV
     12 => [590, 850],  // DEC
@@ -325,41 +325,238 @@ $GLOBALS['MONTH_PRICE_BANDS'] = $MONTH_PRICE_BANDS;
 // List of all ISO‑3166-1 alpha‑3 country codes and names for datalist suggestions.
 // These entries allow the user to quickly find their country and then choose an airport.
 $COUNTRIES = [
-    ['code' => 'AFG','name' => 'Afghanistan'],['code' => 'ALB','name' => 'Albania'],['code' => 'DZA','name' => 'Algeria'],['code' => 'AND','name' => 'Andorra'],['code' => 'AGO','name' => 'Angola'],['code' => 'ATG','name' => 'Antigua and Barbuda'],['code' => 'ARG','name' => 'Argentina'],['code' => 'ARM','name' => 'Armenia'],['code' => 'AUS','name' => 'Australia'],['code' => 'AUT','name' => 'Austria'],['code' => 'AZE','name' => 'Azerbaijan'],
-    ['code' => 'BHS','name' => 'Bahamas'],['code' => 'BHR','name' => 'Bahrain'],['code' => 'BGD','name' => 'Bangladesh'],['code' => 'BRB','name' => 'Barbados'],['code' => 'BLR','name' => 'Belarus'],['code' => 'BEL','name' => 'Belgium'],['code' => 'BLZ','name' => 'Belize'],['code' => 'BEN','name' => 'Benin'],['code' => 'BTN','name' => 'Bhutan'],['code' => 'BOL','name' => 'Bolivia'],['code' => 'BIH','name' => 'Bosnia and Herzegovina'],['code' => 'BWA','name' => 'Botswana'],['code' => 'BRA','name' => 'Brazil'],['code' => 'BRN','name' => 'Brunei'],['code' => 'BGR','name' => 'Bulgaria'],['code' => 'BFA','name' => 'Burkina Faso'],['code' => 'BDI','name' => 'Burundi'],['code' => 'CPV','name' => 'Cabo Verde'],['code' => 'KHM','name' => 'Cambodia'],['code' => 'CMR','name' => 'Cameroon'],['code' => 'CAN','name' => 'Canada'],['code' => 'CAF','name' => 'Central African Republic'],['code' => 'TCD','name' => 'Chad'],['code' => 'CHL','name' => 'Chile'],['code' => 'CHN','name' => 'China'],['code' => 'COL','name' => 'Colombia'],['code' => 'COM','name' => 'Comoros'],['code' => 'COG','name' => 'Congo'],['code' => 'COD','name' => 'Congo (DRC)'],['code' => 'CRI','name' => 'Costa Rica'],['code' => 'CIV','name' => 'Côte d’Ivoire'],['code' => 'HRV','name' => 'Croatia'],['code' => 'CUB','name' => 'Cuba'],['code' => 'CYP','name' => 'Cyprus'],['code' => 'CZE','name' => 'Czechia'],['code' => 'DNK','name' => 'Denmark'],['code' => 'DJI','name' => 'Djibouti'],['code' => 'DMA','name' => 'Dominica'],['code' => 'DOM','name' => 'Dominican Republic'],['code' => 'ECU','name' => 'Ecuador'],['code' => 'EGY','name' => 'Egypt'],['code' => 'SLV','name' => 'El Salvador'],['code' => 'GNQ','name' => 'Equatorial Guinea'],['code' => 'ERI','name' => 'Eritrea'],['code' => 'EST','name' => 'Estonia'],['code' => 'SWZ','name' => 'Eswatini'],['code' => 'ETH','name' => 'Ethiopia'],['code' => 'FJI','name' => 'Fiji'],['code' => 'FIN','name' => 'Finland'],['code' => 'FRA','name' => 'France'],['code' => 'GAB','name' => 'Gabon'],['code' => 'GMB','name' => 'Gambia'],['code' => 'GEO','name' => 'Georgia'],['code' => 'DEU','name' => 'Germany'],['code' => 'GHA','name' => 'Ghana'],['code' => 'GRC','name' => 'Greece'],['code' => 'GRD','name' => 'Grenada'],['code' => 'GTM','name' => 'Guatemala'],['code' => 'GIN','name' => 'Guinea'],['code' => 'GNB','name' => 'Guinea‑Bissau'],['code' => 'GUY','name' => 'Guyana'],['code' => 'HTI','name' => 'Haiti'],['code' => 'HND','name' => 'Honduras'],['code' => 'HUN','name' => 'Hungary'],['code' => 'ISL','name' => 'Iceland'],['code' => 'IND','name' => 'India'],['code' => 'IDN','name' => 'Indonesia'],['code' => 'IRN','name' => 'Iran'],['code' => 'IRQ','name' => 'Iraq'],['code' => 'IRL','name' => 'Ireland'],['code' => 'ISR','name' => 'Israel'],['code' => 'ITA','name' => 'Italy'],['code' => 'JAM','name' => 'Jamaica'],['code' => 'JPN','name' => 'Japan'],['code' => 'JOR','name' => 'Jordan'],['code' => 'KAZ','name' => 'Kazakhstan'],['code' => 'KEN','name' => 'Kenya'],['code' => 'KIR','name' => 'Kiribati'],['code' => 'PRK','name' => 'Korea (North)'],['code' => 'KOR','name' => 'Korea (South)'],['code' => 'KWT','name' => 'Kuwait'],['code' => 'KGZ','name' => 'Kyrgyzstan'],['code' => 'LAO','name' => 'Laos'],['code' => 'LVA','name' => 'Latvia'],['code' => 'LBN','name' => 'Lebanon'],['code' => 'LSO','name' => 'Lesotho'],['code' => 'LBR','name' => 'Liberia'],['code' => 'LBY','name' => 'Libya'],['code' => 'LIE','name' => 'Liechtenstein'],['code' => 'LTU','name' => 'Lithuania'],['code' => 'LUX','name' => 'Luxembourg'],['code' => 'MDG','name' => 'Madagascar'],['code' => 'MWI','name' => 'Malawi'],['code' => 'MYS','name' => 'Malaysia'],['code' => 'MDV','name' => 'Maldives'],['code' => 'MLI','name' => 'Mali'],['code' => 'MLT','name' => 'Malta'],['code' => 'MHL','name' => 'Marshall Islands'],['code' => 'MRT','name' => 'Mauritania'],['code' => 'MUS','name' => 'Mauritius'],['code' => 'MEX','name' => 'Mexico'],['code' => 'FSM','name' => 'Micronesia'],['code' => 'MDA','name' => 'Moldova'],['code' => 'MCO','name' => 'Monaco'],['code' => 'MNG','name' => 'Mongolia'],['code' => 'MNE','name' => 'Montenegro'],['code' => 'MAR','name' => 'Morocco'],['code' => 'MOZ','name' => 'Mozambique'],['code' => 'MMR','name' => 'Myanmar'],['code' => 'NAM','name' => 'Namibia'],['code' => 'NRU','name' => 'Nauru'],['code' => 'NPL','name' => 'Nepal'],['code' => 'NLD','name' => 'Netherlands'],['code' => 'NZL','name' => 'New Zealand'],['code' => 'NIC','name' => 'Nicaragua'],['code' => 'NER','name' => 'Niger'],['code' => 'NGA','name' => 'Nigeria'],['code' => 'MKD','name' => 'North Macedonia'],['code' => 'NOR','name' => 'Norway'],['code' => 'OMN','name' => 'Oman'],['code' => 'PAK','name' => 'Pakistan'],['code' => 'PLW','name' => 'Palau'],['code' => 'PAN','name' => 'Panama'],['code' => 'PNG','name' => 'Papua New Guinea'],['code' => 'PRY','name' => 'Paraguay'],['code' => 'PER','name' => 'Peru'],['code' => 'PHL','name' => 'Philippines'],['code' => 'POL','name' => 'Poland'],['code' => 'PRT','name' => 'Portugal'],['code' => 'QAT','name' => 'Qatar'],['code' => 'ROU','name' => 'Romania'],['code' => 'RUS','name' => 'Russia'],['code' => 'RWA','name' => 'Rwanda'],['code' => 'KNA','name' => 'Saint Kitts and Nevis'],['code' => 'LCA','name' => 'Saint Lucia'],['code' => 'VCT','name' => 'Saint Vincent and the Grenadines'],['code' => 'WSM','name' => 'Samoa'],['code' => 'SMR','name' => 'San Marino'],['code' => 'STP','name' => 'Sao Tome and Principe'],['code' => 'SAU','name' => 'Saudi Arabia'],['code' => 'SEN','name' => 'Senegal'],['code' => 'SRB','name' => 'Serbia'],['code' => 'SYC','name' => 'Seychelles'],['code' => 'SLE','name' => 'Sierra Leone'],['code' => 'SGP','name' => 'Singapore'],['code' => 'SVK','name' => 'Slovakia'],['code' => 'SVN','name' => 'Slovenia'],['code' => 'SLB','name' => 'Solomon Islands'],['code' => 'SOM','name' => 'Somalia'],['code' => 'ZAF','name' => 'South Africa'],['code' => 'SSD','name' => 'South Sudan'],['code' => 'ESP','name' => 'Spain'],['code' => 'LKA','name' => 'Sri Lanka'],['code' => 'SDN','name' => 'Sudan'],['code' => 'SUR','name' => 'Suriname'],['code' => 'SWE','name' => 'Sweden'],['code' => 'CHE','name' => 'Switzerland'],['code' => 'SYR','name' => 'Syria'],['code' => 'TJK','name' => 'Tajikistan'],['code' => 'TZA','name' => 'Tanzania'],['code' => 'THA','name' => 'Thailand'],['code' => 'TLS','name' => 'Timor‑Leste'],['code' => 'TGO','name' => 'Togo'],['code' => 'TON','name' => 'Tonga'],['code' => 'TTO','name' => 'Trinidad and Tobago'],['code' => 'TUN','name' => 'Tunisia'],['code' => 'TUR','name' => 'Türkiye'],['code' => 'TKM','name' => 'Turkmenistan'],['code' => 'TUV','name' => 'Tuvalu'],['code' => 'UGA','name' => 'Uganda'],['code' => 'UKR','name' => 'Ukraine'],['code' => 'ARE','name' => 'United Arab Emirates'],['code' => 'GBR','name' => 'United Kingdom'],['code' => 'USA','name' => 'United States'],['code' => 'URY','name' => 'Uruguay'],['code' => 'UZB','name' => 'Uzbekistan'],['code' => 'VUT','name' => 'Vanuatu'],['code' => 'VAT','name' => 'Vatican City'],['code' => 'VEN','name' => 'Venezuela'],['code' => 'VNM','name' => 'Vietnam'],['code' => 'YEM','name' => 'Yemen'],['code' => 'ZMB','name' => 'Zambia'],['code' => 'ZWE','name' => 'Zimbabwe'],
+    ['code' => 'AFG', 'name' => 'Afghanistan'],
+    ['code' => 'ALB', 'name' => 'Albania'],
+    ['code' => 'DZA', 'name' => 'Algeria'],
+    ['code' => 'AND', 'name' => 'Andorra'],
+    ['code' => 'AGO', 'name' => 'Angola'],
+    ['code' => 'ATG', 'name' => 'Antigua and Barbuda'],
+    ['code' => 'ARG', 'name' => 'Argentina'],
+    ['code' => 'ARM', 'name' => 'Armenia'],
+    ['code' => 'AUS', 'name' => 'Australia'],
+    ['code' => 'AUT', 'name' => 'Austria'],
+    ['code' => 'AZE', 'name' => 'Azerbaijan'],
+    ['code' => 'BHS', 'name' => 'Bahamas'],
+    ['code' => 'BHR', 'name' => 'Bahrain'],
+    ['code' => 'BGD', 'name' => 'Bangladesh'],
+    ['code' => 'BRB', 'name' => 'Barbados'],
+    ['code' => 'BLR', 'name' => 'Belarus'],
+    ['code' => 'BEL', 'name' => 'Belgium'],
+    ['code' => 'BLZ', 'name' => 'Belize'],
+    ['code' => 'BEN', 'name' => 'Benin'],
+    ['code' => 'BTN', 'name' => 'Bhutan'],
+    ['code' => 'BOL', 'name' => 'Bolivia'],
+    ['code' => 'BIH', 'name' => 'Bosnia and Herzegovina'],
+    ['code' => 'BWA', 'name' => 'Botswana'],
+    ['code' => 'BRA', 'name' => 'Brazil'],
+    ['code' => 'BRN', 'name' => 'Brunei'],
+    ['code' => 'BGR', 'name' => 'Bulgaria'],
+    ['code' => 'BFA', 'name' => 'Burkina Faso'],
+    ['code' => 'BDI', 'name' => 'Burundi'],
+    ['code' => 'CPV', 'name' => 'Cabo Verde'],
+    ['code' => 'KHM', 'name' => 'Cambodia'],
+    ['code' => 'CMR', 'name' => 'Cameroon'],
+    ['code' => 'CAN', 'name' => 'Canada'],
+    ['code' => 'CAF', 'name' => 'Central African Republic'],
+    ['code' => 'TCD', 'name' => 'Chad'],
+    ['code' => 'CHL', 'name' => 'Chile'],
+    ['code' => 'CHN', 'name' => 'China'],
+    ['code' => 'COL', 'name' => 'Colombia'],
+    ['code' => 'COM', 'name' => 'Comoros'],
+    ['code' => 'COG', 'name' => 'Congo'],
+    ['code' => 'COD', 'name' => 'Congo (DRC)'],
+    ['code' => 'CRI', 'name' => 'Costa Rica'],
+    ['code' => 'CIV', 'name' => 'Côte d’Ivoire'],
+    ['code' => 'HRV', 'name' => 'Croatia'],
+    ['code' => 'CUB', 'name' => 'Cuba'],
+    ['code' => 'CYP', 'name' => 'Cyprus'],
+    ['code' => 'CZE', 'name' => 'Czechia'],
+    ['code' => 'DNK', 'name' => 'Denmark'],
+    ['code' => 'DJI', 'name' => 'Djibouti'],
+    ['code' => 'DMA', 'name' => 'Dominica'],
+    ['code' => 'DOM', 'name' => 'Dominican Republic'],
+    ['code' => 'ECU', 'name' => 'Ecuador'],
+    ['code' => 'EGY', 'name' => 'Egypt'],
+    ['code' => 'SLV', 'name' => 'El Salvador'],
+    ['code' => 'GNQ', 'name' => 'Equatorial Guinea'],
+    ['code' => 'ERI', 'name' => 'Eritrea'],
+    ['code' => 'EST', 'name' => 'Estonia'],
+    ['code' => 'SWZ', 'name' => 'Eswatini'],
+    ['code' => 'ETH', 'name' => 'Ethiopia'],
+    ['code' => 'FJI', 'name' => 'Fiji'],
+    ['code' => 'FIN', 'name' => 'Finland'],
+    ['code' => 'FRA', 'name' => 'France'],
+    ['code' => 'GAB', 'name' => 'Gabon'],
+    ['code' => 'GMB', 'name' => 'Gambia'],
+    ['code' => 'GEO', 'name' => 'Georgia'],
+    ['code' => 'DEU', 'name' => 'Germany'],
+    ['code' => 'GHA', 'name' => 'Ghana'],
+    ['code' => 'GRC', 'name' => 'Greece'],
+    ['code' => 'GRD', 'name' => 'Grenada'],
+    ['code' => 'GTM', 'name' => 'Guatemala'],
+    ['code' => 'GIN', 'name' => 'Guinea'],
+    ['code' => 'GNB', 'name' => 'Guinea‑Bissau'],
+    ['code' => 'GUY', 'name' => 'Guyana'],
+    ['code' => 'HTI', 'name' => 'Haiti'],
+    ['code' => 'HND', 'name' => 'Honduras'],
+    ['code' => 'HUN', 'name' => 'Hungary'],
+    ['code' => 'ISL', 'name' => 'Iceland'],
+    ['code' => 'IND', 'name' => 'India'],
+    ['code' => 'IDN', 'name' => 'Indonesia'],
+    ['code' => 'IRN', 'name' => 'Iran'],
+    ['code' => 'IRQ', 'name' => 'Iraq'],
+    ['code' => 'IRL', 'name' => 'Ireland'],
+    ['code' => 'ISR', 'name' => 'Israel'],
+    ['code' => 'ITA', 'name' => 'Italy'],
+    ['code' => 'JAM', 'name' => 'Jamaica'],
+    ['code' => 'JPN', 'name' => 'Japan'],
+    ['code' => 'JOR', 'name' => 'Jordan'],
+    ['code' => 'KAZ', 'name' => 'Kazakhstan'],
+    ['code' => 'KEN', 'name' => 'Kenya'],
+    ['code' => 'KIR', 'name' => 'Kiribati'],
+    ['code' => 'PRK', 'name' => 'Korea (North)'],
+    ['code' => 'KOR', 'name' => 'Korea (South)'],
+    ['code' => 'KWT', 'name' => 'Kuwait'],
+    ['code' => 'KGZ', 'name' => 'Kyrgyzstan'],
+    ['code' => 'LAO', 'name' => 'Laos'],
+    ['code' => 'LVA', 'name' => 'Latvia'],
+    ['code' => 'LBN', 'name' => 'Lebanon'],
+    ['code' => 'LSO', 'name' => 'Lesotho'],
+    ['code' => 'LBR', 'name' => 'Liberia'],
+    ['code' => 'LBY', 'name' => 'Libya'],
+    ['code' => 'LIE', 'name' => 'Liechtenstein'],
+    ['code' => 'LTU', 'name' => 'Lithuania'],
+    ['code' => 'LUX', 'name' => 'Luxembourg'],
+    ['code' => 'MDG', 'name' => 'Madagascar'],
+    ['code' => 'MWI', 'name' => 'Malawi'],
+    ['code' => 'MYS', 'name' => 'Malaysia'],
+    ['code' => 'MDV', 'name' => 'Maldives'],
+    ['code' => 'MLI', 'name' => 'Mali'],
+    ['code' => 'MLT', 'name' => 'Malta'],
+    ['code' => 'MHL', 'name' => 'Marshall Islands'],
+    ['code' => 'MRT', 'name' => 'Mauritania'],
+    ['code' => 'MUS', 'name' => 'Mauritius'],
+    ['code' => 'MEX', 'name' => 'Mexico'],
+    ['code' => 'FSM', 'name' => 'Micronesia'],
+    ['code' => 'MDA', 'name' => 'Moldova'],
+    ['code' => 'MCO', 'name' => 'Monaco'],
+    ['code' => 'MNG', 'name' => 'Mongolia'],
+    ['code' => 'MNE', 'name' => 'Montenegro'],
+    ['code' => 'MAR', 'name' => 'Morocco'],
+    ['code' => 'MOZ', 'name' => 'Mozambique'],
+    ['code' => 'MMR', 'name' => 'Myanmar'],
+    ['code' => 'NAM', 'name' => 'Namibia'],
+    ['code' => 'NRU', 'name' => 'Nauru'],
+    ['code' => 'NPL', 'name' => 'Nepal'],
+    ['code' => 'NLD', 'name' => 'Netherlands'],
+    ['code' => 'NZL', 'name' => 'New Zealand'],
+    ['code' => 'NIC', 'name' => 'Nicaragua'],
+    ['code' => 'NER', 'name' => 'Niger'],
+    ['code' => 'NGA', 'name' => 'Nigeria'],
+    ['code' => 'MKD', 'name' => 'North Macedonia'],
+    ['code' => 'NOR', 'name' => 'Norway'],
+    ['code' => 'OMN', 'name' => 'Oman'],
+    ['code' => 'PAK', 'name' => 'Pakistan'],
+    ['code' => 'PLW', 'name' => 'Palau'],
+    ['code' => 'PAN', 'name' => 'Panama'],
+    ['code' => 'PNG', 'name' => 'Papua New Guinea'],
+    ['code' => 'PRY', 'name' => 'Paraguay'],
+    ['code' => 'PER', 'name' => 'Peru'],
+    ['code' => 'PHL', 'name' => 'Philippines'],
+    ['code' => 'POL', 'name' => 'Poland'],
+    ['code' => 'PRT', 'name' => 'Portugal'],
+    ['code' => 'QAT', 'name' => 'Qatar'],
+    ['code' => 'ROU', 'name' => 'Romania'],
+    ['code' => 'RUS', 'name' => 'Russia'],
+    ['code' => 'RWA', 'name' => 'Rwanda'],
+    ['code' => 'KNA', 'name' => 'Saint Kitts and Nevis'],
+    ['code' => 'LCA', 'name' => 'Saint Lucia'],
+    ['code' => 'VCT', 'name' => 'Saint Vincent and the Grenadines'],
+    ['code' => 'WSM', 'name' => 'Samoa'],
+    ['code' => 'SMR', 'name' => 'San Marino'],
+    ['code' => 'STP', 'name' => 'Sao Tome and Principe'],
+    ['code' => 'SAU', 'name' => 'Saudi Arabia'],
+    ['code' => 'SEN', 'name' => 'Senegal'],
+    ['code' => 'SRB', 'name' => 'Serbia'],
+    ['code' => 'SYC', 'name' => 'Seychelles'],
+    ['code' => 'SLE', 'name' => 'Sierra Leone'],
+    ['code' => 'SGP', 'name' => 'Singapore'],
+    ['code' => 'SVK', 'name' => 'Slovakia'],
+    ['code' => 'SVN', 'name' => 'Slovenia'],
+    ['code' => 'SLB', 'name' => 'Solomon Islands'],
+    ['code' => 'SOM', 'name' => 'Somalia'],
+    ['code' => 'ZAF', 'name' => 'South Africa'],
+    ['code' => 'SSD', 'name' => 'South Sudan'],
+    ['code' => 'ESP', 'name' => 'Spain'],
+    ['code' => 'LKA', 'name' => 'Sri Lanka'],
+    ['code' => 'SDN', 'name' => 'Sudan'],
+    ['code' => 'SUR', 'name' => 'Suriname'],
+    ['code' => 'SWE', 'name' => 'Sweden'],
+    ['code' => 'CHE', 'name' => 'Switzerland'],
+    ['code' => 'SYR', 'name' => 'Syria'],
+    ['code' => 'TJK', 'name' => 'Tajikistan'],
+    ['code' => 'TZA', 'name' => 'Tanzania'],
+    ['code' => 'THA', 'name' => 'Thailand'],
+    ['code' => 'TLS', 'name' => 'Timor‑Leste'],
+    ['code' => 'TGO', 'name' => 'Togo'],
+    ['code' => 'TON', 'name' => 'Tonga'],
+    ['code' => 'TTO', 'name' => 'Trinidad and Tobago'],
+    ['code' => 'TUN', 'name' => 'Tunisia'],
+    ['code' => 'TUR', 'name' => 'Türkiye'],
+    ['code' => 'TKM', 'name' => 'Turkmenistan'],
+    ['code' => 'TUV', 'name' => 'Tuvalu'],
+    ['code' => 'UGA', 'name' => 'Uganda'],
+    ['code' => 'UKR', 'name' => 'Ukraine'],
+    ['code' => 'ARE', 'name' => 'United Arab Emirates'],
+    ['code' => 'GBR', 'name' => 'United Kingdom'],
+    ['code' => 'USA', 'name' => 'United States'],
+    ['code' => 'URY', 'name' => 'Uruguay'],
+    ['code' => 'UZB', 'name' => 'Uzbekistan'],
+    ['code' => 'VUT', 'name' => 'Vanuatu'],
+    ['code' => 'VAT', 'name' => 'Vatican City'],
+    ['code' => 'VEN', 'name' => 'Venezuela'],
+    ['code' => 'VNM', 'name' => 'Vietnam'],
+    ['code' => 'YEM', 'name' => 'Yemen'],
+    ['code' => 'ZMB', 'name' => 'Zambia'],
+    ['code' => 'ZWE', 'name' => 'Zimbabwe'],
 ];
 
 // Helper: clamp value between min and max.
-function clamp($val, $min, $max) {
+function clamp($val, $min, $max)
+{
     return max($min, min($max, $val));
 }
 
 // Helper: returns random float between 0 and 1.
-function randf() {
+function randf()
+{
     return mt_rand() / mt_getrandmax();
 }
 
 // Haversine formula to compute great-circle distance between two lat/lon points (km).
-function haversine($lat1, $lon1, $lat2, $lon2) {
+function haversine($lat1, $lon1, $lat2, $lon2)
+{
     $R = 6371; // Earth radius in km
     $dLat = deg2rad($lat2 - $lat1);
     $dLon = deg2rad($lon2 - $lon1);
     $a = sin($dLat / 2) * sin($dLat / 2) +
-         cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-         sin($dLon / 2) * sin($dLon / 2);
+        cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+        sin($dLon / 2) * sin($dLon / 2);
     $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
     return $R * $c;
 }
 
 // Format seconds into human-friendly "Xh Ym".
-function formatDuration($seconds) {
+function formatDuration($seconds)
+{
     $hours = floor($seconds / 3600);
     $minutes = floor(($seconds % 3600) / 60);
     return sprintf('%dh %02dm', $hours, $minutes);
 }
 
 // Convert number of stops into a human-friendly label.
-function stops_label($n) {
+function stops_label($n)
+{
     if ($n <= 0) {
         return 'Non-stop';
     } elseif ($n == 1) {
@@ -370,7 +567,8 @@ function stops_label($n) {
 }
 
 // Compute flight duration given distance in km. Adds taxi/climb/descent time.
-function computeDuration($distanceKm) {
+function computeDuration($distanceKm)
+{
     // base cruise speed ~ 800 km/h => hours = distance / 800
     $cruiseHours = $distanceKm / 800.0;
     // extra 20-45 min for taxi/climb/descent
@@ -380,7 +578,8 @@ function computeDuration($distanceKm) {
 }
 
 // Compute dynamic price given distance, airline quality, class multiplier and days ahead of departure.
-function computePrice($distanceKm, $quality, $classMult, $daysAhead) {
+function computePrice($distanceKm, $quality, $classMult, $daysAhead)
+{
     // Base cost per km; adjust lower to provide more sensible bracket
     $base = $distanceKm * 0.05;
 
@@ -426,7 +625,8 @@ function computePrice($distanceKm, $quality, $classMult, $daysAhead) {
  * @param bool        $isWeekend  Whether the departure date falls on a weekend.
  * @return int                    Price in GBP for one adult, one-way.
  */
-function computeBasePriceByMonth(string $dateStr, float $quality, float $classMult, ?int $daysAhead = null, bool $isWeekend = false): int {
+function computeBasePriceByMonth(string $dateStr, float $quality, float $classMult, ?int $daysAhead = null, bool $isWeekend = false): int
+{
     global $MONTH_PRICE_BANDS;
     // Resolve the monthly band; default to a middle range if not found.
     $month = (int) date('n', strtotime($dateStr));
@@ -435,8 +635,8 @@ function computeBasePriceByMonth(string $dateStr, float $quality, float $classMu
 
     // Compute days ahead if not supplied. Use difference between today and departure date.
     if ($daysAhead === null) {
-        $today   = new DateTime('today');
-        $target  = new DateTime($dateStr);
+        $today = new DateTime('today');
+        $target = new DateTime($dateStr);
         $daysAhead = max(0, (int) $today->diff($target)->days);
     }
     // Lead-time: 0 (close-in) -> high in band; 1 (far-out) -> lower in band.
@@ -470,7 +670,8 @@ function computeBasePriceByMonth(string $dateStr, float $quality, float $classMu
 }
 
 // Look up airport data by code. Returns array or null.
-function findAirport($code, $airports) {
+function findAirport($code, $airports)
+{
     foreach ($airports as $apt) {
         if (strcasecmp($apt['code'], $code) === 0) {
             return $apt;
@@ -481,11 +682,12 @@ function findAirport($code, $airports) {
 
 // Generate flight options for one airline between two airports on given date.
 // May generate non-stop or one-stop flights via airline hubs.
-function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $classKey, $daysAhead) {
+function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $classKey, $daysAhead)
+{
     global $CLASSES, $AIRPORTS;
     $results = [];
     $classMult = $CLASSES[$classKey] ?? $CLASSES['economy'];
-    $quality  = $airline['quality'];
+    $quality = $airline['quality'];
 
     // Determine possible connection points: either direct or via any hub.
     $hubOptions = $airline['hubs'];
@@ -515,28 +717,30 @@ function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $cla
                 $quality,
                 $classMult,
                 $daysAhead,
-                ((int)$departDate->format('N') >= 6)
+                ((int) $departDate->format('N') >= 6)
             );
 
             $results[] = [
-                'airline'   => $airline['name'],
-                'segments'  => [[
-                    'from'   => $fromApt['code'],
-                    'to'     => $toApt['code'],
-                    'depart' => $departDate->format('Y-m-d') . ' ' . $time,
-                    'arrive' => (clone $departDate)->setTime(intval(substr($time,0,2)), intval(substr($time,3,2)))->modify('+' . (int) round($duration/60) . ' minutes')->format('Y-m-d H:i'),
-                    'duration' => $duration,
-                    'stops'     => 0,
-                ]],
+                'airline' => $airline['name'],
+                'segments' => [
+                    [
+                        'from' => $fromApt['code'],
+                        'to' => $toApt['code'],
+                        'depart' => $departDate->format('Y-m-d') . ' ' . $time,
+                        'arrive' => (clone $departDate)->setTime(intval(substr($time, 0, 2)), intval(substr($time, 3, 2)))->modify('+' . (int) round($duration / 60) . ' minutes')->format('Y-m-d H:i'),
+                        'duration' => $duration,
+                        'stops' => 0,
+                    ]
+                ],
                 'totalDuration' => $duration,
-                'price'    => $price,
-                'class'    => ucfirst(str_replace('_',' ', $classKey)),
+                'price' => $price,
+                'class' => ucfirst(str_replace('_', ' ', $classKey)),
             ];
         } else {
             // One-stop via hub
             // pick a random hub
             $hubCode = $hubOptions[array_rand($hubOptions)];
-            $hubApt  = findAirport($hubCode, $AIRPORTS);
+            $hubApt = findAirport($hubCode, $AIRPORTS);
             if (!$hubApt || $hubApt['code'] == $fromApt['code'] || $hubApt['code'] == $toApt['code']) {
                 // fallback to direct if hub same as origin/destination
                 $dist = haversine($fromApt['lat'], $fromApt['lon'], $toApt['lat'], $toApt['lon']);
@@ -547,77 +751,79 @@ function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $cla
                     $quality,
                     $classMult,
                     $daysAhead,
-                    ((int)$departDate->format('N') >= 6)
+                    ((int) $departDate->format('N') >= 6)
                 );
                 $results[] = [
-                    'airline'   => $airline['name'],
-                    'segments'  => [[
-                        'from'   => $fromApt['code'],
-                        'to'     => $toApt['code'],
-                        'depart' => $departDate->format('Y-m-d') . ' ' . $time,
-                        'arrive' => (clone $departDate)->setTime(intval(substr($time,0,2)), intval(substr($time,3,2)))->modify('+' . (int) round($duration/60) . ' minutes')->format('Y-m-d H:i'),
-                        'duration' => $duration,
-                        'stops'     => 0,
-                    ]],
+                    'airline' => $airline['name'],
+                    'segments' => [
+                        [
+                            'from' => $fromApt['code'],
+                            'to' => $toApt['code'],
+                            'depart' => $departDate->format('Y-m-d') . ' ' . $time,
+                            'arrive' => (clone $departDate)->setTime(intval(substr($time, 0, 2)), intval(substr($time, 3, 2)))->modify('+' . (int) round($duration / 60) . ' minutes')->format('Y-m-d H:i'),
+                            'duration' => $duration,
+                            'stops' => 0,
+                        ]
+                    ],
                     'totalDuration' => $duration,
-                    'price'    => $price,
-                    'class'    => ucfirst(str_replace('_',' ', $classKey)),
+                    'price' => $price,
+                    'class' => ucfirst(str_replace('_', ' ', $classKey)),
                 ];
             } else {
                 // compute first leg and second leg
                 $dist1 = haversine($fromApt['lat'], $fromApt['lon'], $hubApt['lat'], $hubApt['lon']);
-                $dur1  = computeDuration($dist1);
+                $dur1 = computeDuration($dist1);
 
                 // choose layover time between 75 and 180 minutes
                 $layover = 75 + rand(0, 105);
 
                 $dist2 = haversine($hubApt['lat'], $hubApt['lon'], $toApt['lat'], $toApt['lon']);
-                $dur2  = computeDuration($dist2);
+                $dur2 = computeDuration($dist2);
 
-                $totalDur = $dur1 + ($layover*60) + $dur2;
+                $totalDur = $dur1 + ($layover * 60) + $dur2;
                 // Price based on month ranges rather than distance (same for connecting flights)
                 $price = computeBasePriceByMonth(
                     $departDate->format('Y-m-d'),
                     $quality,
                     $classMult,
                     $daysAhead,
-                    ((int)$departDate->format('N') >= 6)
+                    ((int) $departDate->format('N') >= 6)
                 );
 
                 // compute departure and arrival times
                 $depDateTime = DateTime::createFromFormat('Y-m-d H:i', $departDate->format('Y-m-d') . ' ' . $time);
                 $arr1DateTime = clone $depDateTime;
-                $arr1DateTime->modify('+' . (int) round($dur1/60) . ' minutes');
+                $arr1DateTime->modify('+' . (int) round($dur1 / 60) . ' minutes');
 
                 $dep2DateTime = clone $arr1DateTime;
                 $dep2DateTime->modify('+' . (int) $layover . ' minutes');
 
                 $arr2DateTime = clone $dep2DateTime;
-                $arr2DateTime->modify('+' . (int) round($dur2/60) . ' minutes');
+                $arr2DateTime->modify('+' . (int) round($dur2 / 60) . ' minutes');
 
                 $results[] = [
-                    'airline'   => $airline['name'],
-                    'segments'  => [
+                    'airline' => $airline['name'],
+                    'segments' => [
                         [
-                            'from'    => $fromApt['code'],
-                            'to'      => $hubApt['code'],
-                            'depart'  => $depDateTime->format('Y-m-d H:i'),
-                            'arrive'  => $arr1DateTime->format('Y-m-d H:i'),
+                            'from' => $fromApt['code'],
+                            'to' => $hubApt['code'],
+                            'depart' => $depDateTime->format('Y-m-d H:i'),
+                            'arrive' => $arr1DateTime->format('Y-m-d H:i'),
                             'duration' => $dur1,
-                            'stops'    => 1,
+                            'stops' => 1,
                         ],
                         [
-                            'from'    => $hubApt['code'],
-                            'to'      => $toApt['code'],
-                            'depart'  => $dep2DateTime->format('Y-m-d H:i'),
-                            'arrive'  => $arr2DateTime->format('Y-m-d H:i'),
+                            'from' => $hubApt['code'],
+                            'to' => $toApt['code'],
+                            'depart' => $dep2DateTime->format('Y-m-d H:i'),
+                            'arrive' => $arr2DateTime->format('Y-m-d H:i'),
                             'duration' => $dur2,
-                            'stops'    => 0,
+                            'stops' => 0,
                         ],
                     ],
                     'totalDuration' => $totalDur,
-                    'price'    => $price,
-                    'class'    => ucfirst(str_replace('_',' ', $classKey)),
+                    'price' => $price,
+                    'class' => ucfirst(str_replace('_', ' ', $classKey)),
                 ];
             }
         }
@@ -626,13 +832,14 @@ function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $cla
 }
 
 // Generate flight results given search criteria. Returns array of flights.
-function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateStr, $classKey, $airlineCode = '') {
+function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateStr, $classKey, $airlineCode = '')
+{
     global $AIRPORTS, $AIRLINES;
 
     $results = [];
 
     $fromApt = findAirport($fromCode, $AIRPORTS);
-    $toApt   = findAirport($toCode,   $AIRPORTS);
+    $toApt = findAirport($toCode, $AIRPORTS);
     if (!$fromApt || !$toApt) {
         return [];
     }
@@ -643,7 +850,7 @@ function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateSt
     if (!$departDate) {
         $departDate = clone $today;
     }
-    $daysAheadDepart = (int)$today->diff($departDate)->format('%a');
+    $daysAheadDepart = (int) $today->diff($departDate)->format('%a');
 
     // For each airline generate flights
     foreach ($AIRLINES as $airline) {
@@ -658,7 +865,7 @@ function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateSt
         // If return date provided and one-way not chosen, generate inbound results.
         if ($returnDateStr) {
             $returnDate = DateTime::createFromFormat('Y-m-d', $returnDateStr);
-            $daysAheadReturn = (int)$today->diff($returnDate)->format('%a');
+            $daysAheadReturn = (int) $today->diff($returnDate)->format('%a');
             $inboundFlights = generateFlightsForAirline($airline, $toApt, $fromApt, $returnDate, $classKey, $daysAheadReturn);
 
             // Pair each outbound with each inbound (cartesian) but limit to 2 inbound combos to avoid blow up.
@@ -667,36 +874,37 @@ function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateSt
                 foreach ($inboundFlights as $in) {
                     // compute combined price and total duration; but treat separately for display.
                     $comboPrice = $out['price'] + $in['price'];
-                    $comboDur   = $out['totalDuration'] + $in['totalDuration'];
+                    $comboDur = $out['totalDuration'] + $in['totalDuration'];
                     $results[] = [
-                        'airline'  => $airline['name'],
+                        'airline' => $airline['name'],
                         'outbound' => $out,
-                        'inbound'  => $in,
-                        'price'    => $comboPrice,
+                        'inbound' => $in,
+                        'price' => $comboPrice,
                         'totalDuration' => $comboDur,
-                        'class'    => $out['class'],
+                        'class' => $out['class'],
                     ];
                     $count++;
-                    if ($count >= 2) break;
+                    if ($count >= 2)
+                        break;
                 }
             }
         } else {
             // no return: just outbound flights
             foreach ($outboundFlights as $out) {
                 $results[] = [
-                    'airline'  => $airline['name'],
+                    'airline' => $airline['name'],
                     'outbound' => $out,
-                    'inbound'  => null,
-                    'price'    => $out['price'],
+                    'inbound' => null,
+                    'price' => $out['price'],
                     'totalDuration' => $out['totalDuration'],
-                    'class'    => $out['class'],
+                    'class' => $out['class'],
                 ];
             }
         }
     }
 
     // Sort by price ascending
-    usort($results, function($a, $b) {
+    usort($results, function ($a, $b) {
         return $a['price'] <=> $b['price'];
     });
 
@@ -706,11 +914,13 @@ function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateSt
 
 // Extract and sanitize query parameters from the request (GET).
 // Accept only 3-letter alphabetic codes for airports.
-function sanitizeIata($str) {
+function sanitizeIata($str)
+{
     return strtoupper(substr(preg_replace('/[^A-Za-z]/', '', $str), 0, 3));
 }
 
-function getParam(array $keys, $default = null) {
+function getParam(array $keys, $default = null)
+{
     foreach ($keys as $key) {
         if (isset($_GET[$key]) && $_GET[$key] !== '') {
             return $_GET[$key];
@@ -719,32 +929,32 @@ function getParam(array $keys, $default = null) {
     return $default;
 }
 
-$_GET['mode']      = strtolower(getParam(['mode', 'flight_type'], 'round')) === 'oneway' ? 'oneway' : 'round';
-$_GET['from']      = sanitizeIata(getParam(['from', 'dept_arpt'], ''));
-$_GET['to']        = sanitizeIata(getParam(['to', 'dest_arpt'], ''));
-$_GET['depart']    = getParam(['depart', 'departure_date'], '');
-$_GET['return']    = getParam(['return', 'return_date'], '');
-$_GET['class']     = strtolower(getParam(['class', 'cabin_class'], 'economy'));
-$_GET['airline']   = strtoupper(preg_replace('/[^A-Za-z]/', '', getParam(['airline', 'airline'], '')));
-$_GET['adults']    = max(1, intval(getParam(['adults', 'padults'], 1)));
-$_GET['children']  = max(0, intval(getParam(['children', 'pchildren'], 0)));
-$_GET['infants']   = max(0, intval(getParam(['infants', 'pinfants'], 0)));
-$_GET['c_name']    = getParam(['c_name'], '');
-$_GET['c_email']   = getParam(['c_email'], '');
-$_GET['c_phone']   = getParam(['c_phone'], '');
+$_GET['mode'] = strtolower(getParam(['mode', 'flight_type'], 'round')) === 'oneway' ? 'oneway' : 'round';
+$_GET['from'] = sanitizeIata(getParam(['from', 'dept_arpt'], ''));
+$_GET['to'] = sanitizeIata(getParam(['to', 'dest_arpt'], ''));
+$_GET['depart'] = getParam(['depart', 'departure_date'], '');
+$_GET['return'] = getParam(['return', 'return_date'], '');
+$_GET['class'] = strtolower(getParam(['class', 'cabin_class'], 'economy'));
+$_GET['airline'] = strtoupper(preg_replace('/[^A-Za-z]/', '', getParam(['airline', 'airline'], '')));
+$_GET['adults'] = max(1, intval(getParam(['adults', 'padults'], 1)));
+$_GET['children'] = max(0, intval(getParam(['children', 'pchildren'], 0)));
+$_GET['infants'] = max(0, intval(getParam(['infants', 'pinfants'], 0)));
+$_GET['c_name'] = getParam(['c_name'], '');
+$_GET['c_email'] = getParam(['c_email'], '');
+$_GET['c_phone'] = getParam(['c_phone'], '');
 
 // Read basic search parameters
-$mode      = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
-$fromCode  = isset($_GET['from']) ? sanitizeIata($_GET['from']) : '';
-$toCode    = isset($_GET['to'])   ? sanitizeIata($_GET['to'])   : '';
-$depart    = isset($_GET['depart']) ? date('Y-m-d', strtotime($_GET['depart'])) : '';
-$return    = isset($_GET['return']) ? date('Y-m-d', strtotime($_GET['return'])) : '';
-$classKey  = isset($_GET['class']) ? $_GET['class'] : 'economy';
+$mode = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
+$fromCode = isset($_GET['from']) ? sanitizeIata($_GET['from']) : '';
+$toCode = isset($_GET['to']) ? sanitizeIata($_GET['to']) : '';
+$depart = isset($_GET['depart']) ? date('Y-m-d', strtotime($_GET['depart'])) : '';
+$return = isset($_GET['return']) ? date('Y-m-d', strtotime($_GET['return'])) : '';
+$classKey = isset($_GET['class']) ? $_GET['class'] : 'economy';
 // Additional fields for refined search
 $airlineCode = isset($_GET['airline']) ? strtoupper(preg_replace('/[^A-Za-z]/', '', $_GET['airline'])) : '';
-$adults   = isset($_GET['adults']) ? max(1, intval($_GET['adults'])) : 1;
+$adults = isset($_GET['adults']) ? max(1, intval($_GET['adults'])) : 1;
 $children = isset($_GET['children']) ? max(0, intval($_GET['children'])) : 0;
-$infants  = isset($_GET['infants']) ? max(0, intval($_GET['infants'])) : 0;
+$infants = isset($_GET['infants']) ? max(0, intval($_GET['infants'])) : 0;
 
 $results = [];
 if ($fromCode && $toCode && $depart) {
@@ -778,12 +988,13 @@ if ($fromCode && $toCode && $depart) {
 }
 
 // List of IATA codes for datalist suggestions
-$iataList = array_map(function($a) {
+$iataList = array_map(function ($a) {
     return $a['code'] . ' - ' . $a['city'] . ', ' . $a['country'];
 }, $AIRPORTS);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Dynamic Flight Search</title>
@@ -794,6 +1005,7 @@ $iataList = array_map(function($a) {
             margin: 0;
             padding: 0;
         }
+
         .container {
             max-width: 1200px;
             margin: auto;
@@ -801,6 +1013,7 @@ $iataList = array_map(function($a) {
             gap: 16px;
             padding: 20px;
         }
+
         .sidebar {
             width: 260px;
             background: #fff;
@@ -808,30 +1021,39 @@ $iataList = array_map(function($a) {
             padding: 16px;
             border-radius: 4px;
         }
+
         .content {
             flex-grow: 1;
         }
+
         h2 {
             margin-top: 0;
         }
+
         .form-group {
             margin-bottom: 10px;
         }
+
         label {
             font-weight: bold;
             display: block;
             margin-bottom: 4px;
         }
-        input[type="text"], input[type="date"], select {
+
+        input[type="text"],
+        input[type="date"],
+        select {
             width: 100%;
             padding: 9px;
             box-sizing: border-box;
         }
+
         .class-tabs {
             display: flex;
             gap: 8px;
             margin-bottom: 16px;
         }
+
         .class-tab {
             padding: 8px 12px;
             border: 1px solid #ccc;
@@ -839,10 +1061,12 @@ $iataList = array_map(function($a) {
             cursor: pointer;
             background: #eee;
         }
+
         .class-tab.active {
             background: #fff;
             border-bottom: 1px solid #fff;
         }
+
         .flight-card {
             background: #fff;
             border: 1px solid #ddd;
@@ -850,19 +1074,23 @@ $iataList = array_map(function($a) {
             margin-bottom: 10px;
             padding: 14px;
         }
+
         .flight-card h3 {
             margin: 0 0 6px;
             font-size: 18px;
         }
+
         .segments {
             margin-bottom: 6px;
         }
+
         .segment {
             display: flex;
             justify-content: space-between;
             font-size: 13px;
             margin-bottom: 2px;
         }
+
         .price {
             font-size: 22px;
             font-weight: bold;
@@ -873,146 +1101,154 @@ $iataList = array_map(function($a) {
 
 
         .class-tabs {
-  margin-bottom: 20px;
-  border-bottom: 2px solid #ddd;
-}
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
 
-.class-tabs ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
+        .class-tabs ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
 
-.class-tabs li {
-  margin: 0;
-}
+        .class-tabs li {
+            margin: 0;
+        }
 
-.class-tabs a {
-  display: block;
-  padding: 10px 18px;
-  text-decoration: none;
-  color: #555;
-  border: 1px solid #ddd;
-  border-bottom: none;
-  margin-right: 5px;
-  border-radius: 6px 6px 0 0;
-  background: #f8f8f8;
-  transition: background 0.2s, color 0.2s;
-}
+        .class-tabs a {
+            display: block;
+            padding: 10px 18px;
+            text-decoration: none;
+            color: #555;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 6px 6px 0 0;
+            background: #f8f8f8;
+            transition: background 0.2s, color 0.2s;
+        }
 
-.class-tabs a:hover {
-  background: #eaeaea;
-  color: #000;
-}
+        .class-tabs a:hover {
+            background: #eaeaea;
+            color: #000;
+        }
 
-.class-tabs a.active {
-  background: #fff;
-  color: #000;
-  border-bottom: 2px solid #fff; /* seamless with container */
-  font-weight: bold;
-}
+        .class-tabs a.active {
+            background: #fff;
+            color: #000;
+            border-bottom: 2px solid #fff;
+            /* seamless with container */
+            font-weight: bold;
+        }
 
-/* Tab content style */
-.tab-content {
-  display: none;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 0 6px 6px 6px;
-  background: #fff;
-}
+        /* Tab content style */
+        .tab-content {
+            display: none;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 0 6px 6px 6px;
+            background: #fff;
+        }
 
-/* Show the section if its ID matches hash in URL */
-:target.tab-content {
-  display: block;
-}
-:target {
-  scroll-margin-top: -100vh; /* pushes target out of view */
-}
-/* Default: show first tab if no hash */
-.tab-content:first-of-type {
-  display: block;
-}
+        /* Show the section if its ID matches hash in URL */
+        :target.tab-content {
+            display: block;
+        }
+
+        :target {
+            scroll-margin-top: -100vh;
+            /* pushes target out of view */
+        }
+
+        /* Default: show first tab if no hash */
+        .tab-content:first-of-type {
+            display: block;
+        }
 
 
-/* Tabs wrapper */
-.nav-tabs {
-    border-bottom: 2px solid #ddd; /* cleaner bottom line */
-    margin-bottom: 15px;
-}
+        /* Tabs wrapper */
+        .nav-tabs {
+            border-bottom: 2px solid #ddd;
+            /* cleaner bottom line */
+            margin-bottom: 15px;
+        }
 
-/* Each tab item */
-.nav-tabs > li {
-    float: none; /* center align since you use text-center */
-    display: inline-block;
-    margin-bottom: 0; /* remove bootstrap default spacing */
-}
+        /* Each tab item */
+        .nav-tabs>li {
+            float: none;
+            /* center align since you use text-center */
+            display: inline-block;
+            margin-bottom: 0;
+            /* remove bootstrap default spacing */
+        }
 
-/* Tab link */
-.nav-tabs > li > a {
-    padding: 10px 20px;
-    font-weight: 500;
-    color: #555;
-    border: 1px solid transparent;
-    border-radius: 0;
-    transition: all 0.2s ease-in-out;
-}
+        /* Tab link */
+        .nav-tabs>li>a {
+            padding: 10px 20px;
+            font-weight: 500;
+            color: #555;
+            border: 1px solid transparent;
+            border-radius: 0;
+            transition: all 0.2s ease-in-out;
+        }
 
-/* Hover effect */
-.nav-tabs > li > a:hover {
-    background-color: #f9f9f9;
-    border-color: #eee #eee #ddd;
-    color: #333;
-}
+        /* Hover effect */
+        .nav-tabs>li>a:hover {
+            background-color: #f9f9f9;
+            border-color: #eee #eee #ddd;
+            color: #333;
+        }
 
-/* Active tab */
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:focus,
-.nav-tabs > li.active > a:hover {
-    color: #000;
-    font-weight: 600;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-bottom-color: transparent; /* connect with content below */
-    cursor: default;
-}
+        /* Active tab */
+        .nav-tabs>li.active>a,
+        .nav-tabs>li.active>a:focus,
+        .nav-tabs>li.active>a:hover {
+            color: #000;
+            font-weight: 600;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-bottom-color: transparent;
+            /* connect with content below */
+            cursor: default;
+        }
 
-/* Responsive small text */
-.nav-tabs > li > a small {
-    display: block;
-    font-size: 11px;
-    color: #999;
-}
-
+        /* Responsive small text */
+        .nav-tabs>li>a small {
+            display: block;
+            font-size: 11px;
+            color: #999;
+        }
     </style>
     <script>
-    // Auto uppercase and filter suggestions for IATA input fields.
-    function setupIataInput(id) {
-        var input = document.getElementById(id);
-        input.addEventListener('input', function() {
-            this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0,3);
-        });
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-        setupIataInput('from');
-        setupIataInput('to');
-        // Class tabs removed; class selection is now via dropdown.
-        var classSelect = document.getElementById('class');
-        if (classSelect) {
-            classSelect.addEventListener('change', function() {
-                document.getElementById('flightForm').submit();
+        // Auto uppercase and filter suggestions for IATA input fields.
+        function setupIataInput(id) {
+            var input = document.getElementById(id);
+            input.addEventListener('input', function () {
+                this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
             });
         }
-        // Toggle return date field
-        var modeRadios = document.querySelectorAll('[name="mode"]');
-        modeRadios.forEach(function(radio) {
-            radio.addEventListener('change', function() {
-                document.getElementById('flightForm').submit();
+        document.addEventListener('DOMContentLoaded', function () {
+            setupIataInput('from');
+            setupIataInput('to');
+            // Class tabs removed; class selection is now via dropdown.
+            var classSelect = document.getElementById('class');
+            if (classSelect) {
+                classSelect.addEventListener('change', function () {
+                    document.getElementById('flightForm').submit();
+                });
+            }
+            // Toggle return date field
+            var modeRadios = document.querySelectorAll('[name="mode"]');
+            modeRadios.forEach(function (radio) {
+                radio.addEventListener('change', function () {
+                    document.getElementById('flightForm').submit();
+                });
             });
         });
-    });
     </script>
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar">
@@ -1020,16 +1256,20 @@ $iataList = array_map(function($a) {
             <form id="flightForm" method="get" action="#">
                 <div class="form-group">
                     <label>Trip Type</label>
-                    <label><input type="radio" name="mode" value="round" <?php echo $mode==='oneway'?'':'checked'; ?>> Round Trip</label><br>
-                    <label><input type="radio" name="mode" value="oneway" <?php echo $mode==='oneway'?'checked':''; ?>> One Way</label>
+                    <label><input type="radio" name="mode" value="round" <?php echo $mode === 'oneway' ? '' : 'checked'; ?>>
+                        Round Trip</label><br>
+                    <label><input type="radio" name="mode" value="oneway" <?php echo $mode === 'oneway' ? 'checked' : ''; ?>>
+                        One Way</label>
                 </div>
                 <div class="form-group">
                     <label for="from">Flying From</label>
-                    <input list="iataList" id="from" name="from" required pattern="[A-Za-z]{3}" value="<?php echo htmlspecialchars($fromCode); ?>">
+                    <input list="iataList" id="from" name="from" required pattern="[A-Za-z]{3}"
+                        value="<?php echo htmlspecialchars($fromCode); ?>">
                 </div>
                 <div class="form-group">
                     <label for="to">Flying To</label>
-                    <input list="iataList" id="to" name="to" required pattern="[A-Za-z]{3}" value="<?php echo htmlspecialchars($toCode); ?>">
+                    <input list="iataList" id="to" name="to" required pattern="[A-Za-z]{3}"
+                        value="<?php echo htmlspecialchars($toCode); ?>">
                 </div>
                 <datalist id="iataList">
                     <?php // Populate airports first. ?>
@@ -1047,44 +1287,50 @@ $iataList = array_map(function($a) {
                 </datalist>
                 <div class="form-group">
                     <label for="depart">Departure Date</label>
-                    <input type="date" id="depart" name="depart" required value="<?php echo htmlspecialchars($depart); ?>">
+                    <input type="date" id="depart" name="depart" required
+                        value="<?php echo htmlspecialchars($depart); ?>">
                 </div>
                 <?php if ($mode !== 'oneway'): ?>
-                <div class="form-group">
-                    <label for="return">Return Date</label>
-                    <input type="date" id="return" name="return" required value="<?php echo htmlspecialchars($return); ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="return">Return Date</label>
+                        <input type="date" id="return" name="return" required
+                            value="<?php echo htmlspecialchars($return); ?>">
+                    </div>
                 <?php endif; ?>
                 <div class="form-group">
                     <label for="airline">Preferred Airline</label>
                     <select id="airline" name="airline">
                         <option value="">All Airlines</option>
                         <?php foreach ($AIRLINES as $al): ?>
-                            <option value="<?php echo htmlspecialchars($al['code']); ?>" <?php echo ($airlineCode && strcasecmp($airlineCode,$al['code'])==0) ? 'selected' : ''; ?>><?php echo htmlspecialchars($al['name']); ?></option>
+                            <option value="<?php echo htmlspecialchars($al['code']); ?>" <?php echo ($airlineCode && strcasecmp($airlineCode, $al['code']) == 0) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($al['name']); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="adults">Adults</label>
                     <select id="adults" name="adults">
-                        <?php for ($i=1; $i<=9; $i++): ?>
-                            <option value="<?php echo $i; ?>" <?php echo ($adults==$i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
+                        <?php for ($i = 1; $i <= 9; $i++): ?>
+                            <option value="<?php echo $i; ?>" <?php echo ($adults == $i) ? 'selected' : ''; ?>>
+                                <?php echo $i; ?></option>
                         <?php endfor; ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="children">Children</label>
                     <select id="children" name="children">
-                        <?php for ($i=0; $i<=5; $i++): ?>
-                            <option value="<?php echo $i; ?>" <?php echo ($children==$i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
+                        <?php for ($i = 0; $i <= 5; $i++): ?>
+                            <option value="<?php echo $i; ?>" <?php echo ($children == $i) ? 'selected' : ''; ?>>
+                                <?php echo $i; ?></option>
                         <?php endfor; ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="infants">Infants</label>
                     <select id="infants" name="infants">
-                        <?php for ($i=0; $i<=4; $i++): ?>
-                            <option value="<?php echo $i; ?>" <?php echo ($infants==$i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
+                        <?php for ($i = 0; $i <= 4; $i++): ?>
+                            <option value="<?php echo $i; ?>" <?php echo ($infants == $i) ? 'selected' : ''; ?>>
+                                <?php echo $i; ?></option>
                         <?php endfor; ?>
                     </select>
                 </div>
@@ -1092,7 +1338,7 @@ $iataList = array_map(function($a) {
                     <label for="class">Class</label>
                     <select id="class" name="class">
                         <?php foreach ($CLASSES as $key => $mult): ?>
-                            <option value="<?php echo htmlspecialchars($key); ?>" <?php echo ($classKey === $key) ? 'selected' : ''; ?>><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></option>
+                            <option value="<?php echo htmlspecialchars($key); ?>" <?php echo ($classKey === $key) ? 'selected' : ''; ?>><?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $key))); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -1111,98 +1357,102 @@ $iataList = array_map(function($a) {
                     <img src="../assets/image/search_top_banner.jpg?v0.1" style="width: 100%;" alt="Flight Search">
                 </div>
             </div>
-            
+
             <!-- Flight Class Tabs -->
             <div class="class-tabs" style="margin-top:1.5rem">
-  <!-- <ul>
+                <!-- <ul>
     <?php foreach ($CLASSES as $key => $mult): ?>
-      <li><a href="#<?php echo htmlspecialchars($key); ?>"><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></a></li>
+      <li><a href="#<?php echo htmlspecialchars($key); ?>"><?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $key))); ?></a></li>
     <?php endforeach; ?>
   </ul> -->
 
-  <ul class="nav nav-tabs" role="tablist">
-    <?php foreach ($CLASSES as $key => $mult): ?>
-        <?php
-        // Copy current query params
-        $params = $_GET;
+                <ul class="nav nav-tabs" role="tablist">
+                    <?php foreach ($CLASSES as $key => $mult): ?>
+                        <?php
+                        // Copy current query params
+                        $params = $_GET;
 
-        // Set/override the class param
-        $params['class'] = $key;
+                        // Set/override the class param
+                        $params['class'] = $key;
 
-        // Build the new URL (same page + updated query)
-        $url = htmlspecialchars($_SERVER['PHP_SELF'] . '?' . http_build_query($params));
+                        // Build the new URL (same page + updated query)
+                        $url = htmlspecialchars($_SERVER['PHP_SELF'] . '?' . http_build_query($params));
 
-        // Check if this tab should be active
-        $active = (isset($_GET['class']) && $_GET['class'] === $key) ? 'active' : '';
-        ?>
-        
-        <li role="presentation" class="text-center <?php echo $active; ?>">
-            <a href="<?php echo $url; ?>" aria-controls="<?php echo htmlspecialchars($key); ?>" role="tab" data-toggle="tab" aria-expanded="<?php echo $active ? 'true' : 'false'; ?>">
-                <span><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></span>
-                <small class="visible-xs">
-                    <small><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $key))); ?></small>
-                </small>
-            </a>
-        </li>
-    <?php endforeach; ?>
-</ul>
+                        // Check if this tab should be active
+                        $active = (isset($_GET['class']) && $_GET['class'] === $key) ? 'active' : '';
+                        ?>
 
-
-</div>
-
-<!-- Tab contents -->
+                        <li role="presentation" class="text-center <?php echo $active; ?>">
+                            <a href="<?php echo $url; ?>" aria-controls="<?php echo htmlspecialchars($key); ?>" role="tab"
+                                data-toggle="tab" aria-expanded="<?php echo $active ? 'true' : 'false'; ?>">
+                                <span><?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $key))); ?></span>
+                                <small class="visible-xs">
+                                    <small><?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $key))); ?></small>
+                                </small>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
 
 
-  <h2><?php echo htmlspecialchars(ucwords(str_replace('_',' ', $classKey))); ?> Flights To <?php echo htmlspecialchars($toCode); ?></h2>
-  <p style="text-transform:capitalize;">
-								    	<?php echo htmlspecialchars(ucwords(str_replace('_',' ', $mode))); ?>, <?php echo htmlspecialchars(ucwords(str_replace('_',' ', $classKey))); ?>, departuring on 
-								    	<strong>
-    <?php 
-    if (!empty($depart)) {
-        echo htmlspecialchars(date("d-M-Y", strtotime($depart)));
-    }
-    ?>
-</strong> 
-<?php if ($mode !== 'oneway'): ?>
-								    	 and returning on 								    	<strong>
-    <?php 
-    if (!empty($depart)) {
-        echo htmlspecialchars(date("d-M-Y", strtotime($return)));
-    }
-    ?>
-    </strong> 
-<?php endif; ?>
-for 
-<?php echo htmlspecialchars($adults); ?> Adult
-<?php if ($children > 0): ?>
-    <?php echo htmlspecialchars($children); ?> Child
-<?php endif; ?>
-<?php if ($infants > 0): ?>
-    <?php echo htmlspecialchars($infants); ?> Infant
-<?php endif; ?>
-.
-									</p>
-    <!-- flights results here -->
+            </div>
 
-    <?php if ($results): ?>
+            <!-- Tab contents -->
+
+
+            <h2><?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $classKey))); ?> Flights To
+                <?php echo htmlspecialchars($toCode); ?></h2>
+            <p style="text-transform:capitalize;">
+                <?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $mode))); ?>,
+                <?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $classKey))); ?>, departuring on
+                <strong>
+                    <?php
+                    if (!empty($depart)) {
+                        echo htmlspecialchars(date("d-M-Y", strtotime($depart)));
+                    }
+                    ?>
+                </strong>
+                <?php if ($mode !== 'oneway'): ?>
+                    and returning on <strong>
+                        <?php
+                        if (!empty($depart)) {
+                            echo htmlspecialchars(date("d-M-Y", strtotime($return)));
+                        }
+                        ?>
+                    </strong>
+                <?php endif; ?>
+                for
+                <?php echo htmlspecialchars($adults); ?> Adult
+                <?php if ($children > 0): ?>
+                    <?php echo htmlspecialchars($children); ?> Child
+                <?php endif; ?>
+                <?php if ($infants > 0): ?>
+                    <?php echo htmlspecialchars($infants); ?> Infant
+                <?php endif; ?>
+                .
+            </p>
+            <!-- flights results here -->
+
+            <?php if ($results): ?>
                 <?php foreach ($results as $res): ?>
                     <div class="flight-card">
-                        <h3><?php echo htmlspecialchars($res['airline']); ?> - <?php echo htmlspecialchars($res['class']); ?></h3>
+                        <h3><?php echo htmlspecialchars($res['airline']); ?> - <?php echo htmlspecialchars($res['class']); ?>
+                        </h3>
                         <div class="segments">
                             <?php
                             // Outbound segments
                             foreach ($res['outbound']['segments'] as $seg) {
                                 echo '<div class="segment">';
-                                echo '<div>'.htmlspecialchars($seg['from']).' → '.htmlspecialchars($seg['to']).'</div>';
-                                echo '<div>'.htmlspecialchars(date('H:i', strtotime($seg['depart']))).' - '.htmlspecialchars(date('H:i', strtotime($seg['arrive']))).'</div>';
+                                echo '<div>' . htmlspecialchars($seg['from']) . ' → ' . htmlspecialchars($seg['to']) . '</div>';
+                                echo '<div>' . htmlspecialchars(date('H:i', strtotime($seg['depart']))) . ' - ' . htmlspecialchars(date('H:i', strtotime($seg['arrive']))) . '</div>';
                                 echo '</div>';
                             }
                             if ($res['inbound']) {
                                 echo '<strong>Return:</strong>';
                                 foreach ($res['inbound']['segments'] as $seg) {
                                     echo '<div class="segment">';
-                                    echo '<div>'.htmlspecialchars($seg['from']).' → '.htmlspecialchars($seg['to']).'</div>';
-                                    echo '<div>'.htmlspecialchars(date('H:i', strtotime($seg['depart']))).' - '.htmlspecialchars(date('H:i', strtotime($seg['arrive']))).'</div>';
+                                    echo '<div>' . htmlspecialchars($seg['from']) . ' → ' . htmlspecialchars($seg['to']) . '</div>';
+                                    echo '<div>' . htmlspecialchars(date('H:i', strtotime($seg['depart']))) . ' - ' . htmlspecialchars(date('H:i', strtotime($seg['arrive']))) . '</div>';
                                     echo '</div>';
                                 }
                             }
@@ -1219,7 +1469,8 @@ for
                         ?>
                         <div class="segment">
                             <div>
-                                <em>Total duration:</em> <?php echo htmlspecialchars(formatDuration($res['totalDuration'])); ?><br>
+                                <em>Total duration:</em>
+                                <?php echo htmlspecialchars(formatDuration($res['totalDuration'])); ?><br>
                                 <em>Stops:</em> <?php echo htmlspecialchars($stopsInfo); ?>
                             </div>
                             <div class="price">£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
@@ -1230,14 +1481,15 @@ for
                 <p>No flights found. Please adjust your search criteria.</p>
             <?php endif; ?>
 
-    
 
 
 
-            
-            
-            
+
+
+
+
         </div>
     </div>
 </body>
+
 </html>
