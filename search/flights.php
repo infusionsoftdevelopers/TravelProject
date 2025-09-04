@@ -968,21 +968,32 @@ function getParam(array $keys, $default = null)
     return $default;
 }
 
-$_GET['mode'] = strtolower(getParam(['mode', 'flight_type'], 'round')) === 'oneway' ? 'oneway' : 'round';
-$_GET['from'] = extractAirportCode(getParam(['from', 'dept_arpt'], ''));
-$_GET['to'] = extractAirportCode(getParam(['to', 'dest_arpt'], ''));
-$_GET['depart'] = getParam(['depart', 'departure_date'], '');
-$_GET['return'] = getParam(['return', 'return_date'], '');
-$_GET['class'] = strtolower(getParam(['class', 'cabin_class'], 'economy'));
+$_GET['mode'] = strtolower(getParam(['mode', 'flight_type', 'trip_type', 'trip-type'], 'round')) === 'oneway' ? 'oneway' : 'round';
+$_GET['from'] = extractAirportCode(getParam(['from', 'dept_arpt', 'departure-from'], ''));
+$_GET['to'] = extractAirportCode(getParam(['to', 'dest_arpt', 'return-from'], ''));
+$_GET['depart'] = getParam(['depart', 'departure_date', 'departure-date'], '');
+$_GET['return'] = getParam(['return', 'return_date', 'return-date'], '');
+
+// Class handling: prefer explicit class/cabin_class, otherwise infer from flags like economy=Economy
+$__classParam = strtolower(getParam(['class', 'cabin_class'], ''));
+
+if ($__classParam === '') {
+    if (isset($_GET['economy'])) { $__classParam = 'economy'; }
+    elseif (isset($_GET['premium_economy']) || isset($_GET['premium-economy'])) { $__classParam = 'premium_economy'; }
+    elseif (isset($_GET['business'])) { $__classParam = 'business'; }
+    elseif (isset($_GET['first'])) { $__classParam = 'first'; }
+    $__classParam = strtolower( $_GET[$__classParam] );
+}
+// echo $__classParam;
+// die();
+$_GET['class'] = $__classParam !== '' ? $__classParam : 'economy';
 $_GET['airline'] = strtoupper(preg_replace('/[^A-Za-z]/', '', getParam(['airline', 'airline'], '')));
 $_GET['adults'] = max(1, intval(getParam(['adults', 'padults'], 1)));
 $_GET['children'] = max(0, intval(getParam(['children', 'pchildren'], 0)));
 $_GET['infants'] = max(0, intval(getParam(['infants', 'pinfants'], 0)));
-$_GET['c_name'] = getParam(['c_name'], '');
-$_GET['c_email'] = getParam(['c_email'], '');
-$_GET['c_phone'] = getParam(['c_phone'], '');
-
-// Read basic search parameters
+$_GET['c_name'] = getParam(['c_name', 'full-name'], '');
+$_GET['c_email'] = getParam(['c_email', 'email'], '');
+$_GET['c_phone'] = getParam(['c_phone', 'phone'], '');
 $mode = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
 $fromCode = isset($_GET['from']) ? extractAirportCode($_GET['from']) : '';
 $toCode = isset($_GET['to']) ? extractAirportCode($_GET['to']) : '';

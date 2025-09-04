@@ -73,8 +73,7 @@ class Flight extends RR_Controller {
                 $this->flights->inqmail($form_val);
             }
 
-            $normalizedParams = $this->normalizeSearchParams($data);
-            $queryString = http_build_query($normalizedParams);
+            
             $redirectUrl = base_url('search/flights.php');
             $queryString = $_SERVER['QUERY_STRING'];
             if (!empty($queryString)) {
