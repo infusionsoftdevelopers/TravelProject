@@ -2,7 +2,7 @@
 // dynamic flight search and booking mock application
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-var_dump($_GET);
+// var_dump($_GET);
 
 // Basic data about airports including coordinates for distance calculation.
 // This is a small curated list of popular international airports. More can be added easily.
@@ -1240,7 +1240,7 @@ $iataList = array_map(function ($a) {
         width: 100%;
         background: #F3F4F6;
         color: #374151;
-        padding: 12px 16px;
+        padding: 3px 0px;
         font-size: 16px;
         font-weight: 500;
         display: flex;
@@ -1249,7 +1249,7 @@ $iataList = array_map(function ($a) {
     }
 
     .flight-number {
-        background: #8B5CF6;
+        /* background: #8B5CF6;
         color: white;
         width: 24px;
         height: 24px;
@@ -1258,7 +1258,20 @@ $iataList = array_map(function ($a) {
         align-items: center;
         justify-content: center;
         font-size: 14px;
-        font-weight: bold;
+        font-weight: bold; */
+        color: #fff;
+    border-radius: 50px;
+    padding: 4px 0;
+    font-weight: bolder;
+    font-size: 16px;
+    display: inline-block;
+    width: 25px;
+    height: 17px;
+    text-align: center;
+    border: 2px solid #fffbfb;
+    margin-right: 5px;
+    line-height: .9em;
+    background: #350c48;
     }
 
     .flight-body {
@@ -1702,14 +1715,14 @@ $iataList = array_map(function ($a) {
             <!-- flights results here -->
 
             <?php if ($results): ?>
-                <?php foreach ($results as $res): ?>
+                <?php foreach ($results as $index => $res): ?>
 
 
 
                     <div class="flight-card">
     <div class="flight-header">
-        <div class="flight-number">1</div>
-        <span class="airline"><?php echo htmlspecialchars($res['airline']); ?> To <?php echo htmlspecialchars($res['outbound']['segments'][count($res['outbound']['segments']) - 1]['to']); ?></span>
+        <div class="flight-number"><?php echo $index + 1; ?></div>
+        <span class="airline"><strong><?php echo htmlspecialchars($res['airline']); ?></strong> To <?php echo htmlspecialchars($res['outbound']['segments'][count($res['outbound']['segments']) - 1]['to']); ?></span>
     </div>
 
     <div class="flight-body">
