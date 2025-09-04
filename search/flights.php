@@ -1220,6 +1220,80 @@ $iataList = array_map(function ($a) {
             color: #999;
         }
     </style>
+
+
+
+<style> 
+    .flight-card {
+    display: flex;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 15px 0;
+    font-family: Arial, sans-serif;
+}
+
+.flight-header {
+    width: 100%;
+    background: #002b7f;
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.flight-body {
+    flex: 3;
+    padding: 12px;
+    border-right: 3px solid #ffcb00;
+}
+
+.flight-section {
+    margin-bottom: 15px;
+}
+
+.flight-section h4 {
+    background: #0070c9;
+    color: #fff;
+    padding: 5px;
+    font-size: 14px;
+    margin: 0 0 5px;
+}
+
+.flight-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+.flight-info .from, .flight-info .to {
+    width: 30%;
+    font-size: 14px;
+}
+
+.flight-info .stops {
+    flex: 1;
+    font-size: 13px;
+    color: #333;
+}
+
+.flight-sidebar {
+    flex: 1;
+    background: #ffeb3b;
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.flight-sidebar .price {
+    font-size: 20px;
+    color: #d32f2f;
+    margin-bottom: 10px;
+}
+
+</style>
     <script>
         // Auto uppercase and filter suggestions for IATA input fields.
         function setupIataInput(id) {
@@ -1435,7 +1509,71 @@ $iataList = array_map(function ($a) {
 
             <?php if ($results): ?>
                 <?php foreach ($results as $res): ?>
+
+
+
                     <div class="flight-card">
+    <div class="flight-header">
+        <span class="airline"><?php echo htmlspecialchars($res['airline']); ?></span>
+        <span class="route">To <?php echo htmlspecialchars($res['outbound']['segments'][count($res['outbound']['segments']) - 1]['to']); ?></span>
+    </div>
+
+    <div class="flight-body">
+        <!-- Outbound -->
+        <div class="flight-section">
+            <h4>Outbound Flight ➜</h4>
+            <?php $outSegs = $res['outbound']['segments']; ?>
+            <div class="flight-info">
+                <div class="from">
+                    <strong><?php echo htmlspecialchars($outSegs[0]['from']); ?></strong><br>
+                    <?php echo date('g:i A', strtotime($outSegs[0]['depart'])); ?><br>
+                    <?php echo date('D d, M', strtotime($outSegs[0]['depart'])); ?>
+                </div>
+                <div class="stops">
+                    <?php echo max(0, count($outSegs) - 1); ?> stops<br>
+                    <?php echo htmlspecialchars($res['airline']); ?>
+                </div>
+                <div class="to">
+                    <strong><?php echo htmlspecialchars(end($outSegs)['to']); ?></strong><br>
+                    <?php echo date('g:i A', strtotime(end($outSegs)['arrive'])); ?><br>
+                    <?php echo date('D d, M', strtotime(end($outSegs)['arrive'])); ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inbound -->
+        <?php if ($res['inbound']) : ?>
+        <div class="flight-section">
+            <h4>Inbound Flight ⬅</h4>
+            <?php $inSegs = $res['inbound']['segments']; ?>
+            <div class="flight-info">
+                <div class="from">
+                    <strong><?php echo htmlspecialchars($inSegs[0]['from']); ?></strong><br>
+                    <?php echo date('g:i A', strtotime($inSegs[0]['depart'])); ?><br>
+                    <?php echo date('D d, M', strtotime($inSegs[0]['depart'])); ?>
+                </div>
+                <div class="stops">
+                    <?php echo max(0, count($inSegs) - 1); ?> stops<br>
+                    <?php echo htmlspecialchars($res['airline']); ?>
+                </div>
+                <div class="to">
+                    <strong><?php echo htmlspecialchars(end($inSegs)['to']); ?></strong><br>
+                    <?php echo date('g:i A', strtotime(end($inSegs)['arrive'])); ?><br>
+                    <?php echo date('D d, M', strtotime(end($inSegs)['arrive'])); ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
+
+    <div class="flight-sidebar">
+        <div class="price">£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
+        <p>Special rates not published online.<br><strong>Call us now</strong></p>
+        <div class="phone">📞 0207 993 6068</div>
+    </div>
+</div>
+
+                    <!-- <div class="flight-card">
                         <h3><?php echo htmlspecialchars($res['airline']); ?> - <?php echo htmlspecialchars($res['class']); ?>
                         </h3>
                         <div class="segments">
@@ -1475,7 +1613,7 @@ $iataList = array_map(function ($a) {
                             </div>
                             <div class="price">£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
                         </div>
-                    </div>
+                    </div> -->
                 <?php endforeach; ?>
             <?php else: ?>
                 <p>No flights found. Please adjust your search criteria.</p>
