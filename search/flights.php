@@ -297,7 +297,7 @@ $CLASSES = [
     'economy' => 1.00,
     'premium' => 1.60,
     'business' => 2.75,
-    'first' => 4.20,
+    'first class' => 4.20,
 ];
 
 // Ensure availability inside functions that declare `global $CLASSES`
