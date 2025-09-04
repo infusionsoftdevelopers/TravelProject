@@ -1291,7 +1291,7 @@ $iataList = array_map(function ($a) {
     text-align: center;
     border: 2px solid #fffbfb;
     margin-right: 5px;
-    line-height: .9em;
+    /* line-height: .9em; */
     background: #350c48;
     }
 
@@ -1741,94 +1741,146 @@ $iataList = array_map(function ($a) {
 
 
                     <div class="flight-card">
-    <div class="flight-header">
-        <div class="flight-number"><?php echo $index + 1; ?></div>
-        <span class="airline"><strong><?php echo htmlspecialchars($res['airline']); ?></strong> To <?php 
-            $destinationCode = $res['outbound']['segments'][count($res['outbound']['segments']) - 1]['to'];
-            $destinationAirport = findAirport($destinationCode, $AIRPORTS);
-            echo $destinationAirport ? htmlspecialchars($destinationAirport['city']) : htmlspecialchars($destinationCode);
-        ?></span>
-    </div>
+                        <div class="row" style="display: flex;">
+                        <div class="flight-card-inner" style="width: 75%;">
+                            <div class="flight-header">
+                                <div class="flight-number"><?php echo $index + 1; ?></div>
+                                <span class="airline"><strong><?php echo htmlspecialchars($res['airline']); ?></strong> To <?php 
+                                    $destinationCode = $res['outbound']['segments'][count($res['outbound']['segments']) - 1]['to'];
+                                    $destinationAirport = findAirport($destinationCode, $AIRPORTS);
+                                    echo $destinationAirport ? htmlspecialchars($destinationAirport['city']) : htmlspecialchars($destinationCode);
+                                ?></span>
+                            </div>
 
-    <div class="flight-body">
-        <!-- Outbound -->
-        <div class="flight-section">
-            <h4>Outbound Flight</h4>
-            <?php $outSegs = $res['outbound']['segments']; ?>
-            <div class="flight-info">
-                <div class="from">
-                    <div class="airport-code"><?php echo htmlspecialchars($outSegs[0]['from']); ?></div>
-                    <div class="airport-name"><?php 
-                        $fromAirport = findAirport($outSegs[0]['from'], $AIRPORTS);
-                        echo $fromAirport ? htmlspecialchars($fromAirport['city']) : '';
-                    ?></div>
-                    <div class="flight-time"><?php echo date('g:i A', strtotime($outSegs[0]['depart'])); ?></div>
-                    <div class="flight-date"><?php echo date('D d, M', strtotime($outSegs[0]['depart'])); ?></div>
-                </div>
-                <div class="stops">
-                    <div class="stops-text"><?php echo max(0, count($outSegs) - 1); ?> stops</div>
-                    <div class="flight-path">
-                        <div class="flight-path-line"></div>
+                            <div class="flight-body">
+                                <!-- Outbound -->
+                                <div class="flight-section">
+                                    <h4>Outbound Flight</h4>
+                                    <?php $outSegs = $res['outbound']['segments']; ?>
+                                    <div class="flight-info">
+                                        <div class="from">
+                                            <div class="airport-code"><?php echo htmlspecialchars($outSegs[0]['from']); ?></div>
+                                            <div class="airport-name"><?php 
+                                                $fromAirport = findAirport($outSegs[0]['from'], $AIRPORTS);
+                                                echo $fromAirport ? htmlspecialchars($fromAirport['city']) : '';
+                                            ?></div>
+                                            <div class="flight-time"><?php echo date('g:i A', strtotime($outSegs[0]['depart'])); ?></div>
+                                            <div class="flight-date"><?php echo date('D d, M', strtotime($outSegs[0]['depart'])); ?></div>
+                                        </div>
+                                        <div class="stops">
+                                            <div class="stops-text"><?php echo max(0, count($outSegs) - 1); ?> stops</div>
+                                            <div class="flight-path">
+                                                <div class="flight-path-line"></div>
+                                            </div>
+                                            <div class="airline-name"><?php echo htmlspecialchars($res['airline']); ?></div>
+                                        </div>
+                                        <div class="to">
+                                            <div class="airport-code"><?php echo htmlspecialchars(end($outSegs)['to']); ?></div>
+                                            <div class="airport-name"><?php 
+                                                $toAirport = findAirport(end($outSegs)['to'], $AIRPORTS);
+                                                echo $toAirport ? htmlspecialchars($toAirport['city']) : '';
+                                            ?></div>
+                                            <div class="flight-time"><?php echo date('g:i A', strtotime(end($outSegs)['arrive'])); ?></div>
+                                            <div class="flight-date"><?php echo date('D d, M', strtotime(end($outSegs)['arrive'])); ?></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="flight-details-link">Flight Details</a>
+                                </div>
+
+                                <!-- Inbound -->
+                                <?php if ($res['inbound']) : ?>
+                                <div class="flight-section">
+                                    <h4>Inbound Flight</h4>
+                                    <?php $inSegs = $res['inbound']['segments']; ?>
+                                    <div class="flight-info">
+                                        <div class="from">
+                                            <div class="airport-code"><?php echo htmlspecialchars($inSegs[0]['from']); ?></div>
+                                            <div class="airport-name"><?php 
+                                                $fromAirport = findAirport($inSegs[0]['from'], $AIRPORTS);
+                                                echo $fromAirport ? htmlspecialchars($fromAirport['city']) : '';
+                                            ?></div>
+                                            <div class="flight-time"><?php echo date('g:i A', strtotime($inSegs[0]['depart'])); ?></div>
+                                            <div class="flight-date"><?php echo date('D d, M', strtotime($inSegs[0]['depart'])); ?></div>
+                                        </div>
+                                        <div class="stops">
+                                            <div class="stops-text"><?php echo max(0, count($inSegs) - 1); ?> stops</div>
+                                            <div class="flight-path">
+                                                <div class="flight-path-line"></div>
+                                            </div>
+                                            <div class="airline-name"><?php echo htmlspecialchars($res['airline']); ?></div>
+                                        </div>
+                                        <div class="to">
+                                            <div class="airport-code"><?php echo htmlspecialchars(end($inSegs)['to']); ?></div>
+                                            <div class="airport-name"><?php 
+                                                $toAirport = findAirport(end($inSegs)['to'], $AIRPORTS);
+                                                echo $toAirport ? htmlspecialchars($toAirport['city']) : '';
+                                            ?></div>
+                                            <div class="flight-time"><?php echo date('g:i A', strtotime(end($inSegs)['arrive'])); ?></div>
+                                            <div class="flight-date"><?php echo date('D d, M', strtotime(end($inSegs)['arrive'])); ?></div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="more-flights-link">More <?php echo htmlspecialchars($res['airline']); ?> Flights</a>
+                                </div>
+                                <?php endif; ?>
+
+                                
+                            </div>
+                        </div>
+                        <div class="flight-card-inner" style="border-left: 1px solid red; width: 25%;">
+                            <!-- <div class="flight-sidebar">
+                                    <div class="price">£<?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
+                                    <div class="call-text">Special rates not published online.</div>
+                                    <div class="call-now">Call us now</div>
+                                    <div class="phone">📞 0207 993 6068</div>
+                                </div> -->
+
+								  			<div class="price_details hidden-xs hidden-sm">
+								  				<div class="price">
+								  					<h6>From</h6>
+								  					<h1>£ 1877<span>PP</span></h1>
+								  					<h6>
+								  						Return, Inc. Taxes<br>
+														1 Adult<br>
+														<strong style="font-size:13px;">Total Price £ 1877</strong>
+								  					</h6>
+								  					<!-- <h6 class="phn-strok">
+														<a href="tel:02079936068">0207 993 6068</a>
+													</h6> -->
+								  				</div>
+												<div class="add-to-link"> 
+													<a class="call_now" href="tel:02079936068">
+								                        <div><i class="fa fa-phone"></i><span>0207 993 6068</span></div>
+								                    </a>
+								                    <a class="book_now" href="javascript: bookingRequest(['Thu, Sep 25', '8:30 AM', 'Heathrow - LHR', 'Thu, Sep 25', '10:04 PM', 'Nanaimo - YCD', '21h 34m', '2 stops', 'Tue, Sep 30', '6:00 AM', 'Nanaimo - YCD', 'Wed, Oct 01', '6:20 AM', 'Heathrow - LHR', '16h 20m', '2 stops', 'London - LON', 'Nanaimo - YCD', 'OS', 'Austrian Airlines', '1', '0', '0', '1877', '1877']);">
+								                        <div><i class="fa fa-check"></i><span>Book Now</span></div>
+								                    </a>
+								                    <a class="whatsapp_now" href="https://api.whatsapp.com/send?phone=442079935374&amp;text=I'm%20interested%20in%20flights%20to%20Nanaimo%20from%20Heathrow%20Return%20Departure Date:%20Thu, Sep 25%20Return Date:%20Wed, Oct 01%20Adults:%201%20Price:%20£1877%20%20%20%20" target="_blank">
+								                        <div><i class="fa fa-whatsapp"></i><span>Whatsapp</span></div>
+								                    </a>
+								                </div>
+								  			</div>
+								  			<div class="row visible-sm visible-xs">
+								  				<div class="col-xs-6 clear-padding">
+								  													  					<h3 class="mob_price">£ 1877<small><small>1Person</small></small></h3>
+								  				</div>
+								  				<div class="col-xs-6 clear-padding">
+								  					<div class="add-to-link"> 
+								  						<a class="call_now" href="tel:02079936068">
+								                            <div><i class="fa fa-phone"></i><span>Call Now</span></div>
+								                        </a>
+								                        <a class="book_now" href="javascript: bookingRequest(['Thu, Sep 25', '8:30 AM', 'Heathrow - LHR', 'Thu, Sep 25', '10:04 PM', 'Nanaimo - YCD', '21h 34m', '2 stops', 'Tue, Sep 30', '6:00 AM', 'Nanaimo - YCD', 'Wed, Oct 01', '6:20 AM', 'Heathrow - LHR', '16h 20m', '2 stops', 'London - LON', 'Nanaimo - YCD', 'OS', 'Austrian Airlines', '1', '0', '0', '1877', '1877']);">
+								                            <div><i class="fa fa-check"></i><span>Book Now</span></div>
+								                        </a>
+								                        <a class="whatsapp_now" href="https://api.whatsapp.com/send?phone=442079935374&amp;text=I'm%20interested%20in%20flights%20to%20Nanaimo%20from%20Heathrow%20ReturnReturn%20Departure Date:%20Thu, Sep 25%20Return Date:%20Wed, Oct 01%20Adults:%201%20Price:%20£1877%20%20%20%20" target="_blank">
+								                            <div><i class="fa fa-whatsapp"></i><span>Whatsapp</span></div>
+								                        </a>
+								                    </div>
+								  				</div>
+								  			</div>
+								  		
+                        </div>
                     </div>
-                    <div class="airline-name"><?php echo htmlspecialchars($res['airline']); ?></div>
-                </div>
-                <div class="to">
-                    <div class="airport-code"><?php echo htmlspecialchars(end($outSegs)['to']); ?></div>
-                    <div class="airport-name"><?php 
-                        $toAirport = findAirport(end($outSegs)['to'], $AIRPORTS);
-                        echo $toAirport ? htmlspecialchars($toAirport['city']) : '';
-                    ?></div>
-                    <div class="flight-time"><?php echo date('g:i A', strtotime(end($outSegs)['arrive'])); ?></div>
-                    <div class="flight-date"><?php echo date('D d, M', strtotime(end($outSegs)['arrive'])); ?></div>
-                </div>
-            </div>
-            <a href="#" class="flight-details-link">Flight Details</a>
-        </div>
-
-        <!-- Inbound -->
-        <?php if ($res['inbound']) : ?>
-        <div class="flight-section">
-            <h4>Inbound Flight</h4>
-            <?php $inSegs = $res['inbound']['segments']; ?>
-            <div class="flight-info">
-                <div class="from">
-                    <div class="airport-code"><?php echo htmlspecialchars($inSegs[0]['from']); ?></div>
-                    <div class="airport-name"><?php 
-                        $fromAirport = findAirport($inSegs[0]['from'], $AIRPORTS);
-                        echo $fromAirport ? htmlspecialchars($fromAirport['city']) : '';
-                    ?></div>
-                    <div class="flight-time"><?php echo date('g:i A', strtotime($inSegs[0]['depart'])); ?></div>
-                    <div class="flight-date"><?php echo date('D d, M', strtotime($inSegs[0]['depart'])); ?></div>
-                </div>
-                <div class="stops">
-                    <div class="stops-text"><?php echo max(0, count($inSegs) - 1); ?> stops</div>
-                    <div class="flight-path">
-                        <div class="flight-path-line"></div>
                     </div>
-                    <div class="airline-name"><?php echo htmlspecialchars($res['airline']); ?></div>
-                </div>
-                <div class="to">
-                    <div class="airport-code"><?php echo htmlspecialchars(end($inSegs)['to']); ?></div>
-                    <div class="airport-name"><?php 
-                        $toAirport = findAirport(end($inSegs)['to'], $AIRPORTS);
-                        echo $toAirport ? htmlspecialchars($toAirport['city']) : '';
-                    ?></div>
-                    <div class="flight-time"><?php echo date('g:i A', strtotime(end($inSegs)['arrive'])); ?></div>
-                    <div class="flight-date"><?php echo date('D d, M', strtotime(end($inSegs)['arrive'])); ?></div>
-                </div>
-            </div>
-            <a href="#" class="more-flights-link">More <?php echo htmlspecialchars($res['airline']); ?> Flights</a>
-        </div>
-        <?php endif; ?>
-
-        <div class="flight-sidebar">
-            <div class="price">£<?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
-            <div class="call-text">Special rates not published online.</div>
-            <div class="call-now">Call us now</div>
-            <div class="phone">📞 0207 993 6068</div>
-        </div>
-    </div>
-</div>
 
                     <!-- <div class="flight-card">
                         <h3><?php echo htmlspecialchars($res['airline']); ?> - <?php echo htmlspecialchars($res['class']); ?>
