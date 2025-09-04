@@ -1038,6 +1038,16 @@ $iataList = array_map(function ($a) {
     <meta charset="UTF-8">
     <title>Dynamic Flight Search</title>
     <style>
+        .side_whybook_w_us{
+            background: #3a1b07;
+    opacity: 1;
+    height: auto;
+    margin: 20px 0 0 0;
+    padding: 20px;
+    border-radius: 0;
+        }
+    </style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             background: #f7fafc;
@@ -1057,7 +1067,7 @@ $iataList = array_map(function ($a) {
             width: 260px;
             background: #fff;
             border: 1px solid #ddd;
-            padding: 16px;
+            /* padding: 16px; */
             border-radius: 4px;
         }
 
@@ -1499,7 +1509,7 @@ $iataList = array_map(function ($a) {
         }
 
         .flight-details-link {
-            position: absolute;
+            /* position: absolute; */
             bottom: 8px;
             left: 16px;
             font-size: 12px;
@@ -1516,17 +1526,25 @@ $iataList = array_map(function ($a) {
         }
 
         .more-flights-link {
-            position: absolute;
-            bottom: 8px;
-            right: 16px;
+            /* position: absolute; */
+            /* bottom: 8px; */
+            /* right: 16px; */
             font-size: 12px;
             color: #DC2626;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            /* display: flex; */
+            /* align-items: center; */
+            /* gap: 4px; */
         }
 
+        .flight-footer{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            /* padding: 16px; */
+            text-align: center;
+        }
         .more-flights-link::before {
             content: "ℹ";
             background: #DC2626;
@@ -1534,7 +1552,7 @@ $iataList = array_map(function ($a) {
             width: 14px;
             height: 14px;
             border-radius: 50%;
-            display: flex;
+            /* display: flex; */
             align-items: center;
             justify-content: center;
             font-size: 10px;
@@ -1793,13 +1811,93 @@ $iataList = array_map(function ($a) {
                     </select>
                 </div>
                 <div class="form-group">
-                    <button type="submit">Search Flights</button>
+                    <button type="submit" style="    height: 45px;
+    color: rgb(255, 255, 255);
+    margin-top: 10px;
+    width: 100%;
+    font-size: 18px;
+    font-family: inherit;
+    font-weight: 500;
+    background: rgb(1, 95, 158);
+    border-radius: 0px;
+    padding: 10px 0px;
+    transition: 0.3s;">Modify Search</button>
                 </div>
             </form>
-            <div class="form-group">
+            <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:10px 23px 23px 23px; border:#FFD701 3px solid;">
+            	<h4 style="color:#015F9E !important">Live Support</h4>
+            	<!--Begin Comm100 Live Chat Code-->
+            	<div id="comm100-button-34"></div>
+            	<script type="text/javascript">
+            	    var Comm100API = Comm100API || new Object;
+    				Comm100API.chat_buttons = Comm100API.chat_buttons || [];
+				    var comm100_chatButton = new Object;
+				    comm100_chatButton.code_plan = 34;
+				    comm100_chatButton.div_id = 'comm100-button-34';
+				    Comm100API.chat_buttons.push(comm100_chatButton);
+				    Comm100API.site_id = 92508;
+				    Comm100API.main_code_plan = 34;
+
+				    var comm100_lc = document.createElement('script');
+				    comm100_lc.type = 'text/javascript';
+				    comm100_lc.async = true;
+				    comm100_lc.src = 'https://chatserver.comm100.com/livechat.ashx?siteId=' + Comm100API.site_id;
+				    var comm100_s = document.getElementsByTagName('script')[0];
+				    comm100_s.parentNode.insertBefore(comm100_lc, comm100_s);
+
+				    setTimeout(function() {
+				        if (!Comm100API.loaded) {
+				            var lc = document.createElement('script');
+				            lc.type = 'text/javascript';
+				            lc.async = true;
+				            lc.src = 'https://hostedmax.comm100.com/chatserver/livechat.ashx?siteId=' + Comm100API.site_id;
+				            var s = document.getElementsByTagName('script')[0];
+				            s.parentNode.insertBefore(lc, s);
+				        }
+				    }, 5000)
+				</script>
+				<!--End Comm100 Live Chat Code-->
+	        </div>
+            <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:0; border:#FFD701 3px solid;">
+	        	<img style="width:100%;" src="../assets/image/paying-img.png" class="paying-later">
+	        </div>
+
+            <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:23px; border:#FFD701 3px solid;"> 
+	        	<div class="visible-lg visible-md visible-sm visible-xs" style="margin-left: 5px; margin-right: 5px;">
+	        		<h4 style="color:#015F9E !important; margin-bottom:20px;">
+	        			Nanaimo Flights From Other UK Airports
+	        		</h4>
+	        			        		<p style="margin-bottom:0px;">
+	        				        			<a style="color:#333;font-size: 13px;" href="javascript: bookingReq(['25-Sep-2025', '30-Sep-2025','Heathrow','LHR','Nanaimo','YCD','','','Return','Economy' ,'10-09-2025 - 25-11-2025','1868']);">Flights From Heathrow	        				<strong class="pull-right" style="color:#015696;">fr £ 1868</strong>
+	        			</a>
+	        		</p>
+                    <div class="dotted_border"></div>
+                    	        		<p style="margin-bottom:0px;">
+	        				        			<a style="color:#333;font-size: 13px;" href="javascript: bookingReq(['25-Sep-2025', '30-Sep-2025','London City','LCY','Nanaimo','YCD','','','Return','Economy' ,'10-09-2025 - 25-11-2025','576']);">Flights From London City	        				<strong class="pull-right" style="color:#015696;">fr £ 576</strong>
+	        			</a>
+	        		</p>
+                    <div class="dotted_border"></div>
+                                    </div>
+            </div>
+            <div style="text-align:center; margin-top:15px; color: #fff; background-color:#F3F3F3; padding:0px; border:#FFD701 3px solid;">
+       			<div style="margin-top:0;" class="booking_session side_whybook_w_us visible-lg visible-md">
+       				<h3>Why book with us ?</h3> 
+   					<ul style="text-align:left;">
+                    	<li class="first"><i class="fa fa-check"></i> Best Prices - Save Money</li>
+                        <li><i class="fa fa-check"></i> No Hidden Fees</li>
+                        <li><i class="fa fa-check"></i> Financial Protection</li>
+                        <li><i class="fa fa-check"></i> Flexible Payment Options - Book Now Pay Later</li>
+                        <li><i class="fa fa-check"></i> Secure Payments &amp; Complete Privacy</li>
+                        <li><i class="fa fa-check"></i> Dedicated Customer Support - Friendly Staff</li>
+                        <li><i class="fa fa-check"></i> Proven Record Of Over Thousands of Satisfied Customers</li>
+                        <li class="last"><i class="fa fa-check"></i> Soft Cancellation Policies and Much More</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- <div class="form-group">
                 <p>Need help? Call us for unpublished fares.</p>
                 <strong>+44 207 123 4567</strong>
-            </div>
+            </div> -->
         </div>
         <div class="content">
             <div class="row">
@@ -1946,7 +2044,7 @@ $iataList = array_map(function ($a) {
                                                     <?php echo date('D d, M', strtotime(end($outSegs)['arrive'])); ?></div>
                                             </div>
                                         </div>
-                                        <a href="#" class="flight-details-link">Flight Details</a>
+                                        
                                     </div>
 
                                     <!-- Inbound -->
@@ -1994,12 +2092,17 @@ $iataList = array_map(function ($a) {
                                                         <?php echo date('D d, M', strtotime(end($inSegs)['arrive'])); ?></div>
                                                 </div>
                                             </div>
-                                            <a href="#" class="more-flights-link">More
-                                                <?php echo htmlspecialchars($res['airline']); ?> Flights</a>
+                                            
                                         </div>
                                     <?php endif; ?>
 
 
+                                </div>
+
+                                <div class="flight-footer" style="border: 1px solid red; width: 100%;">
+                                <a href="#" class="flight-details-link">Flight Details</a>
+                                <a href="#" class="more-flights-link">More
+                                                <?php echo htmlspecialchars($res['airline']); ?> Flights</a>
                                 </div>
                             </div>
                             <div class="flight-card-inner"
