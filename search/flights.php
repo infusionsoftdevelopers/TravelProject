@@ -1225,73 +1225,267 @@ $iataList = array_map(function ($a) {
 
 <style> 
     .flight-card {
-    display: flex;
-    border: 2px solid #ccc;
-    border-radius: 6px;
-    overflow: hidden;
-    margin: 15px 0;
-    font-family: Arial, sans-serif;
-}
+        display: flex;
+        flex-direction: column;
+        border: 2px solid #8B5CF6;
+        border-radius: 6px;
+        overflow: hidden;
+        margin: 15px 0;
+        font-family: Arial, sans-serif;
+        background: #fff;
+        position: relative;
+    }
 
-.flight-header {
-    width: 100%;
-    background: #002b7f;
-    color: #fff;
-    padding: 8px 12px;
-    font-size: 16px;
-    font-weight: bold;
-}
+    .flight-header {
+        width: 100%;
+        background: #F3F4F6;
+        color: #374151;
+        padding: 12px 16px;
+        font-size: 16px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
-.flight-body {
-    flex: 3;
-    padding: 12px;
-    border-right: 3px solid #ffcb00;
-}
+    .flight-number {
+        background: #8B5CF6;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: bold;
+    }
 
-.flight-section {
-    margin-bottom: 15px;
-}
+    .flight-body {
+        flex: 3;
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+    }
 
-.flight-section h4 {
-    background: #0070c9;
-    color: #fff;
-    padding: 5px;
-    font-size: 14px;
-    margin: 0 0 5px;
-}
+    .flight-section {
+        flex: 1;
+        background: white;
+        border-right: 1px solid #E5E7EB;
+        position: relative;
+    }
 
-.flight-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-}
+    .flight-section:last-child {
+        border-right: none;
+    }
 
-.flight-info .from, .flight-info .to {
-    width: 30%;
-    font-size: 14px;
-}
+    .flight-section h4 {
+        background: #1E40AF;
+        color: #fff;
+        padding: 8px 12px;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-.flight-info .stops {
-    flex: 1;
-    font-size: 13px;
-    color: #333;
-}
+    .flight-section h4::after {
+        content: "➜";
+        font-size: 16px;
+    }
 
-.flight-sidebar {
-    flex: 1;
-    background: #ffeb3b;
-    padding: 15px;
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-}
+    .flight-section:last-child h4::after {
+        content: "⬅";
+    }
 
-.flight-sidebar .price {
-    font-size: 20px;
-    color: #d32f2f;
-    margin-bottom: 10px;
-}
+    .flight-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+        text-align: center;
+    }
+
+    .flight-info .from, .flight-info .to {
+        width: 30%;
+        font-size: 14px;
+    }
+
+    .airport-code {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2563EB;
+        line-height: 1.2;
+    }
+
+    .airport-name {
+        font-size: 12px;
+        color: #6B7280;
+        margin-bottom: 4px;
+    }
+
+    .flight-time {
+        font-size: 18px;
+        font-weight: bold;
+        color: #374151;
+        margin-bottom: 2px;
+    }
+
+    .flight-date {
+        font-size: 12px;
+        color: #6B7280;
+    }
+
+    .flight-info .stops {
+        flex: 1;
+        font-size: 13px;
+        color: #374151;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .stops-text {
+        font-size: 13px;
+        color: #374151;
+    }
+
+    .airline-name {
+        font-size: 12px;
+        color: #6B7280;
+    }
+
+    .flight-path {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 8px 0;
+    }
+
+    .flight-path-line {
+        width: 60px;
+        height: 2px;
+        background: repeating-linear-gradient(
+            to right,
+            #D1D5DB 0px,
+            #D1D5DB 8px,
+            transparent 8px,
+            transparent 16px
+        );
+        position: relative;
+    }
+
+    .flight-path-line::after {
+        content: "✈";
+        position: absolute;
+        right: -8px;
+        top: -6px;
+        font-size: 12px;
+        color: #9CA3AF;
+    }
+
+    .flight-sidebar {
+        background: #1E40AF;
+        border: 3px solid #FCD34D;
+        padding: 16px;
+        text-align: center;
+        font-size: 14px;
+        color: white;
+        position: relative;
+        min-width: 200px;
+        margin-left: auto;
+    }
+
+    .flight-sidebar::before {
+        content: "";
+        position: absolute;
+        left: -12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+        border-right: 12px solid #FCD34D;
+    }
+
+    .flight-sidebar .price {
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        margin-bottom: 12px;
+    }
+
+    .flight-sidebar .call-text {
+        font-size: 12px;
+        margin-bottom: 8px;
+        line-height: 1.4;
+    }
+
+    .flight-sidebar .call-now {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    .flight-sidebar .phone {
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .flight-details-link {
+        position: absolute;
+        bottom: 8px;
+        left: 16px;
+        font-size: 12px;
+        color: #DC2626;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .flight-details-link::after {
+        content: "⌄";
+        font-size: 10px;
+    }
+
+    .more-flights-link {
+        position: absolute;
+        bottom: 8px;
+        right: 16px;
+        font-size: 12px;
+        color: #DC2626;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .more-flights-link::before {
+        content: "ℹ";
+        background: #DC2626;
+        color: white;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+    }
+
+    .more-flights-link::after {
+        content: "⌄";
+        font-size: 10px;
+    }
 
 </style>
     <script>
@@ -1514,62 +1708,87 @@ $iataList = array_map(function ($a) {
 
                     <div class="flight-card">
     <div class="flight-header">
-        <span class="airline"><?php echo htmlspecialchars($res['airline']); ?></span>
-        <span class="route">To <?php echo htmlspecialchars($res['outbound']['segments'][count($res['outbound']['segments']) - 1]['to']); ?></span>
+        <div class="flight-number">1</div>
+        <span class="airline"><?php echo htmlspecialchars($res['airline']); ?> To <?php echo htmlspecialchars($res['outbound']['segments'][count($res['outbound']['segments']) - 1]['to']); ?></span>
     </div>
 
     <div class="flight-body">
         <!-- Outbound -->
         <div class="flight-section">
-            <h4>Outbound Flight ➜</h4>
+            <h4>Outbound Flight</h4>
             <?php $outSegs = $res['outbound']['segments']; ?>
             <div class="flight-info">
                 <div class="from">
-                    <strong><?php echo htmlspecialchars($outSegs[0]['from']); ?></strong><br>
-                    <?php echo date('g:i A', strtotime($outSegs[0]['depart'])); ?><br>
-                    <?php echo date('D d, M', strtotime($outSegs[0]['depart'])); ?>
+                    <div class="airport-code"><?php echo htmlspecialchars($outSegs[0]['from']); ?></div>
+                    <div class="airport-name"><?php 
+                        $fromAirport = findAirport($outSegs[0]['from'], $AIRPORTS);
+                        echo $fromAirport ? htmlspecialchars($fromAirport['city']) : '';
+                    ?></div>
+                    <div class="flight-time"><?php echo date('g:i A', strtotime($outSegs[0]['depart'])); ?></div>
+                    <div class="flight-date"><?php echo date('D d, M', strtotime($outSegs[0]['depart'])); ?></div>
                 </div>
                 <div class="stops">
-                    <?php echo max(0, count($outSegs) - 1); ?> stops<br>
-                    <?php echo htmlspecialchars($res['airline']); ?>
+                    <div class="stops-text"><?php echo max(0, count($outSegs) - 1); ?> stops</div>
+                    <div class="flight-path">
+                        <div class="flight-path-line"></div>
+                    </div>
+                    <div class="airline-name"><?php echo htmlspecialchars($res['airline']); ?></div>
                 </div>
                 <div class="to">
-                    <strong><?php echo htmlspecialchars(end($outSegs)['to']); ?></strong><br>
-                    <?php echo date('g:i A', strtotime(end($outSegs)['arrive'])); ?><br>
-                    <?php echo date('D d, M', strtotime(end($outSegs)['arrive'])); ?>
+                    <div class="airport-code"><?php echo htmlspecialchars(end($outSegs)['to']); ?></div>
+                    <div class="airport-name"><?php 
+                        $toAirport = findAirport(end($outSegs)['to'], $AIRPORTS);
+                        echo $toAirport ? htmlspecialchars($toAirport['city']) : '';
+                    ?></div>
+                    <div class="flight-time"><?php echo date('g:i A', strtotime(end($outSegs)['arrive'])); ?></div>
+                    <div class="flight-date"><?php echo date('D d, M', strtotime(end($outSegs)['arrive'])); ?></div>
                 </div>
             </div>
+            <a href="#" class="flight-details-link">Flight Details</a>
         </div>
 
         <!-- Inbound -->
         <?php if ($res['inbound']) : ?>
         <div class="flight-section">
-            <h4>Inbound Flight ⬅</h4>
+            <h4>Inbound Flight</h4>
             <?php $inSegs = $res['inbound']['segments']; ?>
             <div class="flight-info">
                 <div class="from">
-                    <strong><?php echo htmlspecialchars($inSegs[0]['from']); ?></strong><br>
-                    <?php echo date('g:i A', strtotime($inSegs[0]['depart'])); ?><br>
-                    <?php echo date('D d, M', strtotime($inSegs[0]['depart'])); ?>
+                    <div class="airport-code"><?php echo htmlspecialchars($inSegs[0]['from']); ?></div>
+                    <div class="airport-name"><?php 
+                        $fromAirport = findAirport($inSegs[0]['from'], $AIRPORTS);
+                        echo $fromAirport ? htmlspecialchars($fromAirport['city']) : '';
+                    ?></div>
+                    <div class="flight-time"><?php echo date('g:i A', strtotime($inSegs[0]['depart'])); ?></div>
+                    <div class="flight-date"><?php echo date('D d, M', strtotime($inSegs[0]['depart'])); ?></div>
                 </div>
                 <div class="stops">
-                    <?php echo max(0, count($inSegs) - 1); ?> stops<br>
-                    <?php echo htmlspecialchars($res['airline']); ?>
+                    <div class="stops-text"><?php echo max(0, count($inSegs) - 1); ?> stops</div>
+                    <div class="flight-path">
+                        <div class="flight-path-line"></div>
+                    </div>
+                    <div class="airline-name"><?php echo htmlspecialchars($res['airline']); ?></div>
                 </div>
                 <div class="to">
-                    <strong><?php echo htmlspecialchars(end($inSegs)['to']); ?></strong><br>
-                    <?php echo date('g:i A', strtotime(end($inSegs)['arrive'])); ?><br>
-                    <?php echo date('D d, M', strtotime(end($inSegs)['arrive'])); ?>
+                    <div class="airport-code"><?php echo htmlspecialchars(end($inSegs)['to']); ?></div>
+                    <div class="airport-name"><?php 
+                        $toAirport = findAirport(end($inSegs)['to'], $AIRPORTS);
+                        echo $toAirport ? htmlspecialchars($toAirport['city']) : '';
+                    ?></div>
+                    <div class="flight-time"><?php echo date('g:i A', strtotime(end($inSegs)['arrive'])); ?></div>
+                    <div class="flight-date"><?php echo date('D d, M', strtotime(end($inSegs)['arrive'])); ?></div>
                 </div>
             </div>
+            <a href="#" class="more-flights-link">More <?php echo htmlspecialchars($res['airline']); ?> Flights</a>
         </div>
         <?php endif; ?>
-    </div>
 
-    <div class="flight-sidebar">
-        <div class="price">£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
-        <p>Special rates not published online.<br><strong>Call us now</strong></p>
-        <div class="phone">📞 0207 993 6068</div>
+        <div class="flight-sidebar">
+            <div class="price">£<?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
+            <div class="call-text">Special rates not published online.</div>
+            <div class="call-now">Call us now</div>
+            <div class="phone">📞 0207 993 6068</div>
+        </div>
     </div>
 </div>
 
