@@ -723,7 +723,7 @@ function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $cla
         '22:00',
     ];
     shuffle($departTimes);
-    $departTimes = array_slice($departTimes, 0, 3); // choose 3 random times
+    $departTimes = array_slice($departTimes, 0, 1); // choose 3 random times
 
     foreach ($departTimes as $time) {
         // Determine if we do direct or one-stop (50% chance one-stop if there is at least one hub).
