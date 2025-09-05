@@ -2237,7 +2237,8 @@ $iataList = array_map(function ($a) {
                                 </div> -->
 
                                 <div class="price_details hidden-xs hidden-sm" style="">
-                                    <div class="price">
+                                    <?php if($index > 2 ):?>
+                                    <div class="price" style="border: 1px solid red;">
                                         <h6>From</h6>
                                         <h1>£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?><span>PP</span>
                                         </h1>
@@ -2252,9 +2253,6 @@ $iataList = array_map(function ($a) {
                                             <strong style="font-size:13px;">Total Price £
                                                 <?php echo htmlspecialchars(number_format($res['price'], 0)); ?></strong>
                                         </h6>
-                                        <!-- <h6 class="phn-strok">
-                                                        <a href="tel:02079936068">0207 993 6068</a>
-                                                    </h6> -->
                                     </div>
                                     <div class="add-to-links-div">
                                         <a class="call_now" href="tel:02079936068">
@@ -2270,6 +2268,18 @@ $iataList = array_map(function ($a) {
                                             <div><i class="fa fa-whatsapp"></i><span>Whatsapp</span></div>
                                         </a>
                                     </div>
+                                    <?php else:?>
+                                        <div class="price" style="    color: #fff;
+    background-color: #015696;
+    padding: 10px 8px;
+    font-size: 18px;
+    font-weight: 100;">
+                                        <p style=""> Special rates not published online.<br><strong>Call us now</strong><br>
+								                    		<span class="icon-phone"></span>
+									                    	<span class="dialme">0207 993 6068</span>
+									                  	</p>
+                                        </div>
+                                    <?php endif;?>
                                 </div>
 
                             </div>
