@@ -4,25 +4,25 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 
-include_once __DIR__ . '../../../wp-blog-header.php';
-require_once __DIR__ . '../../../wp-load.php';
+// include_once __DIR__ . '../../../wp-blog-header.php';
+// require_once __DIR__ . '../../../wp-load.php';
 
 
 
-get_header();
+// get_header();
 
-$args = array(
-  'post_type' => 'apus_header',
-  'p'         => 1811 // ID of Header 3
-);
-$query = new WP_Query($args);
-if ($query->have_posts()) {
-    while ($query->have_posts()) {
-        $query->the_post();
-        the_content(); // outputs Header 3
-    }
-}
-wp_reset_postdata();
+// $args = array(
+//   'post_type' => 'apus_header',
+//   'p'         => 1811 // ID of Header 3
+// );
+// $query = new WP_Query($args);
+// if ($query->have_posts()) {
+//     while ($query->have_posts()) {
+//         $query->the_post();
+//         the_content(); // outputs Header 3
+//     }
+// }
+// wp_reset_postdata();
 
 // var_dump($_GET);
 
@@ -2331,7 +2331,7 @@ $iataList = array_map(function ($a) {
 
         </div>
     </div>
-    <?php get_footer(); ?>
+    <?php //get_footer(); ?>
 </body>
 
 </html>
