@@ -2,28 +2,6 @@
 // dynamic flight search and booking mock application
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
-
-include_once __DIR__ . '../../../wp-blog-header.php';
-require_once __DIR__ . '../../../wp-load.php';
-
-
-
-get_header();
-
-$args = array(
-  'post_type' => 'apus_header',
-  'p'         => 1811 // ID of Header 3
-);
-$query = new WP_Query($args);
-if ($query->have_posts()) {
-    while ($query->have_posts()) {
-        $query->the_post();
-        the_content(); // outputs Header 3
-    }
-}
-wp_reset_postdata();
-
 // var_dump($_GET);
 
 // Basic data about airports including coordinates for distance calculation.
@@ -1006,7 +984,6 @@ $__classParam = strtolower(getParam(['class', 'cabin_class'], ''));
 //     elseif (isset($_GET['first'])) { $__classParam = 'first'; }
 //     $__classParam = strtolower( $_GET[$__classParam] );
 // }
-
 if ($__classParam === '') {
     if (isset($_GET['economy'])) {
         $__classParam = strtolower($_GET['economy']);
@@ -1020,7 +997,6 @@ if ($__classParam === '') {
         $__classParam = strtolower($_GET['first']);
     }
 }
-
 // echo $__classParam;
 // die();
 $_GET['class'] = $__classParam !== '' ? $__classParam : 'economy';
@@ -1096,18 +1072,15 @@ $iataList = array_map(function ($a) {
         }
     </style>
     <style>
-    #apus-header{
-        display: none !important;
-    }
-    .elementor-section.elementor-section-boxed > .elementor-container {
-      max-width: 1320px !important;
-    }
-    .free-callback-popup{
-        width: 350px;
-    }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7fafc;
+            margin: 0;
+            padding: 0;
+        }
 
         .container {
-            max-width: 1320px;
+            max-width: 1200px;
             margin: auto;
             display: flex;
             gap: 16px;
@@ -1120,7 +1093,6 @@ $iataList = array_map(function ($a) {
             border: 1px solid #ddd;
             /* padding: 16px; */
             border-radius: 4px;
-            padding: 0 !important;
         }
 
         .content {
@@ -1822,7 +1794,6 @@ $iataList = array_map(function ($a) {
     </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://brighttravels.co.uk/wp-content/themes/tourio/css/tickets.css">
 </head>
 
 <body>
@@ -2157,14 +2128,14 @@ $iataList = array_map(function ($a) {
                                                     <?php echo date('D d, M', strtotime(end($outSegs)['arrive'])); ?></div>
                                             </div>
                                         </div>
-                                        <!--<div class="section-footer" style="display:flex; justify-content: space-between; padding: 8px 12px; position: relative; ">-->
-                                        <!--    <a href="#" class="flight-details-link" -->
-                                        <!--       onmouseenter="this.closest('.flight-card').querySelector('.flight-details-panel').classList.add('visible');"-->
-                                        <!--       onclick="event.preventDefault(); this.closest('.flight-card').querySelector('.flight-details-panel').classList.add('visible');">-->
-                                        <!--        Flight Details <i class="fa fa-angle-double-down"></i>-->
-                                        <!--    </a>-->
+                                        <div class="section-footer" style="display:flex; justify-content: space-between; padding: 8px 12px; position: relative; ">
+                                            <a href="#" class="flight-details-link" 
+                                               onmouseenter="this.closest('.flight-card').querySelector('.flight-details-panel').classList.add('visible');"
+                                               onclick="event.preventDefault(); this.closest('.flight-card').querySelector('.flight-details-panel').classList.add('visible');">
+                                                Flight Details <i class="fa fa-angle-double-down"></i>
+                                            </a>
                                             
-                                        <!--</div>-->
+                                        </div>
                                     </div>
 
                                     <!-- Inbound -->
@@ -2212,12 +2183,12 @@ $iataList = array_map(function ($a) {
                                                         <?php echo date('D d, M', strtotime(end($inSegs)['arrive'])); ?></div>
                                                 </div>
                                             </div>
-                                            <!--<div class="section-footer" style="display:flex; justify-content: flex-end; padding: 8px 12px; position: relative; ">-->
-                                            <!--    <a href="#" class="more-flights-link">-->
-                                            <!--        <span class="info-dot"></span> More <?php echo htmlspecialchars($res['airline']); ?> Flights <i class="fa fa-angle-double-down"></i>-->
-                                            <!--    </a>-->
+                                            <div class="section-footer" style="display:flex; justify-content: flex-end; padding: 8px 12px; position: relative; ">
+                                                <a href="#" class="more-flights-link">
+                                                    <span class="info-dot"></span> More <?php echo htmlspecialchars($res['airline']); ?> Flights <i class="fa fa-angle-double-down"></i>
+                                                </a>
                                                 
-                                            <!--</div>-->
+                                            </div>
                                         </div>
                                     <?php endif; ?>
 
@@ -2331,7 +2302,6 @@ $iataList = array_map(function ($a) {
 
         </div>
     </div>
-    <?php get_footer(); ?>
 </body>
 
 </html>
