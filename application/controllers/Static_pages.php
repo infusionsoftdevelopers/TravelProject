@@ -98,6 +98,16 @@ class Static_pages extends RR_Controller {
         $data['meta_desc'] = "RR Travels, the UK's largest independent travel agent, specializes in providing good value, quality holidays alongside excellent customer service. ";
         $data['meta_key'] = "cheap flights,flights,cheap flights from UK,cheap flights from london";
         $data['airlines'] = $this->flights->allAirlinesform();
+        // $AIRLINES = "[";
+        // foreach ($data["airlines"] as $air){
+        //     $AIRLINES .=
+        //         "['name' => '".$air["airline"]."',       'code' => '".$air["airline_code"]."', 'quality' => 1.25, 'hubs' => ['AUH']]";
+        //         break;
+        //     }
+            
+        //     $AIRLINES .="]";
+        //     echo $AIRLINES;
+        //     die();
         if($dest != ''){
             $dest = str_replace('-',' ',$dest);
             $query = "SELECT `airport_code`,`airport_name` from `airports` where `airport_name` like '%{$dest}%';";
