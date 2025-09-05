@@ -308,7 +308,7 @@ $AIRLINES = [
     ['name' => 'Saudi Arabian Airlines','code' => 'SV','quality' => 1.05, 'hubs' => ['JED','RUH']],
     ['name' => 'Malaysia Airlines',    'code' => 'MH', 'quality' => 1.00, 'hubs' => ['KUL']],
 ];
-var_dump($AIRLINESORIGINAL);
+$AIRLINES = $AIRLINESORIGINAL;
 // Multipliers for different cabin classes.
 $CLASSES = [
     // Updated cabin multipliers: higher premiums for upper classes
