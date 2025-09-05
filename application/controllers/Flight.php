@@ -74,7 +74,7 @@ class Flight extends RR_Controller {
             }
 
             
-            $redirectUrl = base_url('search/flights.php');
+            $redirectUrl = base_url('search/results.php');
             $queryString = $_SERVER['QUERY_STRING'];
             if (!empty($queryString)) {
                 $redirectUrl .= (strpos($redirectUrl, '?') === false ? '?' : '&') . $queryString;

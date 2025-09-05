@@ -311,9 +311,9 @@ $AIRLINES = [
 $CLASSES = [
     // Updated cabin multipliers: higher premiums for upper classes
     'economy'         => 1.00,
-    'premium'         => 1.60,
-    'business'        => 2.75,
-    'first'           => 4.20,
+    'premium economy'         => 1.60,
+    'business class'        => 2.75,
+    'first class'           => 4.20,
 ];
 
 // Price ranges for each month (adult one-way before multipliers).
@@ -680,6 +680,7 @@ function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateSt
                     $comboDur   = $out['totalDuration'] + $in['totalDuration'];
                     $results[] = [
                         'airline'  => $airline['name'],
+                        'airlineCode' => $airline['code'],
                         'outbound' => $out,
                         'inbound'  => $in,
                         'price'    => $comboPrice,
@@ -695,6 +696,7 @@ function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateSt
             foreach ($outboundFlights as $out) {
                 $results[] = [
                     'airline'  => $airline['name'],
+                    'airlineCode' => $airline['code'],
                     'outbound' => $out,
                     'inbound'  => null,
                     'price'    => $out['price'],
@@ -735,17 +737,114 @@ function sanitizeIata($str) {
 }
 
 // Read basic search parameters
-$mode      = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
-$fromCode  = isset($_GET['from']) ? sanitizeIata($_GET['from']) : '';
-$toCode    = isset($_GET['to'])   ? sanitizeIata($_GET['to'])   : '';
-$depart    = isset($_GET['depart']) ? $_GET['depart'] : '';
-$return    = isset($_GET['return']) ? $_GET['return'] : '';
-$classKey  = isset($_GET['class']) ? $_GET['class'] : 'economy';
+// $mode      = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
+// $fromCode  = isset($_GET['from']) ? sanitizeIata($_GET['from']) : '';
+// $toCode    = isset($_GET['to'])   ? sanitizeIata($_GET['to'])   : '';
+// $depart    = isset($_GET['depart']) ? $_GET['depart'] : '';
+// $return    = isset($_GET['return']) ? $_GET['return'] : '';
+// $classKey  = isset($_GET['class']) ? $_GET['class'] : 'economy';
+// // Additional fields for refined search
+// $airlineCode = isset($_GET['airline']) ? strtoupper(preg_replace('/[^A-Za-z]/', '', $_GET['airline'])) : '';
+// $adults   = isset($_GET['adults']) ? max(1, intval($_GET['adults'])) : 1;
+// $children = isset($_GET['children']) ? max(0, intval($_GET['children'])) : 0;
+// $infants  = isset($_GET['infants']) ? max(0, intval($_GET['infants'])) : 0;
+
+
+function extractAirportCode($str)
+{
+    if (empty($str)) {
+        return '';
+    }
+    
+    // If it contains " - " (dash with spaces), extract the part after the dash
+    if (strpos($str, ' - ') !== false) {
+        $parts = explode(' - ', $str);
+        if (count($parts) >= 2) {
+            // Get the last part (should be the airport code)
+            $code = trim(end($parts));
+            return sanitizeIata($code);
+        }
+    }
+    
+    // If no dash format, treat as direct airport code
+    return sanitizeIata($str);
+}
+
+// Convert airline name to logo filename format
+function getAirlineLogoFilename($airlineName)
+{
+    // Convert to lowercase and replace spaces with underscores
+    $filename = strtolower($airlineName);
+    $filename = str_replace(' ', '_', $filename);
+    $filename = str_replace('-', '_', $filename);
+    $filename = str_replace('.', '', $filename);
+    $filename = str_replace('&', 'and', $filename);
+    
+    return $filename . '.jpg';
+}
+
+function getParam(array $keys, $default = null)
+{
+    foreach ($keys as $key) {
+        if (isset($_GET[$key]) && $_GET[$key] !== '') {
+            return $_GET[$key];
+        }
+    }
+    return $default;
+}
+
+$_GET['mode'] = strtolower(getParam(['mode', 'flight_type', 'trip_type', 'trip-type'], 'round')) === 'oneway' ? 'oneway' : 'round';
+$_GET['from'] = extractAirportCode(getParam(['from', 'dept_arpt', 'departure-from'], ''));
+$_GET['to'] = extractAirportCode(getParam(['to', 'dest_arpt', 'return-from'], ''));
+$_GET['depart'] = getParam(['depart', 'departure_date', 'departure-date'], '');
+$_GET['return'] = getParam(['return', 'return_date', 'return-date'], '');
+
+// Class handling: prefer explicit class/cabin_class, otherwise infer from flags like economy=Economy
+$__classParam = strtolower(getParam(['class', 'cabin_class'], ''));
+
+// if ($__classParam === '') {
+//     if (isset($_GET['economy'])) { $__classParam = 'economy'; }
+//     elseif (isset($_GET['premium_economy']) || isset($_GET['premium-economy'])) { $__classParam = 'premium_economy'; }
+//     elseif (isset($_GET['business'])) { $__classParam = 'business'; }
+//     elseif (isset($_GET['first'])) { $__classParam = 'first'; }
+//     $__classParam = strtolower( $_GET[$__classParam] );
+// }
+
+if ($__classParam === '') {
+    if (isset($_GET['economy'])) {
+        $__classParam = strtolower($_GET['economy']);
+    } elseif (isset($_GET['premium_economy'])) {
+        $__classParam = strtolower($_GET['premium_economy']);
+    } elseif (isset($_GET['premium-economy'])) {
+        $__classParam = strtolower($_GET['premium-economy']);
+    } elseif (isset($_GET['business'])) {
+        $__classParam = strtolower($_GET['business']);
+    } elseif (isset($_GET['first'])) {
+        $__classParam = strtolower($_GET['first']);
+    }
+}
+
+// echo $__classParam;
+// die();
+$_GET['class'] = $__classParam !== '' ? $__classParam : 'economy';
+$_GET['airline'] = strtoupper(preg_replace('/[^A-Za-z]/', '', getParam(['airline', 'airline'], '')));
+$_GET['adults'] = max(1, intval(getParam(['adults', 'padults'], 1)));
+$_GET['children'] = max(0, intval(getParam(['children', 'pchildren'], 0)));
+$_GET['infants'] = max(0, intval(getParam(['infants', 'pinfants'], 0)));
+$_GET['c_name'] = getParam(['c_name', 'full-name'], '');
+$_GET['c_email'] = getParam(['c_email', 'email'], '');
+$_GET['c_phone'] = getParam(['c_phone', 'phone'], '');
+$mode = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
+$fromCode = isset($_GET['from']) ? extractAirportCode($_GET['from']) : '';
+$toCode = isset($_GET['to']) ? extractAirportCode($_GET['to']) : '';
+$depart = isset($_GET['depart']) ? date('Y-m-d', strtotime($_GET['depart'])) : '';
+$return = isset($_GET['return']) ? date('Y-m-d', strtotime($_GET['return'])) : '';
+$classKey = isset($_GET['class']) ? $_GET['class'] : 'economy';
 // Additional fields for refined search
 $airlineCode = isset($_GET['airline']) ? strtoupper(preg_replace('/[^A-Za-z]/', '', $_GET['airline'])) : '';
-$adults   = isset($_GET['adults']) ? max(1, intval($_GET['adults'])) : 1;
+$adults = isset($_GET['adults']) ? max(1, intval($_GET['adults'])) : 1;
 $children = isset($_GET['children']) ? max(0, intval($_GET['children'])) : 0;
-$infants  = isset($_GET['infants']) ? max(0, intval($_GET['infants'])) : 0;
+$infants = isset($_GET['infants']) ? max(0, intval($_GET['infants'])) : 0;
 
 $results = [];
 if ($fromCode && $toCode && $depart) {
@@ -1951,7 +2050,7 @@ $iataList = array_map(function($a) {
                                 
                             </div>
                             <div class="flight-card-inner"
-                                style="border-left: 1px solid red; width: 25%; background-color: #ffdd26;">
+                                style="border-left: 0px solid red; width: 25%; background-color: #ffdd26;">
                                 <!-- <div class="flight-sidebar">
                                     <div class="price">£<?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
                                     <div class="call-text">Special rates not published online.</div>
@@ -1961,7 +2060,7 @@ $iataList = array_map(function($a) {
 
                                 <div class="price_details hidden-xs hidden-sm" style="">
                                     <?php if($index > 2 ):?>
-                                    <div class="price" style="border: 1px solid red;">
+                                    <div class="price" style="border: 0px solid red;">
                                         <h6>From</h6>
                                         <h1>£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?><span>PP</span>
                                         </h1>
