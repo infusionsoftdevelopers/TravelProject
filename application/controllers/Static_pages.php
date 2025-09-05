@@ -101,8 +101,8 @@ class Static_pages extends RR_Controller {
         // $AIRLINES = "[";
         // foreach ($data["airlines"] as $air){
         //     $AIRLINES .=
-        //         "['name' => '".$air["airline"]."',       'code' => '".$air["airline_code"]."', 'quality' => 1.25, 'hubs' => ['AUH']]";
-        //         break;
+        //         "['name' => '".$air["airline"]."',       'code' => '".$air["airline_code"]."', 'quality' => 1.25, 'hubs' => ['AUH']],<br>";
+        //         // break;
         //     }
             
         //     $AIRLINES .="]";

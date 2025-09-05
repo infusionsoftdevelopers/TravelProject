@@ -4,6 +4,8 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 
+include_once __DIR__ . '/array_data.php';
+
 // include_once __DIR__ . '../../../wp-blog-header.php';
 // require_once __DIR__ . '../../../wp-load.php';
 
@@ -306,7 +308,7 @@ $AIRLINES = [
     ['name' => 'Saudi Arabian Airlines','code' => 'SV','quality' => 1.05, 'hubs' => ['JED','RUH']],
     ['name' => 'Malaysia Airlines',    'code' => 'MH', 'quality' => 1.00, 'hubs' => ['KUL']],
 ];
-
+var_dump($AIRLINESORIGINAL);
 // Multipliers for different cabin classes.
 $CLASSES = [
     // Updated cabin multipliers: higher premiums for upper classes
