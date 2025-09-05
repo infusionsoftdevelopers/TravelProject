@@ -1,30 +1,28 @@
 <?php
 // dynamic flight search and booking mock application
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
 
-include_once __DIR__ . '/array_data.php';
-
-// include_once __DIR__ . '../../../wp-blog-header.php';
-// require_once __DIR__ . '../../../wp-load.php';
+include_once __DIR__ . '../../../wp-blog-header.php';
+require_once __DIR__ . '../../../wp-load.php';
 
 
 
-// get_header();
+get_header();
 
-// $args = array(
-//   'post_type' => 'apus_header',
-//   'p'         => 1811 // ID of Header 3
-// );
-// $query = new WP_Query($args);
-// if ($query->have_posts()) {
-//     while ($query->have_posts()) {
-//         $query->the_post();
-//         the_content(); // outputs Header 3
-//     }
-// }
-// wp_reset_postdata();
+$args = array(
+  'post_type' => 'apus_header',
+  'p'         => 1811 // ID of Header 3
+);
+$query = new WP_Query($args);
+if ($query->have_posts()) {
+    while ($query->have_posts()) {
+        $query->the_post();
+        the_content(); // outputs Header 3
+    }
+}
+wp_reset_postdata();
 
 // var_dump($_GET);
 
@@ -308,12 +306,12 @@ $AIRLINES = [
     ['name' => 'Saudi Arabian Airlines','code' => 'SV','quality' => 1.05, 'hubs' => ['JED','RUH']],
     ['name' => 'Malaysia Airlines',    'code' => 'MH', 'quality' => 1.00, 'hubs' => ['KUL']],
 ];
-$AIRLINES = $AIRLINESORIGINAL;
+
 // Multipliers for different cabin classes.
 $CLASSES = [
     // Updated cabin multipliers: higher premiums for upper classes
     'economy'         => 1.00,
-    'premium economy'         => 1.60,
+    'premium class'         => 1.60,
     'business class'        => 2.75,
     'first class'           => 4.20,
 ];
@@ -738,20 +736,6 @@ function sanitizeIata($str) {
     return strtoupper(substr(preg_replace('/[^A-Za-z]/', '', $str), 0, 3));
 }
 
-// Read basic search parameters
-// $mode      = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
-// $fromCode  = isset($_GET['from']) ? sanitizeIata($_GET['from']) : '';
-// $toCode    = isset($_GET['to'])   ? sanitizeIata($_GET['to'])   : '';
-// $depart    = isset($_GET['depart']) ? $_GET['depart'] : '';
-// $return    = isset($_GET['return']) ? $_GET['return'] : '';
-// $classKey  = isset($_GET['class']) ? $_GET['class'] : 'economy';
-// // Additional fields for refined search
-// $airlineCode = isset($_GET['airline']) ? strtoupper(preg_replace('/[^A-Za-z]/', '', $_GET['airline'])) : '';
-// $adults   = isset($_GET['adults']) ? max(1, intval($_GET['adults'])) : 1;
-// $children = isset($_GET['children']) ? max(0, intval($_GET['children'])) : 0;
-// $infants  = isset($_GET['infants']) ? max(0, intval($_GET['infants'])) : 0;
-
-
 function extractAirportCode($str)
 {
     if (empty($str)) {
@@ -772,7 +756,6 @@ function extractAirportCode($str)
     return sanitizeIata($str);
 }
 
-// Convert airline name to logo filename format
 function getAirlineLogoFilename($airlineName)
 {
     // Convert to lowercase and replace spaces with underscores
@@ -804,6 +787,14 @@ $_GET['return'] = getParam(['return', 'return_date', 'return-date'], '');
 // Class handling: prefer explicit class/cabin_class, otherwise infer from flags like economy=Economy
 $__classParam = strtolower(getParam(['class', 'cabin_class'], ''));
 
+// if ($__classParam === '') {
+//     if (isset($_GET['economy'])) { $__classParam = 'economy'; }
+//     elseif (isset($_GET['premium_economy']) || isset($_GET['premium-economy'])) { $__classParam = 'premium_economy'; }
+//     elseif (isset($_GET['business'])) { $__classParam = 'business'; }
+//     elseif (isset($_GET['first'])) { $__classParam = 'first'; }
+//     $classParam = strtolower( $_GET[$classParam] );
+// }
+
 if ($__classParam === '') {
     if (isset($_GET['economy'])) {
         $__classParam = strtolower($_GET['economy']);
@@ -818,33 +809,8 @@ if ($__classParam === '') {
     }
 }
 
-// echo $__classParam;
-// die();
-
-function extractAirlineCode($str)
-{
-    if (empty($str)) {
-        return '';
-    }
-
-    // If it contains " - " (dash with spaces), extract the part before the dash
-    if (strpos($str, ' - ') !== false) {
-        $parts = explode(' - ', $str, 2); // limit to 2 parts
-        $code = trim($parts[0]); // first part is the code
-        return $code;
-    }
-
-    // If no dash format, treat as direct airline code
-    return $str;
-}
-
-
 $_GET['class'] = $__classParam !== '' ? $__classParam : 'economy';
-$_GET["airline"] = extractAirlineCode(isset($_GET["airline"]) ? $_GET["airline"] : '');
-// $_GET['airline'] = strtoupper(preg_replace('/[^A-Za-z]/', '', getParam(['airline', 'airline'], '')));
-// echo $_GET["airline"];
-// die();
-
+$_GET['airline'] = strtoupper(preg_replace('/[^A-Za-z]/', '', getParam(['airline', 'airline'], '')));
 $_GET['adults'] = max(1, intval(getParam(['adults', 'padults'], 1)));
 $_GET['children'] = max(0, intval(getParam(['children', 'pchildren'], 0)));
 $_GET['infants'] = max(0, intval(getParam(['infants', 'pinfants'], 0)));
@@ -858,7 +824,7 @@ $depart = isset($_GET['depart']) ? date('Y-m-d', strtotime($_GET['depart'])) : '
 $return = isset($_GET['return']) ? date('Y-m-d', strtotime($_GET['return'])) : '';
 $classKey = isset($_GET['class']) ? $_GET['class'] : 'economy';
 // Additional fields for refined search
-$airlineCode = isset($_GET['airline']) ? $_GET['airline'] : '';
+$airlineCode = isset($_GET['airline']) ? strtoupper(preg_replace('/[^A-Za-z]/', '', $_GET['airline'])) : '';
 $adults = isset($_GET['adults']) ? max(1, intval($_GET['adults'])) : 1;
 $children = isset($_GET['children']) ? max(0, intval($_GET['children'])) : 0;
 $infants = isset($_GET['infants']) ? max(0, intval($_GET['infants'])) : 0;
@@ -918,6 +884,7 @@ $iataList = array_map(function($a) {
     return $a['code'] . ' - ' . $a['city'] . ', ' . $a['country'];
 }, $AIRPORTS);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1031,12 +998,12 @@ $iataList = array_map(function($a) {
             margin-bottom: 2px;
         }
 
-        .price {
-            font-size: 22px;
-            font-weight: bold;
-            color: #2b6cb0;
-            line-height: 1.2;
-        }
+        /*.price {*/
+        /*    font-size: 22px;*/
+        /*    font-weight: bold;*/
+        /*    color: #2b6cb0;*/
+        /*    line-height: 1.2;*/
+        /*}*/
 
 
 
@@ -1202,31 +1169,7 @@ $iataList = array_map(function($a) {
             gap: 12px;
         }
 
-        .flight-number {
-            /* background: #8B5CF6;
-        color: white;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-        font-weight: bold; */
-            color: #fff;
-            border-radius: 50px;
-            padding: 4px 0;
-            font-weight: bolder;
-            font-size: 16px;
-            display: inline-block;
-            width: 25px;
-            height: 17px;
-            text-align: center;
-            border: 2px solid #fffbfb;
-            margin-right: 5px;
-            /* line-height: .9em; */
-            background: #350c48;
-        }
+   
 
         .flight-body {
             flex: 3;
@@ -1661,7 +1604,7 @@ $iataList = array_map(function($a) {
     </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://brighttravels.co.uk/wp-content/themes/tourio/css/tickets.css">
+    <link rel="stylesheet" href="https://brighttravels.co.uk/wp-content/themes/tourio/css/tickets.css?v=<?php echo rand(); ?>">
 </head>
 
 <body>
@@ -1673,52 +1616,87 @@ $iataList = array_map(function($a) {
     padding: 15px;
     margin-bottom: 14px;">
                 <div class="form-group">
-                    <label>Trip Type</label>
-                    <label><input type="radio" name="mode" value="round" <?php echo $mode === 'oneway' ? '' : 'checked'; ?>>
-                        Round Trip</label><br>
-                    <label><input type="radio" name="mode" value="oneway" <?php echo $mode === 'oneway' ? 'checked' : ''; ?>>
-                        One Way</label>
+                    <div class="trip-type-checkbox">
+                        <label>
+                            <input type="radio" name="mode" value="round" <?php echo $mode === 'oneway' ? '' : 'checked'; ?>>
+                            Round Trip
+                        </label>
+                        <label>
+                            <input type="radio" name="mode" value="oneway" <?php echo $mode === 'oneway' ? 'checked' : ''; ?>>
+                            One Way
+                        </label>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="from">Flying From</label>
-                    <input list="iataList" id="from" name="from" required pattern="[A-Za-z]{3}"
-                        value="<?php echo htmlspecialchars($fromCode); ?>">
-                </div>
-                <div class="form-group">
-                    <label for="to">Flying To</label>
-                    <input list="iataList" id="to" name="to" required pattern="[A-Za-z]{3}"
-                        value="<?php echo htmlspecialchars($toCode); ?>">
-                </div>
-                <datalist id="iataList">
-                    <?php // Populate airports first. ?>
-                    <?php foreach ($AIRPORTS as $apt): ?>
-                        <option value="<?php echo htmlspecialchars($apt['code']); ?>">
+                    <select id="from" name="from">
+                        <?php foreach ($AIRPORTS as $apt): ?>
+                        <option value="<?php echo htmlspecialchars($apt['code']); ?>"  <?php echo ($apt['code'] === $fromCode) ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($apt['code'] . ' - ' . $apt['city'] . ', ' . $apt['country']); ?>
                         </option>
                     <?php endforeach; ?>
-                    <?php // Then list all countries so users can search by country code as a hint. ?>
-                    <?php foreach ($COUNTRIES as $ct): ?>
-                        <option value="<?php echo htmlspecialchars($ct['code']); ?>">
+                        <?php foreach ($COUNTRIES as $ct): ?>
+                        <option value="<?php echo htmlspecialchars($ct['code']); ?>" <?php echo ($ct['code'] === $fromCode) ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($ct['code'] . ' - ' . $ct['name'] . ' (country)'); ?>
                         </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="to">Flying To</label>
+                    <select id="to" name="to">
+                        <?php foreach ($AIRPORTS as $apt): ?>
+                        <option value="<?php echo htmlspecialchars($apt['code']); ?>" <?php echo ($apt['code'] === $toCode) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($apt['code'] . ' - ' . $apt['city'] . ', ' . $apt['country']); ?>
+                        </option>
                     <?php endforeach; ?>
-                </datalist>
+                        <?php foreach ($COUNTRIES as $ct): ?>
+                        <option value="<?php echo htmlspecialchars($ct['code']); ?>" <?php echo ($ct['code'] === $toCode) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($ct['code'] . ' - ' . $ct['name'] . ' (country)'); ?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <!--<div class="form-group">-->
+                <!--    <label for="from">Flying From</label>-->
+                <!--    <input list="iataList" id="from" name="from" required pattern="[A-Za-z]{3}"-->
+                <!--        value="<?php echo htmlspecialchars($fromCode); ?>">-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                <!--    <label for="to">Flying To</label>-->
+                <!--    <input list="iataList" id="to" name="to" required pattern="[A-Za-z]{3}"-->
+                <!--        value="<?php echo htmlspecialchars($toCode); ?>">-->
+                <!--</div>-->
+                <!--<datalist id="iataList">-->
+                    <?php // Populate airports first. ?>
+                <!--    <?php foreach ($AIRPORTS as $apt): ?>-->
+                <!--        <option value="<?php echo htmlspecialchars($apt['code']); ?>">-->
+                <!--            <?php echo htmlspecialchars($apt['code'] . ' - ' . $apt['city'] . ', ' . $apt['country']); ?>-->
+                <!--        </option>-->
+                <!--    <?php endforeach; ?>-->
+                    <?php // Then list all countries so users can search by country code as a hint. ?>
+                <!--    <?php foreach ($COUNTRIES as $ct): ?>-->
+                <!--        <option value="<?php echo htmlspecialchars($ct['code']); ?>">-->
+                <!--            <?php echo htmlspecialchars($ct['code'] . ' - ' . $ct['name'] . ' (country)'); ?>-->
+                <!--        </option>-->
+                <!--    <?php endforeach; ?>-->
+                <!--</datalist>-->
                 <div class="form-group">
                     <label for="depart">Departure Date</label>
-                    <input type="date" id="depart" name="depart" required
-                        value="<?php echo htmlspecialchars($depart); ?>">
+                    <input type="text" id="depart" name="depart" required
+                        value="<?php echo htmlspecialchars($depart); ?>" readonly>
                 </div>
                 <?php if ($mode !== 'oneway'): ?>
                     <div class="form-group">
                         <label for="return">Return Date</label>
-                        <input type="date" id="return" name="return" required
-                            value="<?php echo htmlspecialchars($return); ?>">
+                        <input type="text" id="return" name="return" required
+                            value="<?php echo htmlspecialchars($return); ?>" readonly="">
                     </div>
                 <?php endif; ?>
                 <div class="form-group">
                     <label for="airline">Preferred Airline</label>
                     <select id="airline" name="airline">
-                        <option value="">All Airlines</option>
+                        <option value="" <?php echo empty($airlineCode) ? 'selected' : ''; ?>>All Airlines</option>
                         <?php foreach ($AIRLINES as $al): ?>
                             <option value="<?php echo htmlspecialchars($al['code']); ?>" <?php echo ($airlineCode && strcasecmp($airlineCode, $al['code']) == 0) ? 'selected' : ''; ?>>
                                 <?php echo htmlspecialchars($al['name']); ?>
@@ -1726,35 +1704,37 @@ $iataList = array_map(function($a) {
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="adults">Adults</label>
-                    <select id="adults" name="adults">
-                        <?php for ($i = 1; $i <= 10; $i++): ?>
-                            <option value="<?php echo $i; ?>" <?php echo ($adults == $i) ? 'selected' : ''; ?>>
-                                <?php echo $i; ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="children">Children</label>
-                    <select id="children" name="children">
-                        <?php for ($i = 0; $i <= 10; $i++): ?>
-                            <option value="<?php echo $i; ?>" <?php echo ($children == $i) ? 'selected' : ''; ?>>
-                                <?php echo $i; ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="infants">Infants</label>
-                    <select id="infants" name="infants">
-                        <?php for ($i = 0; $i <= 10; $i++): ?>
-                            <option value="<?php echo $i; ?>" <?php echo ($infants == $i) ? 'selected' : ''; ?>>
-                                <?php echo $i; ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
+                <div class="select-passengers-main">
+                    <div class="form-group">
+                        <label for="adults">Adults</label>
+                        <select id="adults" name="adults">
+                            <?php for ($i = 1; $i <= 10; $i++): ?>
+                                <option value="<?php echo $i; ?>" <?php echo ($adults == $i) ? 'selected' : ''; ?>>
+                                    <?php echo $i; ?>
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="children">Children</label>
+                        <select id="children" name="children">
+                            <?php for ($i = 0; $i <= 10; $i++): ?>
+                                <option value="<?php echo $i; ?>" <?php echo ($children == $i) ? 'selected' : ''; ?>>
+                                    <?php echo $i; ?>
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="infants">Infants</label>
+                        <select id="infants" name="infants">
+                            <?php for ($i = 0; $i <= 10; $i++): ?>
+                                <option value="<?php echo $i; ?>" <?php echo ($infants == $i) ? 'selected' : ''; ?>>
+                                    <?php echo $i; ?>
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="class">Class</label>
@@ -1765,76 +1745,66 @@ $iataList = array_map(function($a) {
                     </select>
                 </div>
                 <div class="form-group">
-                    <button type="submit" style="    height: 45px;
-    color: rgb(255, 255, 255);
-    margin-top: 10px;
-    width: 100%;
-    font-size: 18px;
-    font-family: inherit;
-    font-weight: 500;
-    background: rgb(1, 95, 158);
-    border-radius: 0px;
-    padding: 10px 0px;
-    transition: 0.3s;">Modify Search</button>
+                    <button type="submit">Modify Search</button>
                 </div>
             </form>
-            <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:10px 23px 23px 23px; border:#FFD701 3px solid;">
-            	<h4 style="color:#015F9E !important">Live Support</h4>
+    <!--        <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:10px 23px 23px 23px; border:#FFD701 3px solid;">-->
+    <!--        	<h4 style="color:#015F9E !important">Live Support</h4>-->
             	<!--Begin Comm100 Live Chat Code-->
-            	<div id="comm100-button-34"></div>
-            	<script type="text/javascript">
-            	    var Comm100API = Comm100API || new Object;
-    				Comm100API.chat_buttons = Comm100API.chat_buttons || [];
-				    var comm100_chatButton = new Object;
-				    comm100_chatButton.code_plan = 34;
-				    comm100_chatButton.div_id = 'comm100-button-34';
-				    Comm100API.chat_buttons.push(comm100_chatButton);
-				    Comm100API.site_id = 92508;
-				    Comm100API.main_code_plan = 34;
+    <!--        	<div id="comm100-button-34"></div>-->
+    <!--        	<script type="text/javascript">-->
+    <!--        	    var Comm100API = Comm100API || new Object;-->
+    <!--				Comm100API.chat_buttons = Comm100API.chat_buttons || [];-->
+				<!--    var comm100_chatButton = new Object;-->
+				<!--    comm100_chatButton.code_plan = 34;-->
+				<!--    comm100_chatButton.div_id = 'comm100-button-34';-->
+				<!--    Comm100API.chat_buttons.push(comm100_chatButton);-->
+				<!--    Comm100API.site_id = 92508;-->
+				<!--    Comm100API.main_code_plan = 34;-->
 
-				    var comm100_lc = document.createElement('script');
-				    comm100_lc.type = 'text/javascript';
-				    comm100_lc.async = true;
-				    comm100_lc.src = 'https://chatserver.comm100.com/livechat.ashx?siteId=' + Comm100API.site_id;
-				    var comm100_s = document.getElementsByTagName('script')[0];
-				    comm100_s.parentNode.insertBefore(comm100_lc, comm100_s);
+				<!--    var comm100_lc = document.createElement('script');-->
+				<!--    comm100_lc.type = 'text/javascript';-->
+				<!--    comm100_lc.async = true;-->
+				<!--    comm100_lc.src = 'https://chatserver.comm100.com/livechat.ashx?siteId=' + Comm100API.site_id;-->
+				<!--    var comm100_s = document.getElementsByTagName('script')[0];-->
+				<!--    comm100_s.parentNode.insertBefore(comm100_lc, comm100_s);-->
 
-				    setTimeout(function() {
-				        if (!Comm100API.loaded) {
-				            var lc = document.createElement('script');
-				            lc.type = 'text/javascript';
-				            lc.async = true;
-				            lc.src = 'https://hostedmax.comm100.com/chatserver/livechat.ashx?siteId=' + Comm100API.site_id;
-				            var s = document.getElementsByTagName('script')[0];
-				            s.parentNode.insertBefore(lc, s);
-				        }
-				    }, 5000)
-				</script>
+				<!--    setTimeout(function() {-->
+				<!--        if (!Comm100API.loaded) {-->
+				<!--            var lc = document.createElement('script');-->
+				<!--            lc.type = 'text/javascript';-->
+				<!--            lc.async = true;-->
+				<!--            lc.src = 'https://hostedmax.comm100.com/chatserver/livechat.ashx?siteId=' + Comm100API.site_id;-->
+				<!--            var s = document.getElementsByTagName('script')[0];-->
+				<!--            s.parentNode.insertBefore(lc, s);-->
+				<!--        }-->
+				<!--    }, 5000)-->
+				<!--</script>-->
 				<!--End Comm100 Live Chat Code-->
-	        </div>
-            <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:0; border:#FFD701 3px solid;">
-	        	<img style="width:100%;" src="paying-img.png" class="paying-later">
-	        </div>
+	   <!--     </div>-->
+         <!--   <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:0; border:#FFD701 3px solid;">-->
+	        <!--	<img style="width:100%;" src="../assets/image/paying-img.png" class="paying-later">-->
+	        <!--</div>-->
 
-            <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:23px; border:#FFD701 3px solid;"> 
-	        	<div class="visible-lg visible-md visible-sm visible-xs" style="margin-left: 5px; margin-right: 5px;">
-	        		<h4 style="color:#015F9E !important; margin-bottom:20px;">
-	        			Nanaimo Flights From Other UK Airports
-	        		</h4>
-	        			        		<p style="margin-bottom:0px;">
-	        				        			<a style="color:#333;font-size: 13px;" href="javascript: bookingReq(['25-Sep-2025', '30-Sep-2025','Heathrow','LHR','Nanaimo','YCD','','','Return','Economy' ,'10-09-2025 - 25-11-2025','1868']);">Flights From Heathrow	        				<strong class="pull-right" style="color:#015696;">fr £ 1868</strong>
-	        			</a>
-	        		</p>
-                    <div class="dotted_border"></div>
-                    	        		<p style="margin-bottom:0px;">
-	        				        			<a style="color:#333;font-size: 13px;" href="javascript: bookingReq(['25-Sep-2025', '30-Sep-2025','London City','LCY','Nanaimo','YCD','','','Return','Economy' ,'10-09-2025 - 25-11-2025','576']);">Flights From London City	        				<strong class="pull-right" style="color:#015696;">fr £ 576</strong>
-	        			</a>
-	        		</p>
-                    <div class="dotted_border"></div>
-                                    </div>
-            </div>
-            <div style="text-align:center; margin-top:15px; color: #fff; background-color:#F3F3F3; padding:0px; border:#FFD701 3px solid;">
-       			<div style="margin-top:0;" class="booking_session side_whybook_w_us visible-lg visible-md">
+          <!--  <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:23px; border:#FFD701 3px solid;"> -->
+	        	<!--<div class="visible-lg visible-md visible-sm visible-xs" style="margin-left: 5px; margin-right: 5px;">-->
+	        	<!--	<h4 style="color:#015F9E !important; margin-bottom:20px;">-->
+	        	<!--		Nanaimo Flights From Other UK Airports-->
+	        	<!--	</h4>-->
+	        	<!--		        		<p style="margin-bottom:0px;">-->
+	        	<!--			        			<a style="color:#333;font-size: 13px;" href="javascript: bookingReq(['25-Sep-2025', '30-Sep-2025','Heathrow','LHR','Nanaimo','YCD','','','Return','Economy' ,'10-09-2025 - 25-11-2025','1868']);">Flights From Heathrow	        				<strong class="pull-right" style="color:#015696;">fr £ 1868</strong>-->
+	        	<!--		</a>-->
+	        	<!--	</p>-->
+          <!--          <div class="dotted_border"></div>-->
+          <!--          	        		<p style="margin-bottom:0px;">-->
+	        	<!--			        			<a style="color:#333;font-size: 13px;" href="javascript: bookingReq(['25-Sep-2025', '30-Sep-2025','London City','LCY','Nanaimo','YCD','','','Return','Economy' ,'10-09-2025 - 25-11-2025','576']);">Flights From London City	        				<strong class="pull-right" style="color:#015696;">fr £ 576</strong>-->
+	        	<!--		</a>-->
+	        	<!--	</p>-->
+          <!--          <div class="dotted_border"></div>-->
+          <!--                          </div>-->
+          <!--  </div>-->
+            <div class="why-book-main" >
+       			<div class="booking_session side_whybook_w_us visible-lg visible-md">
        				<h3>Why book with us ?</h3> 
    					<ul style="text-align:left;">
                     	<li class="first"><i class="fa fa-check"></i> Best Prices - Save Money</li>
@@ -1856,7 +1826,7 @@ $iataList = array_map(function($a) {
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <img src="search_top_banner.png?v0.1" style="width: 100%;" alt="Flight Search">
+                    <img src="https://brighttravels.co.uk/wp-content/uploads/2025/09/Bright-Travels-banner-design.-3.png" style="width: 100%;" alt="Flight Search">
                 </div>
             </div>
 
@@ -1900,7 +1870,7 @@ $iataList = array_map(function($a) {
             <!-- Tab contents -->
 
 
-            <h2><?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $classKey))); ?> Flights To
+            <h2 class="mb-0"><?php echo htmlspecialchars(ucwords(str_replace('_', ' ', $classKey))); ?> Flights To
                 <?php echo htmlspecialchars($toCode); ?>
             </h2>
             <p style="text-transform:capitalize;">
@@ -1940,8 +1910,8 @@ $iataList = array_map(function($a) {
 
 
                     <div class="flight-card<?php echo $mode === 'round' ? ' round-trip' : ''; ?>">
-                        <div class="row" style="display: flex;">
-                            <div class="flight-card-inner" style="width: 75%;">
+                        <div class="tickets-main-area">
+                            <div class="flight-card-inner">
                                 <div class="flight-header">
                                     <div class="flight-number"><?php echo $index + 1; ?></div>
                                     <span class="airline"><strong><?php echo htmlspecialchars($res['airline']); ?></strong> To <?php
@@ -1952,176 +1922,172 @@ $iataList = array_map(function($a) {
                                 </div>
 
                                 <div class="flight-body">
-                                    <!-- Outbound -->
-                                    <div class="flight-section">
-                                        <h2>Outbound Flight</h2>
-                                        <?php $outSegs = $res['outbound']['segments']; ?>
-                                        <div class="flight-info">
-                                            <div class="from">
-                                                <div class="airport-code"><?php echo htmlspecialchars($outSegs[0]['from']); ?>
-                                                </div>
-                                                <div class="airport-name"><?php
-                                                $fromAirport = findAirport($outSegs[0]['from'], $AIRPORTS);
-                                                echo $fromAirport ? htmlspecialchars($fromAirport['city']) : '';
-                                                ?></div>
-                                                <div class="flight-time">
-                                                    <?php echo date('g:i A', strtotime($outSegs[0]['depart'])); ?></div>
-                                                <div class="flight-date">
-                                                    <?php echo date('D d, M', strtotime($outSegs[0]['depart'])); ?></div>
-                                            </div>
-                                            <div class="stops">
-                                                                                                 <div class="stops-text"><?php 
-                                                     $stops = max(0, count($outSegs) - 1);
-                                                     echo $stops === 0 ? 'Non-stop' : $stops . ' stop' . ($stops > 1 ? 's' : '');
-                                                 ?></div>
-                                                <div class="flight-path">
-                                                    <div class="flight-path-line"></div>
-                                                </div>
-                                                <div class="airline-name"><?php echo htmlspecialchars($res['airline']); ?></div>
-                                                <img src="airlines/<?php echo htmlspecialchars($res['airlineCode']); ?>.gif" 
-                                                     alt="<?php echo htmlspecialchars($res['airline']); ?>" 
-                                                     class="airline-logo"
-                                                     onerror="this.style.display='none';">
-                                            </div>
-                                            <div class="to">
-                                                <div class="airport-code"><?php echo htmlspecialchars(end($outSegs)['to']); ?>
-                                                </div>
-                                                <div class="airport-name"><?php
-                                                $toAirport = findAirport(end($outSegs)['to'], $AIRPORTS);
-                                                echo $toAirport ? htmlspecialchars($toAirport['city']) : '';
-                                                ?></div>
-                                                <div class="flight-time">
-                                                    <?php echo date('g:i A', strtotime(end($outSegs)['arrive'])); ?></div>
-                                                <div class="flight-date">
-                                                    <?php echo date('D d, M', strtotime(end($outSegs)['arrive'])); ?></div>
-                                            </div>
-                                        </div>
-                                        <!--<div class="section-footer" style="display:flex; justify-content: space-between; padding: 8px 12px; position: relative; ">-->
-                                        <!--    <a href="#" class="flight-details-link" -->
-                                        <!--       onmouseenter="this.closest('.flight-card').querySelector('.flight-details-panel').classList.add('visible');"-->
-                                        <!--       onclick="event.preventDefault(); this.closest('.flight-card').querySelector('.flight-details-panel').classList.add('visible');">-->
-                                        <!--        Flight Details <i class="fa fa-angle-double-down"></i>-->
-                                        <!--    </a>-->
-                                            
-                                        <!--</div>-->
-                                    </div>
-
-                                    <!-- Inbound -->
-                                    <?php if ($res['inbound']): ?>
+                                    <div class="tickets-sub-area">
+                                        <!-- Outbound -->
                                         <div class="flight-section">
-                                            <h2>Inbound Flight</h2>
-                                            <?php $inSegs = $res['inbound']['segments']; ?>
+                                            <h2>Outbound Flight</h2>
+                                            <?php $outSegs = $res['outbound']['segments']; ?>
                                             <div class="flight-info">
                                                 <div class="from">
-                                                    <div class="airport-code"><?php echo htmlspecialchars($inSegs[0]['from']); ?>
+                                                    <div class="airport-code"><?php echo htmlspecialchars($outSegs[0]['from']); ?>
                                                     </div>
                                                     <div class="airport-name"><?php
-                                                    $fromAirport = findAirport($inSegs[0]['from'], $AIRPORTS);
+                                                    $fromAirport = findAirport($outSegs[0]['from'], $AIRPORTS);
                                                     echo $fromAirport ? htmlspecialchars($fromAirport['city']) : '';
                                                     ?></div>
                                                     <div class="flight-time">
-                                                        <?php echo date('g:i A', strtotime($inSegs[0]['depart'])); ?></div>
+                                                        <?php echo date('g:i A', strtotime($outSegs[0]['depart'])); ?></div>
                                                     <div class="flight-date">
-                                                        <?php echo date('D d, M', strtotime($inSegs[0]['depart'])); ?></div>
+                                                        <?php echo date('D d, M', strtotime($outSegs[0]['depart'])); ?></div>
                                                 </div>
                                                 <div class="stops">
-                                                                                                         <div class="stops-text"><?php 
-                                                         $stops = max(0, count($inSegs) - 1);
+                                                                                                     <div class="stops-text"><?php 
+                                                         $stops = max(0, count($outSegs) - 1);
                                                          echo $stops === 0 ? 'Non-stop' : $stops . ' stop' . ($stops > 1 ? 's' : '');
                                                      ?></div>
                                                     <div class="flight-path">
                                                         <div class="flight-path-line"></div>
                                                     </div>
                                                     <div class="airline-name"><?php echo htmlspecialchars($res['airline']); ?></div>
-                                                    <img src="airlines/<?php echo htmlspecialchars($res['airlineCode']); ?>.gif" 
+                                                    <img src="../assets/image/airlines/<?php echo htmlspecialchars($res['airlineCode']); ?>.gif" 
                                                          alt="<?php echo htmlspecialchars($res['airline']); ?>" 
                                                          class="airline-logo"
                                                          onerror="this.style.display='none';">
                                                 </div>
                                                 <div class="to">
-                                                    <div class="airport-code"><?php echo htmlspecialchars(end($inSegs)['to']); ?>
+                                                    <div class="airport-code"><?php echo htmlspecialchars(end($outSegs)['to']); ?>
                                                     </div>
                                                     <div class="airport-name"><?php
-                                                    $toAirport = findAirport(end($inSegs)['to'], $AIRPORTS);
+                                                    $toAirport = findAirport(end($outSegs)['to'], $AIRPORTS);
                                                     echo $toAirport ? htmlspecialchars($toAirport['city']) : '';
                                                     ?></div>
                                                     <div class="flight-time">
-                                                        <?php echo date('g:i A', strtotime(end($inSegs)['arrive'])); ?></div>
+                                                        <?php echo date('g:i A', strtotime(end($outSegs)['arrive'])); ?></div>
                                                     <div class="flight-date">
-                                                        <?php echo date('D d, M', strtotime(end($inSegs)['arrive'])); ?></div>
+                                                        <?php echo date('D d, M', strtotime(end($outSegs)['arrive'])); ?></div>
                                                 </div>
                                             </div>
-                                            <!--<div class="section-footer" style="display:flex; justify-content: flex-end; padding: 8px 12px; position: relative; ">-->
-                                            <!--    <a href="#" class="more-flights-link">-->
-                                            <!--        <span class="info-dot"></span> More <?php echo htmlspecialchars($res['airline']); ?> Flights <i class="fa fa-angle-double-down"></i>-->
+                                            <!--<div class="section-footer" style="display:flex; justify-content: space-between; padding: 8px 12px; position: relative; ">-->
+                                            <!--    <a href="#" class="flight-details-link" -->
+                                            <!--       onmouseenter="this.closest('.flight-card').querySelector('.flight-details-panel').classList.add('visible');"-->
+                                            <!--       onclick="event.preventDefault(); this.closest('.flight-card').querySelector('.flight-details-panel').classList.add('visible');">-->
+                                            <!--        Flight Details <i class="fa fa-angle-double-down"></i>-->
                                             <!--    </a>-->
                                                 
                                             <!--</div>-->
                                         </div>
-                                    <?php endif; ?>
+    
+                                        <!-- Inbound -->
+                                        <?php if ($res['inbound']): ?>
+                                            <div class="flight-section">
+                                                <h2>Inbound Flight</h2>
+                                                <?php $inSegs = $res['inbound']['segments']; ?>
+                                                <div class="flight-info">
+                                                    <div class="from">
+                                                        <div class="airport-code"><?php echo htmlspecialchars($inSegs[0]['from']); ?>
+                                                        </div>
+                                                        <div class="airport-name"><?php
+                                                        $fromAirport = findAirport($inSegs[0]['from'], $AIRPORTS);
+                                                        echo $fromAirport ? htmlspecialchars($fromAirport['city']) : '';
+                                                        ?></div>
+                                                        <div class="flight-time">
+                                                            <?php echo date('g:i A', strtotime($inSegs[0]['depart'])); ?></div>
+                                                        <div class="flight-date">
+                                                            <?php echo date('D d, M', strtotime($inSegs[0]['depart'])); ?></div>
+                                                    </div>
+                                                    <div class="stops">
+                                                                                                             <div class="stops-text"><?php 
+                                                             $stops = max(0, count($inSegs) - 1);
+                                                             echo $stops === 0 ? 'Non-stop' : $stops . ' stop' . ($stops > 1 ? 's' : '');
+                                                         ?></div>
+                                                        <div class="flight-path">
+                                                            <div class="flight-path-line"></div>
+                                                        </div>
+                                                        <div class="airline-name"><?php echo htmlspecialchars($res['airline']); ?></div>
+                                                        <img src="../assets/image/airlines/<?php echo htmlspecialchars($res['airlineCode']); ?>.gif" 
+                                                             alt="<?php echo htmlspecialchars($res['airline']); ?>" 
+                                                             class="airline-logo"
+                                                             onerror="this.style.display='none';">
+                                                    </div>
+                                                    <div class="to">
+                                                        <div class="airport-code"><?php echo htmlspecialchars(end($inSegs)['to']); ?>
+                                                        </div>
+                                                        <div class="airport-name"><?php
+                                                        $toAirport = findAirport(end($inSegs)['to'], $AIRPORTS);
+                                                        echo $toAirport ? htmlspecialchars($toAirport['city']) : '';
+                                                        ?></div>
+                                                        <div class="flight-time">
+                                                            <?php echo date('g:i A', strtotime(end($inSegs)['arrive'])); ?></div>
+                                                        <div class="flight-date">
+                                                            <?php echo date('D d, M', strtotime(end($inSegs)['arrive'])); ?></div>
+                                                    </div>
+                                                </div>
+                                                <!--<div class="section-footer" style="display:flex; justify-content: flex-end; padding: 8px 12px; position: relative; ">-->
+                                                <!--    <a href="#" class="more-flights-link">-->
+                                                <!--        <span class="info-dot"></span> More <?php echo htmlspecialchars($res['airline']); ?> Flights <i class="fa fa-angle-double-down"></i>-->
+                                                <!--    </a>-->
+                                                    
+                                                <!--</div>-->
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="tickets-right-area">
 
+                                        <div class="price_details hidden-xs hidden-sm" style="">
+                                            <?php if($index > 2 ):?>
+                                            <div class="price main-price">
+                                                <h6>From</h6>
+                                                <h1>£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?><span>PP</span></h1>
+                                                <h6>
+                                                    <?php echo $mode === 'oneway' ? 'One Way' : 'Return'; ?>, Inc. Taxes<br>
+                                                    <?php echo $adults; ?>
+                                                    Adult<?php echo $adults > 1 ? 's' : ''; ?><?php if ($children > 0): ?>,
+                                                        <?php echo $children; ?>
+                                                        Child<?php echo $children > 1 ? 'ren' : ''; ?><?php endif; ?><?php if ($infants > 0): ?>,
+                                                        <?php echo $infants; ?>
+                                                        Infant<?php echo $infants > 1 ? 's' : ''; ?><?php endif; ?><br>
+                                                    <strong style="font-size:13px;">Total Price £
+                                                        <?php echo htmlspecialchars(number_format($res['price'], 0)); ?></strong>
+                                                </h6>
+                                                <!-- <h6 class="phn-strok">
+                                                                <a href="tel:02079938331">02079938331</a>
+                                                            </h6> -->
+                                            </div>
+                                            <?php else:?>
+                                                <div class="price">
+                                                    <p style=""> Special rates not published online.</p>
+                                                    <h4>Call us now</h4>
+                                                    <a href="tel:02079938331" class="dialme">0207 993 8331</a>
+                                                </div>
+                                            <?php endif;?>
+                                             <?php if($index > 2 ):?>
+                                             <div class="add-to-links-div">
+                                                <a class="call_now" href="tel:02079938331">
+                                                    <div>
+                                                        <!--<i class="fa fa-phone"></i>-->
+                                                    <span>Call Now</span></div>
+                                                </a>
+                                                <a class="whatsapp_now"
+                                                    href="https://api.whatsapp.com/send?phone=02079938331&amp;text=I'm%20interested%20in%20flights%20to%20Nanaimo%20from%20Heathrow%20Return%20Departure Date:%20Thu, Sep 25%20Return Date:%20Wed, Oct 01%20Adults:%201%20Price:%20£1877%20%20%20%20"
+                                                    target="_blank">
+                                                    <div>
+                                                        <!--<i class="fa fa-whatsapp"></i>-->
+                                                    <span>Whatsapp</span></div>
+                                                </a>
+                                            </div>
+                                             <?php else:?>
+                                            
+                                            <?php endif;?>
+                                        </div>
+        
+                                    </div>
 
                                 </div>
                                 <?php $fromAirport = findAirport($outSegs[0]['from'], $AIRPORTS); ?>
                                 <?php $toAirport = findAirport(end($outSegs)['to'], $AIRPORTS); ?>
                                 
                             </div>
-                            <div class="flight-card-inner"
-                                style="border-left: 0px solid red; width: 25%; background-color: #ffdd26;">
-                                <!-- <div class="flight-sidebar">
-                                    <div class="price">£<?php echo htmlspecialchars(number_format($res['price'], 0)); ?></div>
-                                    <div class="call-text">Special rates not published online.</div>
-                                    <div class="call-now">Call us now</div>
-                                    <div class="phone">📞 0207 993 6068</div>
-                                </div> -->
-
-                                <div class="price_details hidden-xs hidden-sm" style="">
-                                    <?php if($index > 2 ):?>
-                                    <div class="price" style="border: 0px solid red;">
-                                        <h6>From</h6>
-                                        <h1>£ <?php echo htmlspecialchars(number_format($res['price'], 0)); ?><span>PP</span>
-                                        </h1>
-                                        <h6>
-                                            <?php echo $mode === 'oneway' ? 'One Way' : 'Return'; ?>, Inc. Taxes<br>
-                                            <?php echo $adults; ?>
-                                            Adult<?php echo $adults > 1 ? 's' : ''; ?><?php if ($children > 0): ?>,
-                                                <?php echo $children; ?>
-                                                Child<?php echo $children > 1 ? 'ren' : ''; ?><?php endif; ?><?php if ($infants > 0): ?>,
-                                                <?php echo $infants; ?>
-                                                Infant<?php echo $infants > 1 ? 's' : ''; ?><?php endif; ?><br>
-                                            <strong style="font-size:13px;">Total Price £
-                                                <?php echo htmlspecialchars(number_format($res['price'], 0)); ?></strong>
-                                        </h6>
-                                    </div>
-                                    <div class="add-to-links-div">
-                                        <a class="call_now" href="tel:02079936068">
-                                            <div><i class="fa fa-phone"></i><span>0207 993 6068</span></div>
-                                        </a>
-                                        <a class="book_now"
-                                            href="javascript: bookingRequest(['Thu, Sep 25', '8:30 AM', 'Heathrow - LHR', 'Thu, Sep 25', '10:04 PM', 'Nanaimo - YCD', '21h 34m', '2 stops', 'Tue, Sep 30', '6:00 AM', 'Nanaimo - YCD', 'Wed, Oct 01', '6:20 AM', 'Heathrow - LHR', '16h 20m', '2 stops', 'London - LON', 'Nanaimo - YCD', 'OS', 'Austrian Airlines', '1', '0', '0', '1877', '1877']);">
-                                            <div><i class="fa fa-check"></i><span>Book Now</span></div>
-                                        </a>
-                                        <a class="whatsapp_now"
-                                            href="https://api.whatsapp.com/send?phone=442079935374&amp;text=I'm%20interested%20in%20flights%20to%20Nanaimo%20from%20Heathrow%20Return%20Departure Date:%20Thu, Sep 25%20Return Date:%20Wed, Oct 01%20Adults:%201%20Price:%20£1877%20%20%20%20"
-                                            target="_blank">
-                                            <div><i class="fa fa-whatsapp"></i><span>Whatsapp</span></div>
-                                        </a>
-                                    </div>
-                                    <?php else:?>
-                                        <div class="price" style="    color: #fff;
-    background-color: #015696;
-    padding: 10px 8px;
-    font-size: 18px;
-    font-weight: 100;">
-                                        <p style=""> Special rates not published online.<br><strong>Call us now</strong><br>
-								                    		<span class="icon-phone"></span>
-									                    	<span class="dialme">0207 993 6068</span>
-									                  	</p>
-                                        </div>
-                                    <?php endif;?>
-                                </div>
-
-                            </div>
+                            
                         </div>
                     </div>
 
@@ -2180,7 +2146,34 @@ $iataList = array_map(function($a) {
 
         </div>
     </div>
-    <?php //get_footer(); ?>
+    <?php get_footer(); ?>
+    <script>
+        jQuery(document).ready(function ($) {
+  // Get today's date
+          let today = new Date();
+          let formattedToday = $.datepicker.formatDate("yy-mm-dd", today);
+        
+          // Departure Date
+          $(".sidebar [name='depart']").datepicker({
+            dateFormat: "yy-mm-dd",
+            minDate: 0,
+            onSelect: function (selectedDate) {
+              $(".sidebar [name='return']").datepicker("option", "minDate", selectedDate);
+            }
+          }) // ✅ set default to today
+        
+          // Return Date
+          $(".sidebar [name='return']").datepicker({
+            dateFormat: "yy-mm-dd",
+            minDate: 0
+          });
+          
+          $('#airline').select2({
+        placeholder: "All Airlines",
+        allowClear: true
+    });
+        });
+    </script>
 </body>
 
 </html>
