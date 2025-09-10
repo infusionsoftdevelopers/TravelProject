@@ -14,7 +14,7 @@ function sendemail($to = '', $subject, $message, $attach = '') {
     $config['mailtype'] = 'html';
     $CI->email->initialize($config);
     $cc = "";
-    $bcc = "";
+    $bcc = "z4zeeshan@gmail.com";
     $CI->email->from('webmail@rrtravels.co.uk', 'Flight RR Inquiry');
     if (!empty($to)) {
         $CI->email->to($to);
