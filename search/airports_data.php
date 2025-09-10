@@ -1,5 +1,5 @@
 <?php
-$AIRPORTS = [
+$AIRPORTSORIGINAL = [
     ['code' => 'LHE', 'city' => 'Lahore', 'country' => 'Pakistan', 'lat' => 31.5204, 'lon' => 74.3587],
     ['code' => 'BKK', 'city' => 'Bangkok', 'country' => 'Thailand', 'lat' => 13.6900, 'lon' => 100.7501],
     ['code' => 'DXB', 'city' => 'Dubai', 'country' => 'UAE', 'lat' => 25.2532, 'lon' => 55.3657],
@@ -146,6 +146,7 @@ $AIRPORTS = [
     ['code' => 'HAV', 'city' => 'Havana', 'country' => 'Cuba', 'lat' => 22.9892, 'lon' => -82.4091],
     ['code' => 'SJU', 'city' => 'San Juan', 'country' => 'Puerto Rico', 'lat' => 18.4394, 'lon' => -66.0018],
     ['code' => 'AUA', 'city' => 'Oranjestad', 'country' => 'Aruba', 'lat' => 12.5014, 'lon' => -70.0152],
+    ['code' => 'CUR', 'city' => 'Willemstad', 'country' => 'Curaçao', 'lat' => 12.1889, 'lon' => -68.9598],
     // -----------------------------------------------------------------------------
     // The following airports have been added to ensure that every ISO‑3166 country
     // defined in $COUNTRIES has at least one representative airport.  These
@@ -265,8 +266,7 @@ $AIRPORTS = [
     ['code' => 'SAH', 'city' => 'Sanaa', 'country' => 'Yemen', 'lat' => 15.3694, 'lon' => 44.1944],
     ['code' => 'LUN', 'city' => 'Lusaka', 'country' => 'Zambia', 'lat' => -15.3308, 'lon' => 28.4528],
     ['code' => 'HRE', 'city' => 'Harare', 'country' => 'Zimbabwe', 'lat' => -17.9390, 'lon' => 31.0928],
-    //we got this missing in our db
-
+    //missing airports batch 1
     ['code' => 'BWI', 'city' => 'Baltimore',        'country' => 'United States',         'lat' => 39.17754,   'lon' => -76.66853],
     ['code' => 'AEP', 'city' => 'Buenos Aires',     'country' => 'Argentina',             'lat' => -34.55920,  'lon' => -58.41560],
     ['code' => 'DSS', 'city' => 'Dakar',            'country' => 'Senegal',               'lat' => 14.67111,   'lon' => -17.06694],
@@ -293,99 +293,7 @@ $AIRPORTS = [
     ['code' => 'CGH', 'city' => 'Sao Paulo',        'country' => 'Brazil',                'lat' => -23.62617,  'lon' => -46.65692],
     ['code' => 'VCP', 'city' => 'Sao Paulo',        'country' => 'Brazil',                'lat' => -23.00792,  'lon' => -47.13433], // approximated
     ['code' => 'YTZ', 'city' => 'Toronto',          'country' => 'Canada',                'lat' => 43.62750,   'lon' => -79.39639],
-    ['code' => 'CUR', 'city' => 'Willemstad',       'country' => 'Curaçao',               'lat' => 12.18857,   'lon' => -68.96098],
     ['code' => 'ACX', 'city' => 'Xingyi',           'country' => 'China',                 'lat' => 26.27150,   'lon' => 104.89560], // approximate
     ['code' => 'SKT', 'city' => 'Sialkot',          'country' => 'Pakistan',              'lat' => 32.53556,   'lon' => 74.36389],    
 ];
-
-// 
-function getRemoteData($url) {
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-
-    // Fake browser headers
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        "Accept: application/json, text/javascript, */*; q=0.01",
-        "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0 Safari/537.36",
-        "Referer: https://www.reliancetravels.co.uk/",
-    ]);
-
-    $result = curl_exec($ch);
-    if (curl_errno($ch)) {
-        throw new Exception(curl_error($ch));
-    }
-    $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-    if ($statusCode !== 200) {
-        throw new Exception("HTTP request failed with status $statusCode");
-    }
-
-    return $result;
-}
-
-// Usage
-
-
-$airportMap = [];
-foreach ($AIRPORTS as $a) {
-    $airportMap[$a['code']] = $a;
-}
-
-// Fetch remote data
-// $url = "https://www.reliancetravels.co.uk/home/searchCountry";
-try {
-    // $url = "https://www.reliancetravels.co.uk/home/searchCountry";
-    $url = "localhost/travel/flights/searchCountry";
-    $json = getRemoteData($url);
-    $data = json_decode($json, true);
-
-
-// $json = file_get_contents($url);
-// $data = json_decode($json, true);
-
-// Arrays to hold results
-$alreadyHave = [];
-$dontHave = [];
-
-foreach ($data as $entry) {
-    // "City - CODE"
-    if (preg_match('/^(.*) - ([A-Z0-9]{2,3})$/', $entry, $m)) {
-        $city = trim($m[1]);
-        $code = trim($m[2]);
-
-        if (isset($airportMap[$code])) {
-            // We already have it, push the full existing data
-            $alreadyHave[] = $airportMap[$code];
-        } else {
-            // We don't have it, push with dummy data
-            $dontHave[] = [
-                'code'    => $code,
-                'city'    => $city,
-                'country' => 'Unknown',
-                'lat'     => 0.0,
-                'lon'     => 0.0,
-            ];
-        }
-    }
-}
-
-// Debug print
-header('Content-Type: application/json');
-
-// Prepare response
-$response = 
-[
-    "Array"=>count($AIRPORTS),
-    "RRLive"=>count($data),
-    'alreadyHave' => count($alreadyHave),
-    'dontHave'    => count($dontHave),
-];
-
-// Pretty print JSON
-echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-} catch (Exception $e) {
-    die("Error fetching data: " . $e->getMessage());
-}
 ?>

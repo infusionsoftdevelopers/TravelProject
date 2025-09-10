@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 
 
 include_once __DIR__ . '/array_data.php';
+include_once __DIR__ . '/airports_data.php';
 
 // include_once __DIR__ . '../../../wp-blog-header.php';
 // require_once __DIR__ . '../../../wp-load.php';
@@ -327,7 +328,7 @@ $AIRPORTS = [
     ['code' => 'ACX', 'city' => 'Xingyi',           'country' => 'China',                 'lat' => 26.27150,   'lon' => 104.89560], // approximate
     ['code' => 'SKT', 'city' => 'Sialkot',          'country' => 'Pakistan',              'lat' => 32.53556,   'lon' => 74.36389],    
 ];
-
+$AIRPORTS = $AIRPORTSORIGINAL;
 // Airlines with quality factors (affects price) and hubs for connecting flights.
 $AIRLINES = [
     ['name' => 'Etihad Airways',       'code' => 'EY', 'quality' => 1.25, 'hubs' => ['AUH']],
