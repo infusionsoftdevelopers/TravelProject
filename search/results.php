@@ -297,6 +297,35 @@ $AIRPORTS = [
     ['code' => 'SAH', 'city' => 'Sanaa', 'country' => 'Yemen', 'lat' => 15.3694, 'lon' => 44.1944],
     ['code' => 'LUN', 'city' => 'Lusaka', 'country' => 'Zambia', 'lat' => -15.3308, 'lon' => 28.4528],
     ['code' => 'HRE', 'city' => 'Harare', 'country' => 'Zimbabwe', 'lat' => -17.9390, 'lon' => 31.0928],
+    //missing airports batch 1
+    ['code' => 'BWI', 'city' => 'Baltimore',        'country' => 'United States',         'lat' => 39.17754,   'lon' => -76.66853],
+    ['code' => 'AEP', 'city' => 'Buenos Aires',     'country' => 'Argentina',             'lat' => -34.55920,  'lon' => -58.41560],
+    ['code' => 'DSS', 'city' => 'Dakar',            'country' => 'Senegal',               'lat' => 14.67111,   'lon' => -17.06694],
+    ['code' => 'DIR', 'city' => 'Dire Dawa',        'country' => 'Ethiopia',              'lat' => 9.62470,    'lon' => 41.85420],
+    ['code' => 'XNB', 'city' => 'Dubai',            'country' => 'United Arab Emirates',  'lat' => 25.25,      'lon' => 55.33333],  // approximated
+    ['code' => 'DWC', 'city' => 'DXB',              'country' => 'United Arab Emirates',  'lat' => 24.89667,   'lon' => 55.16139],
+    ['code' => 'FLL', 'city' => 'Fort Lauderdale',  'country' => 'United States',         'lat' => 26.07422,   'lon' => -80.15073], // from similar BWI pattern
+    ['code' => 'YHM', 'city' => 'Hamilton',         'country' => 'Canada',                'lat' => 43.17390,   'lon' => -79.93400], // approximate
+    ['code' => 'HLA', 'city' => 'Johannesburg',     'country' => 'South Africa',          'lat' => -25.93850,  'lon' => 27.92610],
+    ['code' => 'CRK', 'city' => 'Kapampangan',      'country' => 'Philippines',           'lat' => 15.18599,   'lon' => 120.56032],
+    ['code' => 'BON', 'city' => 'Kralendijk',       'country' => 'Curaçao',               'lat' => 12.14489,   'lon' => -68.26588], // approximate
+    ['code' => 'LPF', 'city' => 'Liupanshui',       'country' => 'China',                 'lat' => 26.59240,   'lon' => 104.83580], // approximate
+    ['code' => 'KNO', 'city' => 'Medan',            'country' => 'Indonesia',             'lat' => 3.64280,    'lon' => 98.88500],  // approximated
+    ['code' => 'KYN', 'city' => 'MILTON KEYNES',    'country' => 'United Kingdom',        'lat' => 52.04198,   'lon' => -0.75559],  // near city
+    ['code' => 'MWZ', 'city' => 'Mwanza',           'country' => 'Tanzania',              'lat' => -2.51560,   'lon' => 32.91260],  // approximate
+    ['code' => 'MNC', 'city' => 'Nacala Airport',   'country' => 'Mozambique',            'lat' => -14.50350,  'lon' => 40.68900],  // approximate
+    ['code' => 'APL', 'city' => 'Nampula',          'country' => 'Mozambique',            'lat' => -15.10611,  'lon' => 39.26694],  // approximated
+    ['code' => 'LGA', 'city' => 'New York',         'country' => 'United States',         'lat' => 40.77687,   'lon' => -73.87407],
+    ['code' => 'OXF', 'city' => 'Oxford',           'country' => 'United Kingdom',        'lat' => 51.75202,   'lon' => -1.25775],
+    ['code' => 'SXM', 'city' => 'Philipsburg',      'country' => 'Sint Maarten',          'lat' => 18.04240,   'lon' => -63.10808],
+    ['code' => 'SDU', 'city' => 'Rio de Janeiro',   'country' => 'Brazil',                'lat' => -22.91056,  'lon' => -43.16306], // approximated
+    ['code' => 'SJC', 'city' => 'San Jose',         'country' => 'United States',         'lat' => 37.36395,   'lon' => -121.92895],
+    ['code' => 'SLL', 'city' => 'Santa Rosalia',    'country' => 'Mexico',                'lat' => 26.42250,   'lon' => -111.33056],// approximated
+    ['code' => 'CGH', 'city' => 'Sao Paulo',        'country' => 'Brazil',                'lat' => -23.62617,  'lon' => -46.65692],
+    ['code' => 'VCP', 'city' => 'Sao Paulo',        'country' => 'Brazil',                'lat' => -23.00792,  'lon' => -47.13433], // approximated
+    ['code' => 'YTZ', 'city' => 'Toronto',          'country' => 'Canada',                'lat' => 43.62750,   'lon' => -79.39639],
+    ['code' => 'ACX', 'city' => 'Xingyi',           'country' => 'China',                 'lat' => 26.27150,   'lon' => 104.89560], // approximate
+    ['code' => 'SKT', 'city' => 'Sialkot',          'country' => 'Pakistan',              'lat' => 32.53556,   'lon' => 74.36389],    
 ];
 
 // Airlines with quality factors (affects price) and hubs for connecting flights.
