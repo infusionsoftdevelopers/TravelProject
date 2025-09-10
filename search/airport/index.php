@@ -326,8 +326,9 @@ function getRemoteData($url) {
 }
 
 // Usage
-
-
+include_once '../airports_data.php';
+include_once __DIR__ . '/missing_airports.php';
+$AIRPORTS = array_merge( $AIRPORTSORIGINAL, $MISSING_AIRPORTS);
 $airportMap = [];
 foreach ($AIRPORTS as $a) {
     $airportMap[$a['code']] = $a;
@@ -380,7 +381,7 @@ $response =
     "Array"=>count($AIRPORTS),
     "RRLive"=>count($data),
     'alreadyHave' => count($alreadyHave),
-    'dontHave'    => count($dontHave),
+    'dontHave'    => $dontHave
 ];
 
 // Pretty print JSON
