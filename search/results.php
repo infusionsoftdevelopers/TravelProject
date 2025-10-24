@@ -1,7 +1,7 @@
 <title>Flight Search</title>
 <?php
 // dynamic flight search and booking mock application
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 
@@ -14,7 +14,8 @@ require_once __DIR__ . '../../../wp-load.php';
 
 get_header();
 
-require_once __DIR__ . '/base.php';
+require_once '/flights_algo.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
