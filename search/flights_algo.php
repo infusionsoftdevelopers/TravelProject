@@ -483,11 +483,19 @@ function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $cla
             ];
         } else {
             // One-stop via hub
-            // pick a random hub
-            $hubCode = $hubOptions[array_rand($hubOptions)];
-            $hubApt  = findAirport($hubCode, $AIRPORTS);
-            if (!$hubApt || $hubApt['code'] == $fromApt['code'] || $hubApt['code'] == $toApt['code']) {
-                // fallback to direct if hub same as origin/destination
+            // Only use hubs located in either the origin or destination country to avoid third-country transits.
+            $candidateHubs = [];
+            foreach ($hubOptions as $hubCandidate) {
+                $aptCandidate = findAirport($hubCandidate, $AIRPORTS);
+                if ($aptCandidate && (
+                    strcasecmp($aptCandidate['country'], $fromApt['country']) === 0 ||
+                    strcasecmp($aptCandidate['country'], $toApt['country']) === 0
+                )) {
+                    $candidateHubs[] = $hubCandidate;
+                }
+            }
+            // If no candidate hubs in the origin or destination country, fallback to direct.
+            if (count($candidateHubs) === 0) {
                 $dist = haversine($fromApt['lat'], $fromApt['lon'], $toApt['lat'], $toApt['lon']);
                 $duration = computeDuration($dist);
                 // Price based on month ranges rather than distance
@@ -513,61 +521,92 @@ function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $cla
                     'class'    => ucfirst(str_replace('_',' ', $classKey)),
                 ];
             } else {
-                // compute first leg and second leg
-                $dist1 = haversine($fromApt['lat'], $fromApt['lon'], $hubApt['lat'], $hubApt['lon']);
-                $dur1  = computeDuration($dist1);
-
-                // choose layover time between 75 and 180 minutes
-                $layover = 75 + rand(0, 105);
-
-                $dist2 = haversine($hubApt['lat'], $hubApt['lon'], $toApt['lat'], $toApt['lon']);
-                $dur2  = computeDuration($dist2);
-
-                $totalDur = $dur1 + ($layover*60) + $dur2;
-                // Price based on month ranges rather than distance (same for connecting flights)
-                $price = computeBasePriceByMonth(
-                    $departDate->format('Y-m-d'),
-                    $quality,
-                    $classMult,
-                    $daysAhead,
-                    ((int)$departDate->format('N') >= 6)
-                );
-
-                // compute departure and arrival times
-                $depDateTime = DateTime::createFromFormat('Y-m-d H:i', $departDate->format('Y-m-d') . ' ' . $time);
-                $arr1DateTime = clone $depDateTime;
-                $arr1DateTime->modify('+' . (int) round($dur1/60) . ' minutes');
-
-                $dep2DateTime = clone $arr1DateTime;
-                $dep2DateTime->modify('+' . (int) $layover . ' minutes');
-
-                $arr2DateTime = clone $dep2DateTime;
-                $arr2DateTime->modify('+' . (int) round($dur2/60) . ' minutes');
-
-                $results[] = [
-                    'airline'   => $airline['name'],
-                    'segments'  => [
-                        [
+                // pick a random hub from candidate hubs
+                $hubCode = $candidateHubs[array_rand($candidateHubs)];
+                $hubApt  = findAirport($hubCode, $AIRPORTS);
+                // If the chosen hub is identical to the origin or destination airport,
+                // treat this as a direct service instead of creating a zero-length segment.
+                if ($hubApt && (
+                    strcasecmp($hubApt['code'], $fromApt['code']) === 0 ||
+                    strcasecmp($hubApt['code'], $toApt['code']) === 0
+                )) {
+                    // Direct flight fallback when hub equals origin or destination
+                    $dist = haversine($fromApt['lat'], $fromApt['lon'], $toApt['lat'], $toApt['lon']);
+                    $dur  = computeDuration($dist);
+                    $price = computeBasePriceByMonth(
+                        $departDate->format('Y-m-d'),
+                        $quality,
+                        $classMult,
+                        $daysAhead,
+                        ((int)$departDate->format('N') >= 6)
+                    );
+                    $depDateTime = DateTime::createFromFormat('Y-m-d H:i', $departDate->format('Y-m-d') . ' ' . $time);
+                    $arrDateTime = clone $depDateTime;
+                    $arrDateTime->modify('+' . (int) round($dur/60) . ' minutes');
+                    $results[] = [
+                        'airline'   => $airline['name'],
+                        'segments'  => [[
                             'from'    => $fromApt['code'],
-                            'to'      => $hubApt['code'],
-                            'depart'  => $depDateTime->format('Y-m-d H:i'),
-                            'arrive'  => $arr1DateTime->format('Y-m-d H:i'),
-                            'duration' => $dur1,
-                            'stops'    => 1,
-                        ],
-                        [
-                            'from'    => $hubApt['code'],
                             'to'      => $toApt['code'],
-                            'depart'  => $dep2DateTime->format('Y-m-d H:i'),
-                            'arrive'  => $arr2DateTime->format('Y-m-d H:i'),
-                            'duration' => $dur2,
+                            'depart'  => $depDateTime->format('Y-m-d H:i'),
+                            'arrive'  => $arrDateTime->format('Y-m-d H:i'),
+                            'duration' => $dur,
                             'stops'    => 0,
+                        ]],
+                        'totalDuration' => $dur,
+                        'price'    => $price,
+                        'class'    => ucfirst(str_replace('_',' ', $classKey)),
+                    ];
+                } else {
+                    // compute first leg and second leg distances
+                    $dist1 = haversine($fromApt['lat'], $fromApt['lon'], $hubApt['lat'], $hubApt['lon']);
+                    $dur1  = computeDuration($dist1);
+                    // choose layover time between 75 and 180 minutes
+                    $layover = 75 + rand(0, 105);
+                    $dist2 = haversine($hubApt['lat'], $hubApt['lon'], $toApt['lat'], $toApt['lon']);
+                    $dur2  = computeDuration($dist2);
+                    $totalDur = $dur1 + ($layover*60) + $dur2;
+                    // Price based on month ranges rather than distance (same for connecting flights)
+                    $price = computeBasePriceByMonth(
+                        $departDate->format('Y-m-d'),
+                        $quality,
+                        $classMult,
+                        $daysAhead,
+                        ((int)$departDate->format('N') >= 6)
+                    );
+                    // compute departure and arrival times
+                    $depDateTime = DateTime::createFromFormat('Y-m-d H:i', $departDate->format('Y-m-d') . ' ' . $time);
+                    $arr1DateTime = clone $depDateTime;
+                    $arr1DateTime->modify('+' . (int) round($dur1/60) . ' minutes');
+                    $dep2DateTime = clone $arr1DateTime;
+                    $dep2DateTime->modify('+' . (int) $layover . ' minutes');
+                    $arr2DateTime = clone $dep2DateTime;
+                    $arr2DateTime->modify('+' . (int) round($dur2/60) . ' minutes');
+                    $results[] = [
+                        'airline'   => $airline['name'],
+                        'segments'  => [
+                            [
+                                'from'    => $fromApt['code'],
+                                'to'      => $hubApt['code'],
+                                'depart'  => $depDateTime->format('Y-m-d H:i'),
+                                'arrive'  => $arr1DateTime->format('Y-m-d H:i'),
+                                'duration' => $dur1,
+                                'stops'    => 1,
+                            ],
+                            [
+                                'from'    => $hubApt['code'],
+                                'to'      => $toApt['code'],
+                                'depart'  => $dep2DateTime->format('Y-m-d H:i'),
+                                'arrive'  => $arr2DateTime->format('Y-m-d H:i'),
+                                'duration' => $dur2,
+                                'stops'    => 0,
+                            ],
                         ],
-                    ],
-                    'totalDuration' => $totalDur,
-                    'price'    => $price,
-                    'class'    => ucfirst(str_replace('_',' ', $classKey)),
-                ];
+                        'totalDuration' => $totalDur,
+                        'price'    => $price,
+                        'class'    => ucfirst(str_replace('_',' ', $classKey)),
+                    ];
+                }
             }
         }
     }
@@ -619,11 +658,20 @@ function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateSt
                     continue;
                 }
             } else {
-                // International: apply region coverage filtering
-                $airRegions = $airline['regions'] ?? [];
-                if (!in_array($originRegion, $airRegions) || !in_array($destRegion, $airRegions)) {
+                // International: restrict to airlines from either the origin or destination country.
+                // Skip carriers whose home_country is neither the origin nor the destination country.
+                $home = $airline['home_country'] ?? '';
+                if (!$home || (
+                    strcasecmp($home, $fromApt['country']) !== 0 &&
+                    strcasecmp($home, $toApt['country']) !== 0
+                )) {
                     continue;
                 }
+                // Removed region filter: when the airline originates from either the origin or destination
+                // country, we no longer verify that its regions list includes both the origin and destination
+                // continents.  This allows flights operated by carriers from the departure or arrival
+                // country to appear even if they do not serve the other region directly.  Other airlines
+                // (whose home_country does not match either endpoint) continue to be excluded above.
             }
         }
         $outboundFlights = generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $classKey, $daysAheadDepart);
