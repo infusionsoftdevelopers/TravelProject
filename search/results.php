@@ -1,3 +1,4 @@
+<title>Flight Search</title>
 <?php
 // dynamic flight search and booking mock application
 ini_set('display_errors', 1);
@@ -9,50 +10,9 @@ include_once __DIR__ . '/airports_data.php';
 include_once __DIR__ . '../../../wp-blog-header.php';
 require_once __DIR__ . '../../../wp-load.php';
 
-// 🔹 Hook into wp_head from THIS file
-add_action('wp_head', function () {
-    ?>
-    <script>
-        function gtag_report_conversion(url) {
-          var callback = function () {
-            if (typeof(url) != 'undefined') {
-              window.location = url;
-            }
-          };
-        //   gtag('event', 'conversion', {
-        //       'send_to': 'AW-16963341021/NPcECLXLjo4bEN2V4Jg_',
-        //       'value': 1.0,
-        //       'currency': 'GBP',
-        //       'event_callback': callback
-        //   });
-        gtag('event', 'conversion', {
-          'send_to': 'AW-16963341021/NPcECLXLjo4bEN2V4Jg_',
-          'value': 1.0,
-              'currency': 'GBP'
-          });
-          
-          return false;
-        }
-      
-    </script>
-    <?php
-});
+
 
 get_header();
-
-$args = array(
-  'post_type' => 'apus_header',
-  'p'         => 1811 // ID of Header 3
-);
-$query = new WP_Query($args);
-if ($query->have_posts()) {
-    while ($query->have_posts()) {
-        $query->the_post();
-        the_content(); // outputs Header 3
-    }
-}
-wp_reset_postdata();
-
 
 
 $AIRPORTS = $AIRPORTSORIGINAL;
@@ -210,7 +170,7 @@ $AIRLINES = [
 $CLASSES = [
     // Updated cabin multipliers: higher premiums for upper classes
     'economy'         => 1.00,
-    'premium class'         => 1.60,
+    'premium economy'         => 1.60,
     'business class'        => 2.75,
     'first class'           => 4.20,
 ];
@@ -685,6 +645,20 @@ function sanitizeIata($str) {
     return strtoupper(substr(preg_replace('/[^A-Za-z]/', '', $str), 0, 3));
 }
 
+// Read basic search parameters
+// $mode      = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
+// $fromCode  = isset($_GET['from']) ? sanitizeIata($_GET['from']) : '';
+// $toCode    = isset($_GET['to'])   ? sanitizeIata($_GET['to'])   : '';
+// $depart    = isset($_GET['depart']) ? $_GET['depart'] : '';
+// $return    = isset($_GET['return']) ? $_GET['return'] : '';
+// $classKey  = isset($_GET['class']) ? $_GET['class'] : 'economy';
+// // Additional fields for refined search
+// $airlineCode = isset($_GET['airline']) ? strtoupper(preg_replace('/[^A-Za-z]/', '', $_GET['airline'])) : '';
+// $adults   = isset($_GET['adults']) ? max(1, intval($_GET['adults'])) : 1;
+// $children = isset($_GET['children']) ? max(0, intval($_GET['children'])) : 0;
+// $infants  = isset($_GET['infants']) ? max(0, intval($_GET['infants'])) : 0;
+
+
 function extractAirportCode($str)
 {
     if (empty($str)) {
@@ -705,6 +679,7 @@ function extractAirportCode($str)
     return sanitizeIata($str);
 }
 
+// Convert airline name to logo filename format
 function getAirlineLogoFilename($airlineName)
 {
     // Convert to lowercase and replace spaces with underscores
@@ -736,14 +711,6 @@ $_GET['return'] = getParam(['return', 'return_date', 'return-date'], '');
 // Class handling: prefer explicit class/cabin_class, otherwise infer from flags like economy=Economy
 $__classParam = strtolower(getParam(['class', 'cabin_class'], ''));
 
-// if ($__classParam === '') {
-//     if (isset($_GET['economy'])) { $__classParam = 'economy'; }
-//     elseif (isset($_GET['premium_economy']) || isset($_GET['premium-economy'])) { $__classParam = 'premium_economy'; }
-//     elseif (isset($_GET['business'])) { $__classParam = 'business'; }
-//     elseif (isset($_GET['first'])) { $__classParam = 'first'; }
-//     $classParam = strtolower( $_GET[$classParam] );
-// }
-
 if ($__classParam === '') {
     if (isset($_GET['economy'])) {
         $__classParam = strtolower($_GET['economy']);
@@ -758,8 +725,33 @@ if ($__classParam === '') {
     }
 }
 
+// echo $__classParam;
+// die();
+
+function extractAirlineCode($str)
+{
+    if (empty($str)) {
+        return '';
+    }
+
+    // If it contains " - " (dash with spaces), extract the part before the dash
+    if (strpos($str, ' - ') !== false) {
+        $parts = explode(' - ', $str, 2); // limit to 2 parts
+        $code = trim($parts[0]); // first part is the code
+        return $code;
+    }
+
+    // If no dash format, treat as direct airline code
+    return $str;
+}
+
+
 $_GET['class'] = $__classParam !== '' ? $__classParam : 'economy';
-$_GET['airline'] = strtoupper(preg_replace('/[^A-Za-z]/', '', getParam(['airline', 'airline'], '')));
+$_GET["airline"] = extractAirlineCode(isset($_GET["airline"]) ? $_GET["airline"] : '');
+// $_GET['airline'] = strtoupper(preg_replace('/[^A-Za-z]/', '', getParam(['airline', 'airline'], '')));
+// echo $_GET["airline"];
+// die();
+
 $_GET['adults'] = max(1, intval(getParam(['adults', 'padults'], 1)));
 $_GET['children'] = max(0, intval(getParam(['children', 'pchildren'], 0)));
 $_GET['infants'] = max(0, intval(getParam(['infants', 'pinfants'], 0)));
@@ -773,7 +765,7 @@ $depart = isset($_GET['depart']) ? date('Y-m-d', strtotime($_GET['depart'])) : '
 $return = isset($_GET['return']) ? date('Y-m-d', strtotime($_GET['return'])) : '';
 $classKey = isset($_GET['class']) ? $_GET['class'] : 'economy';
 // Additional fields for refined search
-$airlineCode = isset($_GET['airline']) ? strtoupper(preg_replace('/[^A-Za-z]/', '', $_GET['airline'])) : '';
+$airlineCode = isset($_GET['airline']) ? $_GET['airline'] : '';
 $adults = isset($_GET['adults']) ? max(1, intval($_GET['adults'])) : 1;
 $children = isset($_GET['children']) ? max(0, intval($_GET['children'])) : 0;
 $infants = isset($_GET['infants']) ? max(0, intval($_GET['infants'])) : 0;
@@ -833,9 +825,18 @@ $iataList = array_map(function($a) {
     return $a['code'] . ' - ' . $a['city'] . ', ' . $a['country'];
 }, $AIRPORTS);
 ?>
+<!DOCTYPE html>
+<html lang="en">
 
-
-    <style>
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Flight Search</title>
+	<script>
+	    jQuery(document).ready(function ($) {
+			$('body').removeClass('home');
+		});
+	</script>
+     <style>
         .side_whybook_w_us{
             background: #3a1b07;
     opacity: 1;
@@ -1038,8 +1039,8 @@ $iataList = array_map(function($a) {
         .nav-tabs>li>a {
             padding: 10px 20px;
             font-weight: 700;
-            color: #fff;
-            background: rgba(52, 10, 82, .85);
+            /* color: #fff; */
+            /* background: rgba(52, 10, 82, .85); */
             letter-spacing: 1px;
             border: 1px solid transparent;
             border-radius: 2px 2px 0 0;
@@ -1058,9 +1059,9 @@ $iataList = array_map(function($a) {
         .nav-tabs>li.active>a,
         .nav-tabs>li.active>a:focus,
         .nav-tabs>li.active>a:hover {
-            color: #350b47;
-            background: #ffd71e;
-            border: 1px solid transparent;
+            /* color: #350b47; */
+            /* background: #ffd71e; */
+            /* border: 1px solid transparent; */
             font-weight: bold;
             cursor: default;
         }
@@ -1538,14 +1539,19 @@ $iataList = array_map(function($a) {
     </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://brighttravels.co.uk/wp-content/themes/tourio/css/tickets.css?v=<?php echo rand(); ?>">
-    
+    <link rel="stylesheet" href="https://rrtravels.co.uk/wp-content/themes/travila/assets/css/tickets.css">
+    <!-- <link rel="stylesheet" href="tickets.css"> -->
+</head>
 
+<body>
     <button type="button" class="sidebar-open-btn">Filter Tickets</button>
-    <div class="container">
+    <div class="container results-page">
         <div class="sidebar">
-            <h2 style="background: #015F9E;margin: 0 0 0 0;text-align: center;padding: 10px 0;color: #ffffff;">Refine Your Results <button type="button" class="close-sidebar"><i class="fas fa-plus"></i></button></h2>
-            <form id="flightForm" method="get" action="#" style="background: #350c48;color: #fff;padding: 15px;margin-bottom: 14px;">
+            <h2 style="margin: 0 0 0 0;text-align: center;padding: 10px 0;color: #ffffff;">
+                Refine Your Results
+                <button type="button" class="close-sidebar"><i class="fas fa-plus"></i></button>
+            </h2>
+            <form id="flightForm" method="get" action="#" style="margin-bottom: 14px;">
                 <div class="form-group">
                     <div class="trip-type-checkbox">
                         <label>
@@ -1679,61 +1685,6 @@ $iataList = array_map(function($a) {
                     <button type="submit">Search</button>
                 </div>
             </form>
-    <!--        <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:10px 23px 23px 23px; border:#FFD701 3px solid;">-->
-    <!--        	<h4 style="color:#015F9E !important">Live Support</h4>-->
-            	<!--Begin Comm100 Live Chat Code-->
-    <!--        	<div id="comm100-button-34"></div>-->
-    <!--        	<script type="text/javascript">-->
-    <!--        	    var Comm100API = Comm100API || new Object;-->
-    <!--				Comm100API.chat_buttons = Comm100API.chat_buttons || [];-->
-				<!--    var comm100_chatButton = new Object;-->
-				<!--    comm100_chatButton.code_plan = 34;-->
-				<!--    comm100_chatButton.div_id = 'comm100-button-34';-->
-				<!--    Comm100API.chat_buttons.push(comm100_chatButton);-->
-				<!--    Comm100API.site_id = 92508;-->
-				<!--    Comm100API.main_code_plan = 34;-->
-
-				<!--    var comm100_lc = document.createElement('script');-->
-				<!--    comm100_lc.type = 'text/javascript';-->
-				<!--    comm100_lc.async = true;-->
-				<!--    comm100_lc.src = 'https://chatserver.comm100.com/livechat.ashx?siteId=' + Comm100API.site_id;-->
-				<!--    var comm100_s = document.getElementsByTagName('script')[0];-->
-				<!--    comm100_s.parentNode.insertBefore(comm100_lc, comm100_s);-->
-
-				<!--    setTimeout(function() {-->
-				<!--        if (!Comm100API.loaded) {-->
-				<!--            var lc = document.createElement('script');-->
-				<!--            lc.type = 'text/javascript';-->
-				<!--            lc.async = true;-->
-				<!--            lc.src = 'https://hostedmax.comm100.com/chatserver/livechat.ashx?siteId=' + Comm100API.site_id;-->
-				<!--            var s = document.getElementsByTagName('script')[0];-->
-				<!--            s.parentNode.insertBefore(lc, s);-->
-				<!--        }-->
-				<!--    }, 5000)-->
-				<!--</script>-->
-				<!--End Comm100 Live Chat Code-->
-	   <!--     </div>-->
-         <!--   <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:0; border:#FFD701 3px solid;">-->
-	        <!--	<img style="width:100%;" src="../assets/image/paying-img.png" class="paying-later">-->
-	        <!--</div>-->
-
-          <!--  <div style="text-align:center; margin-top:15px; background-color:#F3F3F3; padding:23px; border:#FFD701 3px solid;"> -->
-	        	<!--<div class="visible-lg visible-md visible-sm visible-xs" style="margin-left: 5px; margin-right: 5px;">-->
-	        	<!--	<h4 style="color:#015F9E !important; margin-bottom:20px;">-->
-	        	<!--		Nanaimo Flights From Other UK Airports-->
-	        	<!--	</h4>-->
-	        	<!--		        		<p style="margin-bottom:0px;">-->
-	        	<!--			        			<a style="color:#333;font-size: 13px;" href="javascript: bookingReq(['25-Sep-2025', '30-Sep-2025','Heathrow','LHR','Nanaimo','YCD','','','Return','Economy' ,'10-09-2025 - 25-11-2025','1868']);">Flights From Heathrow	        				<strong class="pull-right" style="color:#015696;">fr £ 1868</strong>-->
-	        	<!--		</a>-->
-	        	<!--	</p>-->
-          <!--          <div class="dotted_border"></div>-->
-          <!--          	        		<p style="margin-bottom:0px;">-->
-	        	<!--			        			<a style="color:#333;font-size: 13px;" href="javascript: bookingReq(['25-Sep-2025', '30-Sep-2025','London City','LCY','Nanaimo','YCD','','','Return','Economy' ,'10-09-2025 - 25-11-2025','576']);">Flights From London City	        				<strong class="pull-right" style="color:#015696;">fr £ 576</strong>-->
-	        	<!--		</a>-->
-	        	<!--	</p>-->
-          <!--          <div class="dotted_border"></div>-->
-          <!--                          </div>-->
-          <!--  </div>-->
             <div class="why-book-main" >
        			<div class="booking_session side_whybook_w_us visible-lg visible-md">
        				<h3>Why book with us ?</h3> 
@@ -1757,8 +1708,8 @@ $iataList = array_map(function($a) {
         <div class="content">
             <div class="row">
                 <div class="col-md-12">
-                    <a href="tel:02079938331">
-                        <img src="https://brighttravels.co.uk/wp-content/uploads/2025/09/Bright-Travels-banner-design-1.png" style="width: 100%;" alt="Flight Search">
+                    <a href="tel:02070788885">
+                        <img src="search-banner.png" style="width: 100%;" alt="Flight Search">
                     </a>
                 </div>
             </div>
@@ -1800,8 +1751,6 @@ $iataList = array_map(function($a) {
 
             </div>
 
-            <!-- Tab contents -->
-            
             <?php 
 
                 // Find airport by code
@@ -2004,18 +1953,18 @@ $iataList = array_map(function($a) {
                                             </div>
                                             <?php else:?>
                                                 <div class="price no-price">
-                                                    <a href="tel:02079938331" class="link-fill"></a>
+                                                    <a href="tel:02070788885" class="link-fill"></a>
                                                     <p style=""> Special rates not published online.</p>
                                                     <div class="call-group">
                                                         <h4><i aria-hidden="true" class="fas fa-phone-alt"></i> Call Now</h4>
-                                                        <a href="tel:02079938331" class="dialme">0207 993 8331</a>
+                                                        <a href="tel:02070788885" class="dialme">0207 078 8885</a>
                                                     </div>
                                                 </div>
                                             <?php endif;?>
                                              <?php if($index > 2 ):?>
                                              <div class="add-to-links-div">
                                                  <a class="whatsapp_now"
-                                                    href="https://api.whatsapp.com/send?phone=02079938331&amp;text=I'm%20interested%20in%20flights%20to%20<?php
+                                                    href="https://api.whatsapp.com/send?phone=02070788885&amp;text=I'm%20interested%20in%20flights%20to%20<?php
                                                         $fromAirport = findAirport($inSegs[0]['from'], $AIRPORTS);
                                                         echo $fromAirport ? htmlspecialchars($fromAirport['city']) : '';
                                                         ?>%20from%20<?php
@@ -2036,7 +1985,7 @@ $iataList = array_map(function($a) {
                                                         <!--<span>Whatsapp</span>-->
                                                     </div>
                                                 </a>
-                                                <a class="call_now" href="tel:02079938331">
+                                                <a class="call_now" href="tel:02070788885">
                                                     <div>
                                                         <i class="fa fa-phone"></i>
                                                         <!--<span>Call Now</span>-->
@@ -2163,4 +2112,5 @@ $iataList = array_map(function($a) {
         });
     </script>
 </body>
+
 </html>
