@@ -184,7 +184,14 @@ $AIRLINES = [
         'code'        => 'PK',
         'quality'     => 0.98,
         'hubs'        => ['KHI','LHE','ISB'],
-        'regions'     => ['Asia','Middle East','Europe','North America'],
+        // PIA's network covers Pakistan domestic routes and select international
+        // destinations across Asia, the Middle East and Europe.  While the
+        // carrier has historically served North America, those services were
+        // suspended and the airline currently operates only one long-haul
+        // flight to Toronto via Pakistan【111938027958090†L309-L315】.  To avoid
+        // unrealistic suggestions for North America (e.g. LHR→GON), the
+        // 'North America' region has been removed from this list.
+        'regions'     => ['Asia','Middle East','Europe'],
         'home_country'=> 'Pakistan'
     ],
     [
@@ -751,7 +758,8 @@ function getParam(array $keys, $default = null)
     return $default;
 }
 
-$_GET['mode'] = strtolower(getParam(['mode', 'flight_type', 'trip_type', 'trip-type'], 'round')) === 'oneway' ? 'oneway' : 'round';
+$_GET['mode'] = strtolower(getParam(['mode', 'flight_type', 'trip_type', 'trip-type'], 'round'));
+$_GET['mode'] =  ($_GET['mode'] === 'oneway' || $_GET['mode'] === 'one way') ? 'oneway' : 'round';
 $_GET['from'] = extractAirportCode(getParam(['from', 'dept_arpt', 'departure-from'], ''));
 $_GET['to'] = extractAirportCode(getParam(['to', 'dest_arpt', 'return-from'], ''));
 $_GET['depart'] = getParam(['depart', 'departure_date', 'departure-date'], '');
