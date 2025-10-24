@@ -14,7 +14,7 @@ require_once __DIR__ . '../../../wp-load.php';
 
 get_header();
 
-require_once '/flights_algo.php';
+require_once __DIR__ . '/flights_algo.php';
 
 ?>
 <!DOCTYPE html>
