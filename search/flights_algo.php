@@ -96,7 +96,7 @@ $AIRLINES = [
         'quality'     => 1.10,
         'hubs'        => ['ATL','DTW','MSP','SLC','LAX','JFK','SEA','BOS'],
         'regions'     => ['North America','South America','Europe','Asia','Africa'],
-        'home_country'=> 'USA'
+        'home_country'=> 'United States'
     ],
     [
         'name'        => 'American Airlines',
@@ -104,7 +104,7 @@ $AIRLINES = [
         'quality'     => 1.10,
         'hubs'        => ['DFW','MIA','CLT','PHL','PHX','ORD','LAX','JFK'],
         'regions'     => ['North America','South America','Europe','Asia'],
-        'home_country'=> 'USA'
+        'home_country'=> 'United States'
     ],
     [
         'name'        => 'United Airlines',
@@ -112,7 +112,7 @@ $AIRLINES = [
         'quality'     => 1.10,
         'hubs'        => ['ORD','IAH','DEN','EWR','SFO','LAX','IAD','GUM'],
         'regions'     => ['North America','South America','Europe','Asia','Oceania'],
-        'home_country'=> 'USA'
+        'home_country'=> 'United States'
     ],
     [
         'name'        => 'Air Canada',
