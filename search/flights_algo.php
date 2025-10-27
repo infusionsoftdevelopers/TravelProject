@@ -1,4 +1,7 @@
 <?php
+
+
+
 $AIRPORTS = $AIRPORTSORIGINAL;
 
 // Airlines with quality factors (affects price) and hubs for connecting flights.
@@ -15,200 +18,138 @@ $AIRPORTS = $AIRPORTSORIGINAL;
 // operates international flights across Africa, North America, South America,
 // Asia, Europe and Oceania【618647756162369†L123-L129】).
 $AIRLINES = [
-    // Each airline now includes a home_country field. When searching for domestic flights,
-    // only carriers whose home_country matches the country of origin/destination will be shown.
-    // Regions remain unchanged and reflect broad network coverage as cited above.
     [
-        'name'        => 'Emirates',
-        'code'        => 'EK',
-        'quality'     => 1.35,
-        'hubs'        => ['DXB'],
-        'regions'     => ['Middle East','Asia','Europe','Africa','Americas','Oceania'],
-        'home_country'=> 'UAE'
+        'name'    => 'Emirates',
+        'code'    => 'EK',
+        'quality' => 1.35,
+        'hubs'    => ['DXB'],
+        'regions' => ['Middle East','Asia','Europe','Africa','Americas','Oceania']
     ],
     [
-        'name'        => 'Qatar Airways',
-        'code'        => 'QR',
-        'quality'     => 1.30,
-        'hubs'        => ['DOH'],
-        'regions'     => ['Middle East','Asia','Europe','Africa','Americas','Oceania'],
-        'home_country'=> 'Qatar'
+        'name'    => 'Qatar Airways',
+        'code'    => 'QR',
+        'quality' => 1.30,
+        'hubs'    => ['DOH'],
+        'regions' => ['Middle East','Asia','Europe','Africa','Americas','Oceania']
     ],
     [
-        'name'        => 'Etihad Airways',
-        'code'        => 'EY',
-        'quality'     => 1.25,
-        'hubs'        => ['AUH'],
-        'regions'     => ['Middle East','Asia','Europe','Africa','Americas','Oceania'],
-        'home_country'=> 'UAE'
+        'name'    => 'Etihad Airways',
+        'code'    => 'EY',
+        'quality' => 1.25,
+        'hubs'    => ['AUH'],
+        'regions' => ['Middle East','Asia','Europe','Africa','Americas','Oceania']
     ],
     [
-        'name'        => 'Turkish Airlines',
-        'code'        => 'TK',
-        'quality'     => 1.10,
-        'hubs'        => ['IST'],
-        'regions'     => ['Europe','Asia','Africa','Americas','Oceania','Middle East'],
-        'home_country'=> 'Turkey'
+        'name'    => 'Turkish Airlines',
+        'code'    => 'TK',
+        'quality' => 1.10,
+        'hubs'    => ['IST'],
+        'regions' => ['Europe','Asia','Africa','Americas','Oceania','Middle East']
     ],
     [
-        'name'        => 'Saudi Arabian Airlines',
-        'code'        => 'SV',
-        'quality'     => 1.05,
-        'hubs'        => ['JED','RUH'],
-        'regions'     => ['Middle East','Asia','Europe','Africa','North America'],
-        'home_country'=> 'Saudi Arabia'
+        'name'    => 'Saudi Arabian Airlines',
+        'code'    => 'SV',
+        'quality' => 1.05,
+        'hubs'    => ['JED','RUH'],
+        'regions' => ['Middle East','Asia','Europe','Africa','North America']
     ],
     [
-        'name'        => 'Malaysia Airlines',
-        'code'        => 'MH',
-        'quality'     => 1.00,
-        'hubs'        => ['KUL'],
-        'regions'     => ['Asia','Oceania','Europe'],
-        'home_country'=> 'Malaysia'
+        'name'    => 'Malaysia Airlines',
+        'code'    => 'MH',
+        'quality' => 1.00,
+        'hubs'    => ['KUL'],
+        'regions' => ['Asia','Oceania','Europe']
     ],
     [
-        'name'        => 'British Airways',
-        'code'        => 'BA',
-        'quality'     => 1.20,
-        'hubs'        => ['LHR','LGW'],
-        'regions'     => ['Europe','Africa','Asia','Americas','Oceania','Middle East'],
-        'home_country'=> 'United Kingdom'
+        'name'    => 'British Airways',
+        'code'    => 'BA',
+        'quality' => 1.20,
+        'hubs'    => ['LHR','LGW'],
+        'regions' => ['Europe','Africa','Asia','Americas','Oceania','Middle East']
     ],
     [
-        'name'        => 'Air France',
-        'code'        => 'AF',
-        'quality'     => 1.18,
-        'hubs'        => ['CDG','ORY'],
-        'regions'     => ['Europe','Africa','Asia','Americas','Middle East'],
-        'home_country'=> 'France'
+        'name'    => 'Air France',
+        'code'    => 'AF',
+        'quality' => 1.18,
+        'hubs'    => ['CDG','ORY'],
+        'regions' => ['Europe','Africa','Asia','Americas','Middle East']
     ],
     [
-        'name'        => 'KLM',
-        'code'        => 'KL',
-        'quality'     => 1.15,
-        'hubs'        => ['AMS'],
-        'regions'     => ['Europe','Africa','Asia','Americas','Middle East'],
-        'home_country'=> 'Netherlands'
+        'name'    => 'KLM',
+        'code'    => 'KL',
+        'quality' => 1.15,
+        'hubs'    => ['AMS'],
+        'regions' => ['Europe','Africa','Asia','Americas','Middle East']
     ],
     [
-        'name'        => 'Delta Air Lines',
-        'code'        => 'DL',
-        'quality'     => 1.10,
-        'hubs'        => ['ATL','DTW','MSP','SLC','LAX','JFK','SEA','BOS'],
-        'regions'     => ['North America','South America','Europe','Asia','Africa'],
-        'home_country'=> 'United States'
+        'name'    => 'Delta Air Lines',
+        'code'    => 'DL',
+        'quality' => 1.10,
+        'hubs'    => ['ATL','DTW','MSP','SLC','LAX','JFK','SEA','BOS'],
+        'regions' => ['North America','South America','Europe','Asia','Africa']
     ],
     [
-        'name'        => 'American Airlines',
-        'code'        => 'AA',
-        'quality'     => 1.10,
-        'hubs'        => ['DFW','MIA','CLT','PHL','PHX','ORD','LAX','JFK'],
-        'regions'     => ['North America','South America','Europe','Asia'],
-        'home_country'=> 'United States'
+        'name'    => 'American Airlines',
+        'code'    => 'AA',
+        'quality' => 1.10,
+        'hubs'    => ['DFW','MIA','CLT','PHL','PHX','ORD','LAX','JFK'],
+        'regions' => ['North America','South America','Europe','Asia']
     ],
     [
-        'name'        => 'United Airlines',
-        'code'        => 'UA',
-        'quality'     => 1.10,
-        'hubs'        => ['ORD','IAH','DEN','EWR','SFO','LAX','IAD','GUM'],
-        'regions'     => ['North America','South America','Europe','Asia','Oceania'],
-        'home_country'=> 'United States'
+        'name'    => 'United Airlines',
+        'code'    => 'UA',
+        'quality' => 1.10,
+        'hubs'    => ['ORD','IAH','DEN','EWR','SFO','LAX','IAD','GUM'],
+        'regions' => ['North America','South America','Europe','Asia','Oceania']
     ],
     [
-        'name'        => 'Air Canada',
-        'code'        => 'AC',
-        'quality'     => 1.05,
-        'hubs'        => ['YYZ','YVR','YUL'],
-        'regions'     => ['North America','Europe','Asia','South America'],
-        'home_country'=> 'Canada'
+        'name'    => 'Air Canada',
+        'code'    => 'AC',
+        'quality' => 1.05,
+        'hubs'    => ['YYZ','YVR','YUL'],
+        'regions' => ['North America','Europe','Asia','South America']
     ],
     [
-        'name'        => 'Singapore Airlines',
-        'code'        => 'SQ',
-        'quality'     => 1.30,
-        'hubs'        => ['SIN'],
-        'regions'     => ['Asia','Europe','North America','Oceania','Africa'],
-        'home_country'=> 'Singapore'
+        'name'    => 'Singapore Airlines',
+        'code'    => 'SQ',
+        'quality' => 1.30,
+        'hubs'    => ['SIN'],
+        'regions' => ['Asia','Europe','North America','Oceania','Africa']
     ],
     [
-        'name'        => 'Qantas',
-        'code'        => 'QF',
-        'quality'     => 1.25,
-        'hubs'        => ['SYD','MEL','BNE','PER'],
-        'regions'     => ['Oceania','Asia','Europe','Americas','Africa'],
-        'home_country'=> 'Australia'
+        'name'    => 'Qantas',
+        'code'    => 'QF',
+        'quality' => 1.25,
+        'hubs'    => ['SYD','MEL','BNE','PER'],
+        'regions' => ['Oceania','Asia','Europe','Americas','Africa']
     ],
     [
-        'name'        => 'Ethiopian Airlines',
-        'code'        => 'ET',
-        'quality'     => 1.05,
-        'hubs'        => ['ADD'],
-        'regions'     => ['Africa','Europe','Asia','Americas','Middle East'],
-        'home_country'=> 'Ethiopia'
+        'name'    => 'Ethiopian Airlines',
+        'code'    => 'ET',
+        'quality' => 1.05,
+        'hubs'    => ['ADD'],
+        'regions' => ['Africa','Europe','Asia','Americas','Middle East']
     ],
     [
-        'name'        => 'Kenya Airways',
-        'code'        => 'KQ',
-        'quality'     => 1.00,
-        'hubs'        => ['NBO'],
-        'regions'     => ['Africa','Europe','Asia','Middle East'],
-        'home_country'=> 'Kenya'
+        'name'    => 'Kenya Airways',
+        'code'    => 'KQ',
+        'quality' => 1.00,
+        'hubs'    => ['NBO'],
+        'regions' => ['Africa','Europe','Asia','Middle East']
     ],
     [
-        'name'        => 'Egyptair',
-        'code'        => 'MS',
-        'quality'     => 1.00,
-        'hubs'        => ['CAI'],
-        'regions'     => ['Africa','Middle East','Europe','North America','Asia'],
-        'home_country'=> 'Egypt'
+        'name'    => 'Egyptair',
+        'code'    => 'MS',
+        'quality' => 1.00,
+        'hubs'    => ['CAI'],
+        'regions' => ['Africa','Middle East','Europe','North America','Asia']
     ],
     [
-        'name'        => 'LATAM Airlines',
-        'code'        => 'LA',
-        'quality'     => 1.00,
-        'hubs'        => ['SCL','GRU','LIM'],
-        'regions'     => ['South America','North America','Europe','Oceania'],
-        'home_country'=> 'Chile'
-    ],
-    // 🔸 Pakistan local carriers: PIA, Airblue and SereneAir.  These airlines operate
-    // domestic flights within Pakistan and select international routes.  Their
-    // inclusion enables domestic flight searches to return realistic local airlines.
-    // PIA serves domestic routes plus international destinations across Asia,
-    // Europe, the Middle East and North America【838397963142053†L272-L276】.
-    // Airblue operates scheduled domestic flights in Pakistan and to Saudi Arabia and
-    // the UAE【50911131343809†L224-L229】【50911131343809†L233-L254】.
-    // SereneAir primarily operates domestically and launched its first international
-    // service to Sharjah in March 2021【247028291621764†L181-L184】.
-    [
-        'name'        => 'Pakistan International Airlines',
-        'code'        => 'PK',
-        'quality'     => 0.98,
-        'hubs'        => ['KHI','LHE','ISB'],
-        // PIA's network covers Pakistan domestic routes and select international
-        // destinations across Asia, the Middle East and Europe.  While the
-        // carrier has historically served North America, those services were
-        // suspended and the airline currently operates only one long-haul
-        // flight to Toronto via Pakistan【111938027958090†L309-L315】.  To avoid
-        // unrealistic suggestions for North America (e.g. LHR→GON), the
-        // 'North America' region has been removed from this list.
-        'regions'     => ['Asia','Middle East','Europe'],
-        'home_country'=> 'Pakistan'
-    ],
-    [
-        'name'        => 'Airblue',
-        'code'        => 'PA',
-        'quality'     => 0.95,
-        'hubs'        => ['ISB','KHI','LHE'],
-        'regions'     => ['Asia','Middle East'],
-        'home_country'=> 'Pakistan'
-    ],
-    [
-        'name'        => 'SereneAir',
-        'code'        => 'ER',
-        'quality'     => 0.90,
-        'hubs'        => ['ISB','KHI','LHE'],
-        'regions'     => ['Asia','Middle East'],
-        'home_country'=> 'Pakistan'
+        'name'    => 'LATAM Airlines',
+        'code'    => 'LA',
+        'quality' => 1.00,
+        'hubs'    => ['SCL','GRU','LIM'],
+        'regions' => ['South America','North America','Europe','Oceania']
     ]
 ];
 
@@ -216,7 +157,7 @@ $AIRLINES = [
 $CLASSES = [
     // Updated cabin multipliers: higher premiums for upper classes
     'economy'         => 1.00,
-    'premium economy'         => 1.60,
+    'premium class'         => 1.60,
     'business class'        => 2.75,
     'first class'           => 4.20,
 ];
@@ -483,19 +424,11 @@ function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $cla
             ];
         } else {
             // One-stop via hub
-            // Only use hubs located in either the origin or destination country to avoid third-country transits.
-            $candidateHubs = [];
-            foreach ($hubOptions as $hubCandidate) {
-                $aptCandidate = findAirport($hubCandidate, $AIRPORTS);
-                if ($aptCandidate && (
-                    strcasecmp($aptCandidate['country'], $fromApt['country']) === 0 ||
-                    strcasecmp($aptCandidate['country'], $toApt['country']) === 0
-                )) {
-                    $candidateHubs[] = $hubCandidate;
-                }
-            }
-            // If no candidate hubs in the origin or destination country, fallback to direct.
-            if (count($candidateHubs) === 0) {
+            // pick a random hub
+            $hubCode = $hubOptions[array_rand($hubOptions)];
+            $hubApt  = findAirport($hubCode, $AIRPORTS);
+            if (!$hubApt || $hubApt['code'] == $fromApt['code'] || $hubApt['code'] == $toApt['code']) {
+                // fallback to direct if hub same as origin/destination
                 $dist = haversine($fromApt['lat'], $fromApt['lon'], $toApt['lat'], $toApt['lon']);
                 $duration = computeDuration($dist);
                 // Price based on month ranges rather than distance
@@ -521,92 +454,61 @@ function generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $cla
                     'class'    => ucfirst(str_replace('_',' ', $classKey)),
                 ];
             } else {
-                // pick a random hub from candidate hubs
-                $hubCode = $candidateHubs[array_rand($candidateHubs)];
-                $hubApt  = findAirport($hubCode, $AIRPORTS);
-                // If the chosen hub is identical to the origin or destination airport,
-                // treat this as a direct service instead of creating a zero-length segment.
-                if ($hubApt && (
-                    strcasecmp($hubApt['code'], $fromApt['code']) === 0 ||
-                    strcasecmp($hubApt['code'], $toApt['code']) === 0
-                )) {
-                    // Direct flight fallback when hub equals origin or destination
-                    $dist = haversine($fromApt['lat'], $fromApt['lon'], $toApt['lat'], $toApt['lon']);
-                    $dur  = computeDuration($dist);
-                    $price = computeBasePriceByMonth(
-                        $departDate->format('Y-m-d'),
-                        $quality,
-                        $classMult,
-                        $daysAhead,
-                        ((int)$departDate->format('N') >= 6)
-                    );
-                    $depDateTime = DateTime::createFromFormat('Y-m-d H:i', $departDate->format('Y-m-d') . ' ' . $time);
-                    $arrDateTime = clone $depDateTime;
-                    $arrDateTime->modify('+' . (int) round($dur/60) . ' minutes');
-                    $results[] = [
-                        'airline'   => $airline['name'],
-                        'segments'  => [[
+                // compute first leg and second leg
+                $dist1 = haversine($fromApt['lat'], $fromApt['lon'], $hubApt['lat'], $hubApt['lon']);
+                $dur1  = computeDuration($dist1);
+
+                // choose layover time between 75 and 180 minutes
+                $layover = 75 + rand(0, 105);
+
+                $dist2 = haversine($hubApt['lat'], $hubApt['lon'], $toApt['lat'], $toApt['lon']);
+                $dur2  = computeDuration($dist2);
+
+                $totalDur = $dur1 + ($layover*60) + $dur2;
+                // Price based on month ranges rather than distance (same for connecting flights)
+                $price = computeBasePriceByMonth(
+                    $departDate->format('Y-m-d'),
+                    $quality,
+                    $classMult,
+                    $daysAhead,
+                    ((int)$departDate->format('N') >= 6)
+                );
+
+                // compute departure and arrival times
+                $depDateTime = DateTime::createFromFormat('Y-m-d H:i', $departDate->format('Y-m-d') . ' ' . $time);
+                $arr1DateTime = clone $depDateTime;
+                $arr1DateTime->modify('+' . (int) round($dur1/60) . ' minutes');
+
+                $dep2DateTime = clone $arr1DateTime;
+                $dep2DateTime->modify('+' . (int) $layover . ' minutes');
+
+                $arr2DateTime = clone $dep2DateTime;
+                $arr2DateTime->modify('+' . (int) round($dur2/60) . ' minutes');
+
+                $results[] = [
+                    'airline'   => $airline['name'],
+                    'segments'  => [
+                        [
                             'from'    => $fromApt['code'],
-                            'to'      => $toApt['code'],
+                            'to'      => $hubApt['code'],
                             'depart'  => $depDateTime->format('Y-m-d H:i'),
-                            'arrive'  => $arrDateTime->format('Y-m-d H:i'),
-                            'duration' => $dur,
-                            'stops'    => 0,
-                        ]],
-                        'totalDuration' => $dur,
-                        'price'    => $price,
-                        'class'    => ucfirst(str_replace('_',' ', $classKey)),
-                    ];
-                } else {
-                    // compute first leg and second leg distances
-                    $dist1 = haversine($fromApt['lat'], $fromApt['lon'], $hubApt['lat'], $hubApt['lon']);
-                    $dur1  = computeDuration($dist1);
-                    // choose layover time between 75 and 180 minutes
-                    $layover = 75 + rand(0, 105);
-                    $dist2 = haversine($hubApt['lat'], $hubApt['lon'], $toApt['lat'], $toApt['lon']);
-                    $dur2  = computeDuration($dist2);
-                    $totalDur = $dur1 + ($layover*60) + $dur2;
-                    // Price based on month ranges rather than distance (same for connecting flights)
-                    $price = computeBasePriceByMonth(
-                        $departDate->format('Y-m-d'),
-                        $quality,
-                        $classMult,
-                        $daysAhead,
-                        ((int)$departDate->format('N') >= 6)
-                    );
-                    // compute departure and arrival times
-                    $depDateTime = DateTime::createFromFormat('Y-m-d H:i', $departDate->format('Y-m-d') . ' ' . $time);
-                    $arr1DateTime = clone $depDateTime;
-                    $arr1DateTime->modify('+' . (int) round($dur1/60) . ' minutes');
-                    $dep2DateTime = clone $arr1DateTime;
-                    $dep2DateTime->modify('+' . (int) $layover . ' minutes');
-                    $arr2DateTime = clone $dep2DateTime;
-                    $arr2DateTime->modify('+' . (int) round($dur2/60) . ' minutes');
-                    $results[] = [
-                        'airline'   => $airline['name'],
-                        'segments'  => [
-                            [
-                                'from'    => $fromApt['code'],
-                                'to'      => $hubApt['code'],
-                                'depart'  => $depDateTime->format('Y-m-d H:i'),
-                                'arrive'  => $arr1DateTime->format('Y-m-d H:i'),
-                                'duration' => $dur1,
-                                'stops'    => 1,
-                            ],
-                            [
-                                'from'    => $hubApt['code'],
-                                'to'      => $toApt['code'],
-                                'depart'  => $dep2DateTime->format('Y-m-d H:i'),
-                                'arrive'  => $arr2DateTime->format('Y-m-d H:i'),
-                                'duration' => $dur2,
-                                'stops'    => 0,
-                            ],
+                            'arrive'  => $arr1DateTime->format('Y-m-d H:i'),
+                            'duration' => $dur1,
+                            'stops'    => 1,
                         ],
-                        'totalDuration' => $totalDur,
-                        'price'    => $price,
-                        'class'    => ucfirst(str_replace('_',' ', $classKey)),
-                    ];
-                }
+                        [
+                            'from'    => $hubApt['code'],
+                            'to'      => $toApt['code'],
+                            'depart'  => $dep2DateTime->format('Y-m-d H:i'),
+                            'arrive'  => $arr2DateTime->format('Y-m-d H:i'),
+                            'duration' => $dur2,
+                            'stops'    => 0,
+                        ],
+                    ],
+                    'totalDuration' => $totalDur,
+                    'price'    => $price,
+                    'class'    => ucfirst(str_replace('_',' ', $classKey)),
+                ];
             }
         }
     }
@@ -645,33 +547,14 @@ function generateFlightResults($fromCode, $toCode, $departDateStr, $returnDateSt
         if ($airlineCode && strcasecmp($airline['code'], $airlineCode) !== 0) {
             continue;
         }
-        // If no specific airline code is given, apply additional filters:
-        // 1) When travelling domestically (origin and destination share the same country), only show airlines
-        // whose home_country matches that country.  This ensures local carriers appear for internal routes.
-        // 2) When travelling internationally, restrict to airlines that serve both origin and destination
-        // regions.  An airline's 'regions' list enumerates the continents it serves.
+        // If no specific airline code is given, filter airlines to those that operate in both the origin and
+        // destination regions.  Airlines include a 'regions' list specifying continents where they fly.
+        // Only consider airlines covering both regions; this yields more realistic search results by avoiding
+        // carriers that do not serve either the origin or destination areas.
         if (!$airlineCode) {
-            // Domestic flight: restrict to carriers with matching home_country.
-            if (strcasecmp($fromApt['country'], $toApt['country']) === 0) {
-                $home = $airline['home_country'] ?? null;
-                if (!$home || strcasecmp($home, $fromApt['country']) !== 0) {
-                    continue;
-                }
-            } else {
-                // International: restrict to airlines from either the origin or destination country.
-                // Skip carriers whose home_country is neither the origin nor the destination country.
-                $home = $airline['home_country'] ?? '';
-                if (!$home || (
-                    strcasecmp($home, $fromApt['country']) !== 0 &&
-                    strcasecmp($home, $toApt['country']) !== 0
-                )) {
-                    continue;
-                }
-                // Removed region filter: when the airline originates from either the origin or destination
-                // country, we no longer verify that its regions list includes both the origin and destination
-                // continents.  This allows flights operated by carriers from the departure or arrival
-                // country to appear even if they do not serve the other region directly.  Other airlines
-                // (whose home_country does not match either endpoint) continue to be excluded above.
+            $airRegions = $airline['regions'] ?? [];
+            if (!in_array($originRegion, $airRegions) || !in_array($destRegion, $airRegions)) {
+                continue;
             }
         }
         $outboundFlights = generateFlightsForAirline($airline, $fromApt, $toApt, $departDate, $classKey, $daysAheadDepart);
@@ -749,20 +632,6 @@ function sanitizeIata($str) {
     return strtoupper(substr(preg_replace('/[^A-Za-z]/', '', $str), 0, 3));
 }
 
-// Read basic search parameters
-// $mode      = isset($_GET['mode']) && $_GET['mode'] === 'oneway' ? 'oneway' : 'round';
-// $fromCode  = isset($_GET['from']) ? sanitizeIata($_GET['from']) : '';
-// $toCode    = isset($_GET['to'])   ? sanitizeIata($_GET['to'])   : '';
-// $depart    = isset($_GET['depart']) ? $_GET['depart'] : '';
-// $return    = isset($_GET['return']) ? $_GET['return'] : '';
-// $classKey  = isset($_GET['class']) ? $_GET['class'] : 'economy';
-// // Additional fields for refined search
-// $airlineCode = isset($_GET['airline']) ? strtoupper(preg_replace('/[^A-Za-z]/', '', $_GET['airline'])) : '';
-// $adults   = isset($_GET['adults']) ? max(1, intval($_GET['adults'])) : 1;
-// $children = isset($_GET['children']) ? max(0, intval($_GET['children'])) : 0;
-// $infants  = isset($_GET['infants']) ? max(0, intval($_GET['infants'])) : 0;
-
-
 function extractAirportCode($str)
 {
     if (empty($str)) {
@@ -783,7 +652,6 @@ function extractAirportCode($str)
     return sanitizeIata($str);
 }
 
-// Convert airline name to logo filename format
 function getAirlineLogoFilename($airlineName)
 {
     // Convert to lowercase and replace spaces with underscores
@@ -816,6 +684,14 @@ $_GET['return'] = getParam(['return', 'return_date', 'return-date'], '');
 // Class handling: prefer explicit class/cabin_class, otherwise infer from flags like economy=Economy
 $__classParam = strtolower(getParam(['class', 'cabin_class'], ''));
 
+// if ($__classParam === '') {
+//     if (isset($_GET['economy'])) { $__classParam = 'economy'; }
+//     elseif (isset($_GET['premium_economy']) || isset($_GET['premium-economy'])) { $__classParam = 'premium_economy'; }
+//     elseif (isset($_GET['business'])) { $__classParam = 'business'; }
+//     elseif (isset($_GET['first'])) { $__classParam = 'first'; }
+//     $classParam = strtolower( $_GET[$classParam] );
+// }
+
 if ($__classParam === '') {
     if (isset($_GET['economy'])) {
         $__classParam = strtolower($_GET['economy']);
@@ -830,33 +706,8 @@ if ($__classParam === '') {
     }
 }
 
-// echo $__classParam;
-// die();
-
-function extractAirlineCode($str)
-{
-    if (empty($str)) {
-        return '';
-    }
-
-    // If it contains " - " (dash with spaces), extract the part before the dash
-    if (strpos($str, ' - ') !== false) {
-        $parts = explode(' - ', $str, 2); // limit to 2 parts
-        $code = trim($parts[0]); // first part is the code
-        return $code;
-    }
-
-    // If no dash format, treat as direct airline code
-    return $str;
-}
-
-
 $_GET['class'] = $__classParam !== '' ? $__classParam : 'economy';
-$_GET["airline"] = extractAirlineCode(isset($_GET["airline"]) ? $_GET["airline"] : '');
-// $_GET['airline'] = strtoupper(preg_replace('/[^A-Za-z]/', '', getParam(['airline', 'airline'], '')));
-// echo $_GET["airline"];
-// die();
-
+$_GET['airline'] = strtoupper(preg_replace('/[^A-Za-z]/', '', getParam(['airline', 'airline'], '')));
 $_GET['adults'] = max(1, intval(getParam(['adults', 'padults'], 1)));
 $_GET['children'] = max(0, intval(getParam(['children', 'pchildren'], 0)));
 $_GET['infants'] = max(0, intval(getParam(['infants', 'pinfants'], 0)));
@@ -870,7 +721,7 @@ $depart = isset($_GET['depart']) ? date('Y-m-d', strtotime($_GET['depart'])) : '
 $return = isset($_GET['return']) ? date('Y-m-d', strtotime($_GET['return'])) : '';
 $classKey = isset($_GET['class']) ? $_GET['class'] : 'economy';
 // Additional fields for refined search
-$airlineCode = isset($_GET['airline']) ? $_GET['airline'] : '';
+$airlineCode = isset($_GET['airline']) ? strtoupper(preg_replace('/[^A-Za-z]/', '', $_GET['airline'])) : '';
 $adults = isset($_GET['adults']) ? max(1, intval($_GET['adults'])) : 1;
 $children = isset($_GET['children']) ? max(0, intval($_GET['children'])) : 0;
 $infants = isset($_GET['infants']) ? max(0, intval($_GET['infants'])) : 0;
